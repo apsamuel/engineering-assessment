@@ -1,7 +1,15 @@
 # To Dos
 
-- TODO: program the slider/inputs to act on the application state accordingly
-- TODO: ensure CLI container can run persistently
-- TODO: refactor the categories column, it feels bad!
-- TODO: troubleshoot DataGrid rendering issues when paging
-- TODO: move filtering to top level (eg. compileData)
+| Icon |   Meaning   |
+| :--: | :---------: |
+|  💻  | In Progress |
+|  ✅  |    Done     |
+
+|               TODO               |                          Description                          | Status |
+| :------------------------------: | :-----------------------------------------------------------: | :----: |
+|   distance from truck and user   |                  add distance to UI and CLI                   |   ✅   |
+|         Sliders & Inputs         |                   program sliders & inputs                    |   💻   |
+|          CLI container           |          CLI container persistence in docker-compose          |   💻   |
+|   refactor `categories` column   |                  reformat presentation layer                  |   💻   |
+| review DataGrid rendering issues |                pagination is rendering poorly                 |   💻   |
+| centralize core filters/mappings | we should not have to repeat the filters and mappings so much |   💻   |
