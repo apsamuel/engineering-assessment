@@ -1,0 +1,13 @@
+*.md
+**/node_modules/
+**/dist
+.git
+npm-debug.log
+.coverage
+.coverage.*
+.env
+.env.*
+.aws
+docker-compose.yml
+.gitignore
+.npmrc
