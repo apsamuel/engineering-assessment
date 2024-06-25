@@ -23,7 +23,10 @@
 ## Development
 
 - I created a **very** simple API for the data source
-- I scaffolded the vite project and started to define primary components
+  - I wanted to have control over representation of the data
+    - I want to use my own simpified searching/sorting/mapping algorithms
+- I scaffolded a new vite react project and started to define primary components
+  - Data component took/taking the most time, mainly as a result of how to present the data with pagination
   - Focusing on visualizing the data, and I want to add something useful
     - distance!
     - I'm also filtering this data to ensure vendors are approved and have some basic properties set (such as coordinates)
