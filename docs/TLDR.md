@@ -1,26 +1,28 @@
-# TLDR
+# Process
 
 ## Plan
 
-- I read the requirements of the `Estee Challenge`
-- I inspected the data source and thought about what questions can be answered with the data, and how we can **add value** to the existing API
-  - Map/Viz?
-    - I need to look into what's available, hopefully something that's free
-    - what trucks exist in San Francisco
-    - where is each truck?
-  - Info
-    - how far away from me is the truck?
-  - Searchability
-    - (search by food category, vendor, or nearest distance)
-  - what are my favorite trucks?
-    - I want to avoid users, but perhaps session cookies can work?
-    - we can use the rating component in MUI, this will need to be coded appropriately
-- I can use existing libraries to accelerate the development of an API, UI and CLI.
-  - **API** - `express` for quickly defining an API
-  - **UI** - using the `vite` framework to create a `react` project. Using `MaterialUI` for component framework.
-  - **CLI** - `commander` for accelerating CLI development.
+- I read the requirements of the challenge
+- I inspected the data source
+  - what **`questions can be answered`** with the available data
+  - how we can **`add value`** to the existing API
+- I thought about how this may eventually be packaged and delivered (containers)
 
-## Development
+## Brainstorm
+
+- *Searchability*
+  - (search by food category, vendor, or nearest distance)
+- *Maps & Visualization*
+  - I need to look into what's available, hopefully something that's free
+- *Preferences & Favorites*
+  - I want to avoid creating users, but perhaps we can leverage session cookies to store preferences
+    - we can use the rating component in MUI, this will need to be coded appropriately
+- Use existing libraries to accelerate the development of APIs, UIs and CLIs.
+  - **API** => `express` for quickly defining an API
+  - **UI** => using the `vite` framework to create a `react` project. Using `MaterialUI` for component framework.
+  - **CLI** => `commander` for accelerating CLI development
+
+## Develop
 
 - I created a **very** simple API for the data source
   - I wanted to have control over representation of the data
@@ -32,7 +34,7 @@
     - I'm also filtering this data to ensure vendors are approved and have some basic properties set (such as coordinates)
 - i used the `./scripts` folder and files as a scratch area, but this became the backbone of the CLI
 
-## Operations
+## Operate
 
 Once I had enough of the assesment working locally, I began working on containerization, first defining the Dockerfiles, and then creating a docker-compose file to orchestrate the total project.
 
