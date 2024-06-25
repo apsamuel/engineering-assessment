@@ -1,0 +1,24 @@
+{
+  "type": "module",
+  "name": "engineering-assessment",
+  "description": "",
+  "version": "0.0.0-dev.0",
+  "main": "index.js",
+  "engins": {
+    "node": ">=20.0.0",
+    "npm": ">=7.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-api": "node ./api/index.js",
+    "run-ui": "cd ./ui && npm run dev"
+  },
+  "author": "aaron.psamuel@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "cors": "^2.8.5",
+    "haversine-distance": "^1.2.3",
+    "public-ip": "^6.0.2"
+  }
+}
