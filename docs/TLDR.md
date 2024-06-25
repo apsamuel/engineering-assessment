@@ -29,11 +29,3 @@
 ## Operationalizing
 
 Once I had enough of the assesment working locally, I began working on containerization, first defining the Dockerfiles, and then creating a docker-compose file to orchestrate the total project.
-
-### To Dos
-
-- TODO: refactor the categories column, it feels bad!
-- TODO: troubleshoot DataGrid rendering issues when paging
-- TODO: move filtering to top level (eg. compileData)
-- TODO: get the cli container to persistently run and avoid a dependency of node to use it
-- TODO: program the slider/inputs to act on the application state accordingly

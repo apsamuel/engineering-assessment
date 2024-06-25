@@ -40,6 +40,10 @@ After following the steps in [Getting Started](#getting-started) you will have t
 - [Hungrèe API](http://localhost:8080)
   - you can use curl or a browser to play around with the API
 
+## To Dos
+
+actively looking into [TODOs](./docs/TODOS.md)
+
 ## TLDR
 
 [tldr](./docs/TLDR.md)
