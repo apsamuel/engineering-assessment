@@ -1,0 +1,28 @@
+services:
+  hungree-api:
+    build: ./api
+    ports:
+      - 8080:8080
+    container_name: hungree-api
+    environment:
+      - PORT=5173
+      - NODE_ENV=production
+    working_dir: /app
+    command: node index.js
+  hungree-ui:
+    build: ./ui
+    ports:
+      - 5173:5173
+    container_name: hungree-ui
+    environment:
+      - PORT=5173
+      - NODE_ENV=production
+    working_dir: /app
+    command: npm run dev -- --host
+    depends_on:
+      - hungree-api
+  hungree-cli:
+    build: .
+    container_name: hungree-cli
+    working_dir: /app
+    command: echo "CLI is ready!"; sleep infinity
