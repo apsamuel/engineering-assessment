@@ -21,8 +21,8 @@ services:
     command: npm run dev -- --host
     depends_on:
       - hungree-api
+  # NOTE: this container does not run persistently, it contains the CLI tools
   hungree-cli:
     build: .
     container_name: hungree-cli
     working_dir: /app
-    command: echo "CLI is ready!"; sleep infinity

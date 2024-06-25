@@ -1,11 +1,15 @@
 FROM node:lts
 
-WORKDIR /app
+# WORKDIR /app
 COPY api /app/api
 COPY scripts /app/scripts
 COPY index.js /app/index.js
 COPY package*.json /app/
-RUN cd /app/api && npm install
+WORKDIR /app/api
+# RUN cd /app/api && npm install
 RUN npm install
-CMD ["echo 'CLI Started!' ; sleep infinity"]
-# ENTRYPOINT [ "node", "/app/scripts/hungree.js" ]
+WORKDIR /app
+RUN npm install
+WORKDIR /app
+# CMD ["/usr/bin/sleep", "infinity"]
+ENTRYPOINT [ "node", "/app/scripts/hungree.js" ]

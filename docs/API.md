@@ -1,5 +1,7 @@
 # API
 
+The API runs on port 8080, you can use a browser or curl to interact with it's endpoint
+
 ```sh
 curl http://localhost:8080/api/trucks | jq '.[0]'
 {
