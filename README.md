@@ -31,11 +31,11 @@ docker-compose up -d
 
 After following the steps in [Get Started](#get-started) you will have three entrypoints available to food truck heaven.
 
-- [Hungrèe UI](http://localhost:5173)
+- [Hungrèe UI](./docs/UI.md)
   - use your browser to navigate to the UI
-- [Hungrèe API](http://localhost:8080)
+- [Hungrèe API](./docs/API.md)
   - you can use curl or a browser to play around with the API
-- [Hungrèe CLI](./scripts/hungree-cli.js)
+- [Hungrèe CLI](./docs/CLI.md)
   - use `docker-compose` to run the hungree-cli script
   - `node scripts/hungree.js search -d 100000 -c taco`
 
