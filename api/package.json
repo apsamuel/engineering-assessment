@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "type": "module",
+  "version": "0.0.0-dev.0",
+  "description": "Hungry? Let us find a truck!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aaron.psamuel@icloud.com",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
