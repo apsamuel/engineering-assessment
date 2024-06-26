@@ -3,12 +3,13 @@ import cors from 'cors'
 import compileData from './lib/compileData.js';
 
 const app = express();
+const port = process.env.API_PORT || 8080;
 app.use(cors());
-const port = 8080;
+
 
 
 app.get('/', (req, res) => {
-  res.send('Hungry?');
+  res.send('Hungree?');
 })
 
 app.get('/api', (req, res) => {
@@ -17,8 +18,16 @@ app.get('/api', (req, res) => {
   })
 })
 
+// This is the endpoint that the frontend will hit to get the data
+// expose query params for changing the data model between csv and json
 app.get('/api/trucks', async (req, res) => {
-  const compiled = await compileData();
+  const query = req.query;
+  let { format } = query;
+  if (!format) format = 'csv'
+  console.log('data format:', format)
+  const compiled = await compileData(
+    // format === 'csv' ? true : false
+  );
   const headers = compiled[0];
   const data = compiled.slice(1, )
   res.json(data)
