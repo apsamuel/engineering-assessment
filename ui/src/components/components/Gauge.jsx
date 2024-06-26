@@ -7,10 +7,12 @@ import { styled } from '@mui/material/styles';
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
   height: 250,
 }))
-Categories.propTypes = {
+
+Gauge.propTypes = {
   trucks: PropTypes.arrayOf(PropTypes.object)
 };
-export default function Categories({ trucks = [] }) {
+
+export default function Gauge({ trucks = [] }) {
   const frequencies = [];
   const categories = trucks
     .map((truck) => truck.fooditems)
@@ -32,37 +34,61 @@ export default function Categories({ trucks = [] }) {
     .sort((a, b) => b.value - a.value)
     .slice(0, 10);
 
+
   const option = {
-    legend: {
-      top: 'bottom'
-    },
-    toolbox: {
-      show: true,
-      feature: {
-        // mark: { show: true },
-        dataView: { show: true, readOnly: false },
-        restore: { show: true },
-        saveAsImage: { show: true }
-      }
-    },
     series: [
       {
-        name: 'Nightingale Chart',
-        type: 'pie',
-        radius: [50, 250],
-        center: ['50%', '50%'],
-        roseType: 'area',
-        itemStyle: {
-          borderRadius: 8
+        type: 'gauge',
+        startAngle: 90,
+        endAngle: -270,
+        pointer: {
+          show: false
         },
-        data: [
-          ...sortedFrequencies
-        ]
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            borderWidth: 1,
+            borderColor: '#464646'
+          }
+        },
+        axisLine: {
+          lineStyle: {
+            width: 40
+          }
+        },
+        splitLine: {
+          show: false,
+          distance: 0,
+          length: 10
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: false,
+          distance: 50
+        },
+        data: sortedFrequencies,
+        title: {
+          fontSize: 14
+        },
+        detail: {
+          width: 50,
+          height: 14,
+          fontSize: 14,
+          color: 'inherit',
+          borderColor: 'inherit',
+          borderRadius: 20,
+          borderWidth: 1,
+          formatter: '{value}%'
+        }
       }
     ]
-  };
+  }
 
-  // const options =
   return (
     <Box
       sx={{

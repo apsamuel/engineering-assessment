@@ -68,15 +68,15 @@ export default function Form({
       direction={'row'}
 
       sx={{
-        // flexGrow: 1,
+        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 2,
         width: {
-          xs: '80%',
-          sm: '80%',
-          md: '80%',
-          lg: '80%',
+          xs: '30%',
+          sm: '50%',
+          md: '60%',
+          lg: '70%',
           xl: '80%'
         },
         m: {
@@ -88,14 +88,13 @@ export default function Form({
         },
         borderRadius: {
           xs: 0,
-          sm: 5,
-          md: 7,
-          lg: 8,
-          xl: 10
+          sm: 2,
+          md: 3,
+          lg: 4,
+          xl: 5
         },
         border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
       }}
-      // spacing={10}
     >
       {/* distance controls */}
       <FormControl

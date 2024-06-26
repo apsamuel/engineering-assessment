@@ -1,7 +1,8 @@
+import SanFrancLogo from '../assets/sanfran.svg';
 export default function Trucks() {
   return (
     <div>
-      <h1>Trucks</h1>
+      <img src={SanFrancLogo} alt='San Francisco' />
     </div>
   );
 }

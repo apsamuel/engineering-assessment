@@ -1,7 +1,8 @@
+import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Categories from './components/Categories.jsx';
+import Gauge from './components/Gauge.jsx';
 import { useOutletContext } from 'react-router-dom';
-
 
 export default function Visualize() {
   const {
@@ -18,18 +19,42 @@ export default function Visualize() {
     foods
   } = useOutletContext();
 
+  console.log('visualize', {
+    trucks: trucks.length,
+    filteredTrucks: filterTrucks.length
+  });
+
   return (
-    <Box
+    <Stack
       sx={{
-        // height: 550,
-        width: '100%'
-
+        display: {
+          xs: 'none',
+          sm: 'none',
+          md: 'none',
+          lg: 'block',
+          xl: 'block'
+        },
+        padding: {
+          sm: 2,
+          md: 2,
+          lg: 2,
+          xl: 2
+        },
+        width: {
+          xs: '100%',
+          sm: '100%',
+          md: '100%',
+          lg: '100%',
+          xl: '100%'
+        }
       }}
-
     >
-      <Categories trucks={filterTrucks}/>
-      {/* <ReactECharts option={option} /> */}
-    </Box>
-
+      <Box>
+        <Categories trucks={filterTrucks} />
+      </Box>
+      {/* <Box>
+        <Gauge trucks={filterTrucks} />
+      </Box> */}
+    </Stack>
   );
 }

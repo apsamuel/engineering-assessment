@@ -21,18 +21,19 @@ app.get('/api', (req, res) => {
 // This is the endpoint that the frontend will hit to get the data
 // expose query params for changing the data model between csv and json
 app.get('/api/trucks', async (req, res) => {
-  console.log(JSON.stringify({
-    method: req.method,
+  console.log(`api-${req.method.toLowerCase()}`, JSON.stringify({
+    timestamp: new Date().toISOString(),
+    // method: req.method,
     url: req.url,
-    query: req.query,
-    params: req.params,
+    query: req.query || 'no query',
+    params: req.params || 'no params',
     body: req.body,
   }, null, 2))
   const query = req.query;
   let { format } = query;
   if (!format) format = 'csv'
   const compiled = await compileData(
-    // format === 'csv' ? true : false
+    // TODO: validate we can switch the
   );
   const headers = compiled[0];
   const data = compiled.slice(1, )

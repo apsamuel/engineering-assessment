@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef, useLayoutEffect } from 'react';
 import {
   createTheme,
   responsiveFontSizes,
@@ -68,6 +68,12 @@ function App() {
   if (loading) console.log('loading location...');
   if (error) console.log('error getting location');
 
+  // create references
+  const rootRef = createRef();
+  // const naviRef = createRef();
+  // const contentRef = createRef();
+  // const outletRef = createRef();
+
   useEffect(() => {
     fetch('http://localhost:3000/api/trucks')
       .then((res) => res.json())
@@ -108,9 +114,14 @@ function App() {
     // }
   }, [latitude, longitude]);
 
+  useLayoutEffect(() => {
+    console.log('event.application.layout.refresh', rootRef);
+
+  })
   return (
     <ThemeProvider theme={theme}>
       <Stack
+        ref={rootRef}
 
       >
         <Stack
@@ -121,11 +132,13 @@ function App() {
           }}
         >
           <Navigation
+            // ref={naviRef}
             setTheme={setTheme}
             lightTheme={lightTheme}
             darkTheme={darkTheme}
           />
           <Stack
+            // ref={contentRef}
             spacing={2}
             sx={{
               backgroundColor: 'primary.main',
@@ -173,6 +186,7 @@ function App() {
                 // spacing={2}
               >
               <Outlet
+                // ref={outletRef}
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
