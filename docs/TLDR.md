@@ -44,3 +44,11 @@
 Once I had enough of the assesment working locally, I began working on containerization, first defining the Dockerfiles, and then creating a docker-compose file to orchestrate the total project.
 
 I wanted to run the CLI container persistently, but ran into some issues that may be related to the ENTRYPOINT/CMD or base container configuration. I decided it's not totally neccesary, and documented the steps to using the containerized CLI tool.
+
+## TLDR^2
+
+### A Fun Exchange
+
+While looking into methods for retrieving a users location in a CLI session, I had a brief interaction with the folks at ipapi. I've experienced this before but totally lost why the API wouldn't respond outside a browser, ofcourse, I had not sent a user agent string with the request.
+
+![ipapiSupport](./funExhange.jpg)
