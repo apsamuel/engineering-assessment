@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
+import { Outlet } from 'react-router-dom';
 // import haversine from 'haversine-distance'
 import './App.css';
 
@@ -158,22 +159,29 @@ function App() {
             }}
             direction='column'
           >
-            <Form
-              trucks={trucks}
-              setDistance={setDistance}
-              distance={distance}
-              setVendor={setVendor}
-              vendor={vendor}
-              setFoods={setFoods}
-              foods={foods}
-            />
-            <Data
-              trucks={trucks}
-              location={browserLocation}
-              vendor={vendor}
-              distance={distance}
-              foods={foods}
-            />
+              <Stack
+                direction='row'
+              >
+              <Outlet/>
+              <Form
+                trucks={trucks}
+                setDistance={setDistance}
+                distance={distance}
+                setVendor={setVendor}
+                vendor={vendor}
+                setFoods={setFoods}
+                foods={foods}
+              />
+              </Stack>
+
+              <Data
+                trucks={trucks}
+                location={browserLocation}
+                vendor={vendor}
+                distance={distance}
+                foods={foods}
+              />
+
           </Stack>
         </Stack>
       </Stack>
