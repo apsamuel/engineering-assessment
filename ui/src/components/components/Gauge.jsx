@@ -41,13 +41,13 @@ export default function Gauge({ trucks = [] }) {
         value: 1,
         title: {
           offsetCenter: [
-            0, `${((categories.indexOf(category) / categoriesLength) * 100) - 10.0}%`
+            0, `${((categories.indexOf(category) / categoriesLength) * 100) + 20.0}%`
           ]
         },
         detail: {
           valueAnimation: true,
           offsetCenter: [
-            0, `${((categories.indexOf(category) / categoriesLength) * 100) - 15.0}%`
+            0, `${((categories.indexOf(category) / categoriesLength) * 100) + 25.0}%`
           ]
         }
       });

@@ -108,7 +108,7 @@ export default function Form({
               // padding: 5
             }}
           >
-            <Typography variant='caption'>Distance</Typography>
+            <Typography variant='caption'></Typography>
           </InputLabel>
           <Slider
             label='Distance'
@@ -151,7 +151,7 @@ export default function Form({
           }}
         >
           <Typography
-          >Vendor</Typography>
+          ></Typography>
         </InputLabel>
         <Select
           labelId='vendor-name-multiple-select-label'
@@ -188,7 +188,7 @@ export default function Form({
             // padding: 5
           }}
         >
-          <Typography>Category</Typography>
+          <Typography></Typography>
         </InputLabel>
         <Select
           variant='filled'
