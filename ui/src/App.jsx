@@ -1,6 +1,3 @@
-// import { useState } from 'react';
-// import truckLogo from './assets/truck.svg'
-// import viteLogo from '/vite.svg'
 import { useState, useEffect } from 'react';
 import {
   createTheme,
@@ -14,7 +11,6 @@ import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
 import { Outlet } from 'react-router-dom';
-// import haversine from 'haversine-distance'
 import './App.css';
 
 
@@ -114,7 +110,9 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Stack>
+      <Stack
+
+      >
         <Stack
           style={{
             flexDirection: 'row',
@@ -130,6 +128,7 @@ function App() {
           <Stack
             spacing={2}
             sx={{
+              backgroundColor: 'primary.main',
               alignContent: 'center',
               alignItems: 'center',
               justifyContent: 'center',
@@ -140,6 +139,7 @@ function App() {
                 lg: 'flex',
                 xl: 'flex'
               },
+              // TODO: I should grab a reference to the AppBar and properly store/memoize the dimensions, brute-forcing the padding is not the best solution
               top: {
                 xs: '30%',
                 sm: '30%',
@@ -166,7 +166,8 @@ function App() {
                   display: 'flex',
                   flexGrowth: 1,
                   width: '100%',
-                  border: '1px solid',
+                  // border: '1px solid',
+                  padding: 5,
                   // height: '100%',
                 }}
                 // spacing={2}

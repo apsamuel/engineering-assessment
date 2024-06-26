@@ -23,17 +23,21 @@ Form.propTypes = {
 };
 export default function Form({
   trucks = [],
+  // eslint-disable-next-line no-unused-vars
   setTrucks = () => {
     console.log('setTrucks not implemented');
   },
+    // eslint-disable-next-line no-unused-vars
   vendor = null,
   setVendor = () => {
     console.log('setVendor not implemented');
   },
+    // eslint-disable-next-line no-unused-vars
   distance = 10000,
   setDistance = () => {
     console.log('setDistance not implemented');
   },
+    // eslint-disable-next-line no-unused-vars
   foods = null,
   setFoods = () => {
     console.log('setFoods not implemented');

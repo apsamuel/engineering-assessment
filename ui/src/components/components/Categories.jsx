@@ -1,7 +1,12 @@
 import ReactECharts from 'echarts-for-react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
+// eslint-disable-next-line no-unused-vars
+const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
+  height: 250,
+}))
 Categories.propTypes = {
   trucks: PropTypes.arrayOf(PropTypes.object)
 };
@@ -23,9 +28,6 @@ export default function Categories({ trucks = [] }) {
     }
   }
 
-  // console.log(frequencies)
-
-  // sort frequencies
   const sortedFrequencies = frequencies
     .sort((a, b) => b.value - a.value)
     .slice(0, 10);
@@ -62,8 +64,21 @@ export default function Categories({ trucks = [] }) {
 
   // const options =
   return (
-    <Box style={{width: '100%'}}>
-      <ReactECharts option={option} />
+    <Box
+      sx={{
+        width: '100%',
+        flexGrow: 1,
+        display: {
+          xs: 'none',
+          sm: 'none',
+          md: 'none',
+          lg: 'block',
+          xl: 'block'
+
+        }
+      }}
+    >
+      <StyledReactECharts style={{ height: 500}} option={option} />
     </Box>
   );
 }

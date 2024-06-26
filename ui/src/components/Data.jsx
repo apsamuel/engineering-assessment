@@ -102,7 +102,7 @@ export default function Data({
     )
     setFilterTrucks(filtered)
 
-  }, [vendor, distance, foods, location, trucks, apiRef]);
+  }, [vendor, distance, foods, location, trucks, apiRef, setFilterTrucks]);
   return (
       <Box
         style={{

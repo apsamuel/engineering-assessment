@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Icon from '@mui/material/Icon';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import Stack from '@mui/material/Stack';
@@ -79,8 +78,8 @@ export default function Navigation({
     console.log('setTheme not implemented');
   }
 }) {
-  const pages = ['Trucks', 'Visualize', 'Reviews'];
-  const pagesX = [
+  // const pages = ['Trucks', 'Visualize', 'Reviews'];
+  const pages = [
     {
       name: 'Trucks',
       to: '/trucks',
@@ -182,7 +181,7 @@ export default function Navigation({
             sx={{ alignContent: 'center', justifyContent: 'center' }}
           >
             {/* page links */}
-            {pagesX.map((page) => (
+            {pages.map((page) => (
               <Box key={`box-${page.name}`}>
                 <StyledNavLink
                   key={page.name}

@@ -1,36 +1,32 @@
 import Box from '@mui/material/Box';
-import ReactECharts from 'echarts-for-react';
 import Categories from './components/Categories.jsx';
 import { useOutletContext } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 
 
 export default function Visualize() {
   const {
+    // eslint-disable-next-line no-unused-vars
     trucks,
     filterTrucks,
+    // eslint-disable-next-line no-unused-vars
     location,
+    // eslint-disable-next-line no-unused-vars
     vendor,
+    // eslint-disable-next-line no-unused-vars
     distance,
+    // eslint-disable-next-line no-unused-vars
     foods
   } = useOutletContext();
-  const option = {
-    xAxis: {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        data: [120, 200, 150, 80, 70, 110, 130],
-        type: 'bar'
-      }
-    ]
-  };
+
   return (
-    <Box style={{width: '100%'}}>
+    <Box
+      sx={{
+        // height: 550,
+        width: '100%'
+
+      }}
+
+    >
       <Categories trucks={filterTrucks}/>
       {/* <ReactECharts option={option} /> */}
     </Box>
