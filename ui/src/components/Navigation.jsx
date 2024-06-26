@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,12 +10,36 @@ import Icon from '@mui/material/Icon';
 import Container from '@mui/material/Container';
 // import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Switch from '@mui/material/Switch';
 // import Tooltip from '@mui/material/Tooltip';
 // import MenuItem from '@mui/material/MenuItem';
+import FormGroup from '@mui/material/FormGroup';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import FormControl from '@mui/material/FormControl';
+// import FormLabel from '@mui/material/FormLabel';
+// import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
+// import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
 
-export default function Navigation() {
+Navigation.propTypes = {
+  lightTheme: PropTypes.object,
+  darkTheme: PropTypes.object,
+  setTheme: PropTypes.func
+};
+
+export default function Navigation({
+  lightTheme = {},
+  darkTheme = {},
+  setTheme = () => {
+    console.log('setTheme not implemented');
+  }
+}) {
   const pages = ['Trucks', 'Foo', 'Serving'];
+
+  useEffect(() => {
+    console.log('rendering Navigation...')
+  })
 
   return (
     <AppBar position='absolute' sx={{ top: 0 }}>
@@ -43,20 +68,36 @@ export default function Navigation() {
           >
             Hungrèe
           </Typography>
-          <Stack direction={'row'}>
-            {pages.map((page) => (
-              <Button
-                variant='outlined'
-                key={page}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block'
-                }}
-              >
-                {page}
-              </Button>
-            ))}
+          <Stack
+            direction={'row'}
+            sx={{ alignContent: 'center', justifyContent: 'center' }}
+          >
+            <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
+              {pages.map((page) => (
+                <Button
+                  variant='outlined'
+                  key={page}
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    display: 'block'
+                  }}
+                >
+                  {page}
+                </Button>
+              ))}
+            </FormGroup>
+            <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Box>
+                <Switch
+                  id='hungree-app-theme-switch'
+                  aria-labelledby='hungree-app-theme-switch-label'
+                  aria-label='hungree-app-theme-switch'
+                  onChange={(event) => event.target.checked ? setTheme(darkTheme) : setTheme(lightTheme)}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              </Box>
+            </FormGroup>
           </Stack>
           <Box>
             <Icon

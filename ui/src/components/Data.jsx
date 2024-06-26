@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 // import Stack from '@mui/material/Stack'
 import Chip from '@mui/material/Chip';
@@ -10,10 +10,19 @@ import haversine from 'haversine-distance'
 
 Data.propTypes = {
   trucks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  location: PropTypes.arrayOf(PropTypes.number)
+  location: PropTypes.arrayOf(PropTypes.number),
+  vendor: PropTypes.string,
+  distance: PropTypes.number,
+  foods: PropTypes.arrayOf(PropTypes.string)
 }
-export default function Data({ trucks = [], location = []}) {
-  console.log('location:', location)
+export default function Data({ trucks = [], location = [], vendor = null, distance = 10000, foods = null}) {
+  const [filteredTrucks, setFilteredTrucks] = useState(trucks);
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 25,
+    page: 0,
+  });
+  // console.log('location:', location)
+  console.log('filteredTrucks:', filteredTrucks.length)
   const columns = [
     { field: 'applicant', headerName: 'Vendor', width: 200 },
     { field: 'facilitytype', headerName: 'Type', width: 150 },
@@ -59,30 +68,42 @@ export default function Data({ trucks = [], location = []}) {
     }
   ];
 
+
+  // trucks = foods ? trucks.filter(truck => truck.fooditems.includes(foods)) : trucks;
+  useEffect(() => {
+    setFilteredTrucks(
+      trucks.filter((truck) =>
+        vendor ? truck.applicant === vendor : true &&
+        distance ? haversine(location, [truck.latitude, truck.longitude]) / 1000 < distance : true &&
+        foods ? truck.fooditems.includes(foods) : true
+      )
+    )
+  }, [vendor, distance, foods, location, trucks]);
   return (
       <div
         style={{ height: 500, width: '100%'}}
       >
         <DataGrid
-          rows={trucks}
+          rows={filteredTrucks}
           columns={columns}
           autoHeight
           disableAutosize
           disableColumnResize
-          loading={trucks.length === 0}
+          loading={filteredTrucks.length === 0}
           initialState={{
             pagination: {
-              rowCount: trucks.length,
+              rowCount: filteredTrucks.length,
               paginationModel: {
                 page: 0,
                 pageSize: 20
               }
             }
           }}
-          pageSizeOptions={[5, 10, 20]}
+          pageSizeOptions={[5, 10, 20, 25]}
           checkboxSelection
           disableSelectionOnClick
-          onPaginationModelChange={(params) => {console.log(params)}}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
         />
       </div>
     // </Stack>
