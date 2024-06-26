@@ -2,8 +2,13 @@
 // import truckLogo from './assets/truck.svg'
 // import viteLogo from '/vite.svg'
 import { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useGeolocation } from "@uidotdev/usehooks";
+import {
+  createTheme,
+  responsiveFontSizes,
+  ThemeProvider
+} from '@mui/material/styles';
+import * as Colors from '@mui/material/colors';
+import { useGeolocation } from '@uidotdev/usehooks';
 import Stack from '@mui/material/Stack';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
@@ -11,14 +16,34 @@ import Form from './components/Form';
 // import haversine from 'haversine-distance'
 import './App.css';
 
-const darkTheme = createTheme({
-  foo: 'bar',
+
+
+let darkTheme = createTheme({
   palette: {
     primary: {
-      light: '#757575',
-      main: '#424242',
-      dark: '#000000',
+      light: Colors.grey[300],
+      main: Colors.grey[900],
+      dark: Colors.grey[900],
       contrastText: '#fff'
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#fff'
+    }
+  }
+});
+
+darkTheme = responsiveFontSizes(darkTheme);
+
+let lightTheme = createTheme({
+  palette: {
+    primary: {
+      light: Colors.grey[300],
+      main: Colors.grey[50],
+      dark: Colors.grey[500],
+      contrastText: '#000'
     },
     secondary: {
       light: '#ff7961',
@@ -27,33 +52,24 @@ const darkTheme = createTheme({
       contrastText: '#000'
     }
   }
-})
+});
 
-const lightTheme = createTheme({
-  bar: 'foo',
-  palette: {
-    primary: {
-      main: '#1976d2'
-    }
-  }
-})
+lightTheme = responsiveFontSizes(lightTheme);
 
 function App() {
-
   //
-  const [theme, setTheme] = useState(darkTheme)
+  const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
   const [browserLocation, setBrowserLocation] = useState([]);
   // set the distance to 10,000 km for now...
   const [distance, setDistance] = useState(10000);
   const [vendor, setVendor] = useState(null);
-  const [foods, setFoods] = useState(null);
+  const [foods, setFoods] = useState([]);
 
   const { loading, error, longitude, latitude } = useGeolocation();
-  if (loading) console.log('loading location...')
-  if (error) console.log('error getting location')
+  if (loading) console.log('loading location...');
+  if (error) console.log('error getting location');
 
-  // console.log('theme: ', theme)
   useEffect(() => {
     fetch('http://localhost:3000/api/trucks')
       .then((res) => res.json())
@@ -76,14 +92,17 @@ function App() {
               // we want trucks with a valid applicant
               truck.applicant &&
               // we want trucks with a valid latitude and longitude
-              truck.latitude && truck.latitude !== '0' &&
-              truck.longitude && truck.longitude !== '0'
+              truck.latitude &&
+              truck.latitude !== '0' &&
+              truck.longitude &&
+              truck.longitude !== '0'
           );
+        // console.log(data)
         setTrucks(data);
       });
 
     if (latitude && longitude) {
-      setBrowserLocation([latitude, longitude])
+      setBrowserLocation([latitude, longitude]);
     }
 
     // if (theme === 'dark') {
@@ -92,32 +111,73 @@ function App() {
   }, [latitude, longitude]);
 
   return (
-    <ThemeProvider theme={darkTheme}>
-    <Stack>
-      <Stack
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Navigation setTheme={setTheme} lightTheme={lightTheme} darkTheme={darkTheme}/>
+    <ThemeProvider theme={theme}>
+      <Stack>
         <Stack
-
-          spacing={2}
           style={{
-            position: 'absolute',
-            top: '20%'
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
-          direction='column'
         >
-          <Form trucks={trucks} setDistance={setDistance} distance={distance} setVendor={setVendor} vendor={vendor} setFoods={setFoods} foods={foods}/>
-          <Data trucks={trucks} location={browserLocation} vendor={vendor} distance={distance} foods={foods}/>
+          <Navigation
+            setTheme={setTheme}
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
+          />
+          <Stack
+            spacing={2}
+            sx={{
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              display: {
+                xs: 'none',
+                sm: 'none',
+                md: 'flex',
+                lg: 'flex',
+                xl: 'flex'
+              },
+              top: {
+                xs: '30%',
+                sm: '30%',
+                md: '30%',
+                lg: '30%',
+                xl: '30%'
+              },
+              width: {
+                xs: '80%',
+                sm: '80%',
+                md: '80%',
+                lg: '80%',
+                xl: '80%'
+              }
+            }}
+            style={{
+              position: 'absolute',
+            }}
+            direction='column'
+          >
+            <Form
+              trucks={trucks}
+              setDistance={setDistance}
+              distance={distance}
+              setVendor={setVendor}
+              vendor={vendor}
+              setFoods={setFoods}
+              foods={foods}
+            />
+            <Data
+              trucks={trucks}
+              location={browserLocation}
+              vendor={vendor}
+              distance={distance}
+              foods={foods}
+            />
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
     </ThemeProvider>
-
   );
 }
 

@@ -3,6 +3,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
@@ -61,20 +62,52 @@ export default function Form({
   return (
     <Stack
       direction={'row'}
+
       sx={{
         justifyContent: 'center',
         alignItems: 'center',
-        m: 1
+        padding: 2,
+        width: {
+          xs: '80%',
+          sm: '80%',
+          md: '80%',
+          lg: '80%',
+          xl: '80%'
+        },
+        m: {
+          xs: 1,
+          sm: 2,
+          md: 3,
+          lg: 4,
+          xl: 5
+        },
+        borderRadius: {
+          xs: 0,
+          sm: 5,
+          md: 7,
+          lg: 8,
+          xl: 10
+        },
+        border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
       }}
-      spacing={4}
+      spacing={8}
     >
       {/* distance controls */}
-      <FormControl>
+      <FormControl
+        variant='filled'
+      >
         <Box sx={{ width: 200 }}>
-          <InputLabel id='vendor-distance-slider-label'>
+          <InputLabel
+            id='vendor-distance-slider-label'
+            sx={{
+              color: 'primary.contrastText'
+              // padding: 5
+            }}
+          >
             <Typography variant='caption'>Distance</Typography>
           </InputLabel>
           <Slider
+            label='Distance'
             labelId='vendor-distance-slider-label'
             aria-label='vendor-distance-slider'
             defaultValue={5000}
@@ -91,25 +124,34 @@ export default function Form({
               { value: 10000, label: '10000 km' }
             ]}
             onChange={(_, value) => {
-              console.log('value:', value);
               setDistance(value);
             }}
           />
         </Box>
+        <FormHelperText>Trucks within distance</FormHelperText>
       </FormControl>
       {/*  vendor controls */}
       <FormControl
+        variant='filled'
         sx={{
-          m: 1
+          // m: 1,
+          padding: 1,
         }}
       >
-        <InputLabel id='vendor-name-multiple-select-label'>
-          <Typography>Vendor</Typography>
+        <InputLabel
+          id='vendor-name-multiple-select-label'
+          // variant='filled'
+          sx={{
+            color: 'primary.contrastText'
+            // padding: 5
+          }}
+        >
+          <Typography
+          >Vendor</Typography>
         </InputLabel>
         <Select
           labelId='vendor-name-multiple-select-label'
           id='vendor-name-multiple-select'
-          // multiple
           value={[vendors[0]]}
           input={<OutlinedInput id='vendor' />}
           label='Vendor'
@@ -124,24 +166,34 @@ export default function Form({
             </MenuItem>
           ))}
         </Select>
+        <FormHelperText>Choose a vendor</FormHelperText>
       </FormControl>
       {/*  food category controls */}
       <FormControl
+        variant={'filled'}
         sx={{
-          flexDirection: 'row',
-          m: 1
+          // flexDirection: 'row',
+          padding: 1
+          // m: 1
         }}
       >
-        <InputLabel id='category-name-multiple-select-label'>
-          <Typography>Categories</Typography>
+        <InputLabel
+          id='category-name-multiple-select-label'
+          sx={{
+            color: 'primary.contrastText'
+            // padding: 5
+          }}
+        >
+          <Typography>Category</Typography>
         </InputLabel>
         <Select
+          variant='filled'
           labelId='category-name-multiple-select-label'
+          label='Category'
           id='category-name-multiple-select'
-          // multiple
           value={[foodItems[0]]}
-          input={<OutlinedInput id='category' />}
-          label='Categories'
+          input={<OutlinedInput placeholder='Select a Category' id='category' />}
+          placeholder='Select a Category'
           onChange={(event) => {
             console.log('setting food category:', event.target.value);
             setFoods(event.target.value);
@@ -153,6 +205,7 @@ export default function Form({
             </MenuItem>
           ))}
         </Select>
+        <FormHelperText>Choose a food category</FormHelperText>
       </FormControl>
     </Stack>
   );

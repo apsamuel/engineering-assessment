@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 // import Stack from '@mui/material/Stack'
 import Chip from '@mui/material/Chip';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, useGridApiRef } from '@mui/x-data-grid';
 // import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import haversine from 'haversine-distance'
+// import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 
 Data.propTypes = {
@@ -15,14 +17,16 @@ Data.propTypes = {
   distance: PropTypes.number,
   foods: PropTypes.arrayOf(PropTypes.string)
 }
-export default function Data({ trucks = [], location = [], vendor = null, distance = 10000, foods = null}) {
-  const [filteredTrucks, setFilteredTrucks] = useState(trucks);
+export default function Data({
+  trucks = [], location = [], vendor = null, distance = 10000, foods = []
+}) {
+  let [filteredTrucks, setFilteredTrucks] = useState(trucks);
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 25,
     page: 0,
   });
-  // console.log('location:', location)
-  console.log('filteredTrucks:', filteredTrucks.length)
+  const apiRef = useGridApiRef();
+
   const columns = [
     { field: 'applicant', headerName: 'Vendor', width: 200 },
     { field: 'facilitytype', headerName: 'Type', width: 150 },
@@ -36,7 +40,9 @@ export default function Data({ trucks = [], location = [], vendor = null, distan
     {
       field: 'fooditems',
       headerName: 'Foods',
-      width: 250,
+      minWidth: 150,
+      maxWidth: 350,
+      width: 350,
       renderCell: (params) => {
         return (
           <Stack
@@ -48,7 +54,7 @@ export default function Data({ trucks = [], location = [], vendor = null, distan
             direction={'row'}
             // spacing={1}
           >
-            {params.value.split(':').map(val => val.trim()).slice(0,1).map((category, index) => (
+            {params.value.split(new RegExp('[:;]', 'g')).map(val => val.trim()).slice(0, 3).map((category, index) => (
               <Chip
                 key={index}
                 sx={{
@@ -56,6 +62,7 @@ export default function Data({ trucks = [], location = [], vendor = null, distan
                     xs: 'none',
                     sm: 'flex'
                   },
+                  color: 'primary.contrastText',
                 }}
                 size='small'
                 // key={category}
@@ -68,33 +75,54 @@ export default function Data({ trucks = [], location = [], vendor = null, distan
     }
   ];
 
-
-  // trucks = foods ? trucks.filter(truck => truck.fooditems.includes(foods)) : trucks;
   useEffect(() => {
+    // apiRef.current.setPageSize(paginationModel.pageSize)
+    // apiRef.current.setPage(paginationModel.page)
+
+    let filtered = trucks
+    if (vendor) {
+      filtered = filtered.filter((truck) => truck.applicant === vendor)
+    }
+    if (distance) {
+      filtered = filtered.filter((truck) => haversine(location, [truck.latitude, truck.longitude]) / 1000 < distance)
+    }
+    if (foods) {
+      console.log('foods', foods)
+      filtered = filtered.filter((truck) => truck.fooditems.includes(foods))
+    }
     setFilteredTrucks(
-      trucks.filter((truck) =>
-        vendor ? truck.applicant === vendor : true &&
-        distance ? haversine(location, [truck.latitude, truck.longitude]) / 1000 < distance : true &&
-        foods ? truck.fooditems.includes(foods) : true
-      )
+      filtered
+      // trucks.filter((truck) =>
+      //   vendor ? truck.applicant === vendor : true &&
+      //   distance ? haversine(location, [truck.latitude, truck.longitude]) / 1000 < distance : true &&
+      //   foods ? truck.fooditems.includes(foods) : true
+      // )
     )
-  }, [vendor, distance, foods, location, trucks]);
+
+  }, [vendor, distance, foods, location, trucks, apiRef]);
   return (
-      <div
-        style={{ height: 500, width: '100%'}}
+      <Box
+        style={{
+          height: 500,
+          width: '100%',
+          color: 'primary.contrastText',
+        }}
       >
         <DataGrid
+          sx={{
+            color: 'primary.contrastText',
+          }}
+          apiRef={apiRef}
+          density='comfortable'
           rows={filteredTrucks}
           columns={columns}
           autoHeight
-          disableAutosize
-          disableColumnResize
           loading={filteredTrucks.length === 0}
           initialState={{
             pagination: {
               rowCount: filteredTrucks.length,
               paginationModel: {
-                page: 0,
+                page: paginationModel.page,
                 pageSize: 20
               }
             }
@@ -103,9 +131,16 @@ export default function Data({ trucks = [], location = [], vendor = null, distan
           checkboxSelection
           disableSelectionOnClick
           paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
+          onSortModelChange={(model) => {
+            console.log('sort model change', model)
+          }}
+          onPaginationModelChange={(model) => {
+            setPaginationModel(model)
+          }}
+          onStateChange={(state) => {
+            setPaginationModel(state.pagination.paginationModel)
+          }}
         />
-      </div>
-    // </Stack>
+      </Box>
   );
 }
