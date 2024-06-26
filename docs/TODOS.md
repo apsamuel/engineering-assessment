@@ -15,7 +15,7 @@
 |            Sliders & Inputs             |                   program sliders & inputs                    | Development |   ✅   |
 |              CLI container              |          CLI container persistence in docker-compose          |   DevOps    |   ✔   |
 |      refactor `categories` column       |                  reformat presentation layer                  | Development |   💻   |
-|    review DataGrid rendering issues     |                pagination is rendering poorly                 | Development |   💻   |
+|    review DataGrid rendering issues     |                ~~pagination~~ is rendering poorly                 | Development |   💻   |
 |    centralize core filters/mappings     | we should not have to repeat the filters and mappings so much | Development |   💻   |
 
 ## Notes
