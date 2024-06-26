@@ -31,14 +31,14 @@ docker-compose up -d
 
 After following the steps in [Get Started](#get-started) you will have three entrypoints available to food truck heaven.
 
-- [Hungrèe UI](./docs/UI.md)
+- [Hungrèe UI](http://localhost:3001)
   - use a web browser to navigate to the UI
-- [Hungrèe API](./docs/API.md)
-  - use a web browser to interact with the API
-  - use a command line client like `curl` or `wget` to interact with the API
+- [Hungrèe API](http://localhost:3000)
+  - use a web browser or command line client to interact with the API
 - [Hungrèe CLI](./docs/CLI.md)
   - use `docker-compose` to run the hungree-cli script
-  - `node scripts/hungree.js search -d 100000 -c taco`
+  - `docker-compose run -it hungree-cli search -c fruit -d 1000000`
+  - NOTE: this container is intended to be built and used transiently, it is not a service
 
 ## Tips
 
@@ -46,7 +46,7 @@ After following the steps in [Get Started](#get-started) you will have three ent
 
 ## To Dos
 
-I am actively looking into [TODOs](./docs/TODOS.md)
+I have wrapped up most of the MVP blockers in. Anything else is just me being super interested and obsessive 😀 [TODOs](./docs/TODOS.md)
 
 ## TLDR
 
