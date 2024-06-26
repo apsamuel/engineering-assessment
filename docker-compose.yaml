@@ -1,28 +1,48 @@
 services:
   hungree-api:
-    build: ./api
-    ports:
-      - 8080:8080
+    build:
+      context: ./api
+      args:
+        - api_port=3000
+        - ui_port=3001
+        - NODE_ENV=production
     container_name: hungree-api
     environment:
-      - PORT=5173
+      - API_PORT=3000
+      - UI_PORT=3001
       - NODE_ENV=production
     working_dir: /app
+    ports:
+      - 3000:3000
     command: node index.js
   hungree-ui:
-    build: ./ui
+    build:
+      context: ./ui
+      args:
+        - api_port=3000
+        - ui_port=3001
+        - NODE_ENV=production
     ports:
-      - 5173:5173
+      - 3001:3001
     container_name: hungree-ui
     environment:
-      - PORT=5173
+      - API_PORT=3000
+      - UI_PORT=3001
       - NODE_ENV=production
     working_dir: /app
-    command: npm run dev -- --host
+    command: npm run dev -- --host --port 3001
     depends_on:
       - hungree-api
-  # NOTE: this container does not run persistently, it contains the CLI tools
   hungree-cli:
-    build: .
+    build:
+      context: .
+      args:
+        - api_port=3000
+        - ui_port=3001
+        - node_env=production
+    environment:
+      - API_PORT=3000
+      - UI_PORT=3001
+      - NODE_ENV=production
     container_name: hungree-cli
     working_dir: /app
