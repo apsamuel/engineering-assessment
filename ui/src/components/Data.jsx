@@ -113,7 +113,7 @@ export default function Data({
             color: 'primary.contrastText',
           }}
           apiRef={apiRef}
-          density='comfortable'
+          density='compact'
           rows={filteredTrucks}
           columns={columns}
           autoHeight
