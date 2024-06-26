@@ -34,14 +34,14 @@ const ToggleThemeSwitch = styled(Switch)(({ theme }) => ({
       transform: 'translateX(22px)',
       '& .MuiSwitch-thumb:before': {
         backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-          '#fff',
-        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+          '#fff'
+        )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-      },
-    },
+        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be'
+      }
+    }
   },
   '& .MuiSwitch-thumb': {
     backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
@@ -57,15 +57,19 @@ const ToggleThemeSwitch = styled(Switch)(({ theme }) => ({
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-        '#fff',
-      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
-    },
+        '#fff'
+      )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`
+    }
   },
   '& .MuiSwitch-track': {
     opacity: 1,
     backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
-    borderRadius: 20 / 2,
-  },
+    borderRadius: 20 / 2
+  }
+}));
+
+const StyledNavLink = styled(NavLink)(({ theme}) => ({
+  color: theme.palette.primary.contrastText,
 }))
 
 export default function Navigation({
@@ -92,10 +96,9 @@ export default function Navigation({
       to: '/reviews',
       position: 3
     }
-  ]
+  ];
 
-  useEffect(() => {
-  });
+  useEffect(() => {});
 
   return (
     <AppBar position='absolute' sx={{ top: 0 }}>
@@ -103,7 +106,7 @@ export default function Navigation({
         maxWidth='xl'
         sx={{
           justifyContent: 'flex-start',
-          alignItems: 'flex-start',
+          alignItems: 'flex-start'
         }}
       >
         <Toolbar disableGutters>
@@ -112,23 +115,39 @@ export default function Navigation({
             sx={{
               flexGrow: 1,
               alignContent: 'center',
-              justifyContent: 'baseline',
+              justifyContent: 'baseline'
             }}
           >
-            <Typography
-              variant='h6'
-              component='div'
-              sx={{
-                mr: 1,
-                fontFamily: 'Roboto',
-                fontSize: '2rem',
-                fontWeight: 700,
-                letterSpacing: '0.3em',
-                textDecoration: 'none'
-              }}
+            <Box
+                style={{
+                  color: 'primary.contrastText'
+                }}
+                sx={{
+                  color: 'primary.contrastText',
+                  textDecoration: 'none'
+                }}
             >
-              Hungrèe
-            </Typography>
+              <StyledNavLink
+                to='/'
+
+              >
+                <Typography
+                  variant='h6'
+                  component='div'
+                  sx={{
+                    mr: 1,
+                    fontFamily: 'Roboto',
+                    fontSize: '2rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.3em',
+                    textDecoration: 'none'
+                  }}
+                >
+                  Hungrèe
+                </Typography>
+              </StyledNavLink>
+            </Box>
+
             <Box
               sx={{
                 display: 'flex',
@@ -142,14 +161,14 @@ export default function Navigation({
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}
               >
                 <img
                   style={{
                     display: 'flex',
                     width: '2rem',
-                    height: '2rem',
+                    height: '2rem'
                   }}
                   src={'../../src/assets/truck.svg'}
                 />
@@ -160,27 +179,35 @@ export default function Navigation({
           <Stack
             direction={'row'}
             spacing={4}
-            sx={{ alignContent: 'center', justifyContent: 'center', }}
+            sx={{ alignContent: 'center', justifyContent: 'center' }}
           >
-
-            <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
-              {pagesX.map((page) => (
-                <Button
-                  variant='outlined'
+            {/* page links */}
+            {pagesX.map((page) => (
+              <Box key={`box-${page.name}`}>
+                <StyledNavLink
                   key={page.name}
+                  to={page.to}
                   sx={{
-                    color: 'primary.contrastText',
+                    color: 'primary.contrastText'
                   }}
-                  onClick={() => {
-                    console.log('link: ', page.name, 'to: ', page.to);
+                  // eslint-disable-next-line no-unused-vars
+                  style={({ isActive, isPending, isTransitioning }) => {
+                    return {
+                      fontWeight: isActive ? 'bold' : 'normal',
+                      // color: isPending ? 'red' : 'white',
+                      viewTransitionName: isTransitioning ? 'fade' : 'none'
+                    };
                   }}
-                  // component={NavLink}
                 >
                   {page.name}
-                </Button>
-              ))}
-            </FormGroup>
-            <FormGroup sx={{  alignContent: 'center', justifyContent: 'center'}}>
+                </StyledNavLink>
+              </Box>
+            ))}
+
+            {/* toggle theme controls */}
+            <FormGroup
+              sx={{ alignContent: 'center', justifyContent: 'center' }}
+            >
               <Box>
                 <ToggleThemeSwitch
                   id='hungree-app-theme-switch'
