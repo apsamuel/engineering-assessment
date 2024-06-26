@@ -14,8 +14,8 @@
 |      distance from truck and user       |                  add distance to UI and CLI                   | Development |   ✅   |
 |            Sliders & Inputs             |                   program sliders & inputs                    | Development |   ✅   |
 |              CLI container              |          CLI container persistence in docker-compose          |   DevOps    |   ✔    |
-|      ~~refactor `categories` column~~       |                  ~~reformat presentation layer~~                  | Development |   💻   |
-|    review DataGrid rendering issues     |              ~~pagination~~ is rendering poorly               | Development |   💻   |
+|    ~~refactor `categories` column~~     |                ~~reformat presentation layer~~                | Development |   ✅   |
+|    review DataGrid rendering issues     |              ~~pagination~~ is rendering poorly               | Development |   ✅   |
 |    centralize core filters/mappings     | we should not have to repeat the filters and mappings so much | Development |   💻   |
 
 ## Notes about items on TO DO
@@ -30,6 +30,7 @@
         - I initially thought this was a pagination issue, but it is an issue with how the DataGrid refreshes
         - I may explore a different component to display data, but I'll spend some more time looking at this first, I really think a DataGrid provides the perfect "home" view
           - interesting, with theme toggling enabled, this improves some, but not much, will loop back around.
+        - resolved. I was using react-router-doms browser router, and had specified the `<App>` component twice. Removing the duplicate entry fixed everything.
 - About category refactor
   - this is actually not that bad, spacing could be improved, and the initial parsing of categories needs some work.
     - various edge cases in the data make the simple regex/splitting fail silently, leaving long sentences for categories where simple words are expected (hamburgers, mexican food, lobster rolls, etc.)

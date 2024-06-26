@@ -17,6 +17,11 @@
 - *Preferences & Favorites*
   - I want to avoid creating users, but perhaps we can leverage session cookies to store preferences
     - we can use the rating component in MUI, this will need to be coded appropriately
+  - I checked a few yelp reviews for these trucks, and they exist!
+    - this implies we know how to search yelp, parse the interesting data, and render it in app somehow. 🤨
+      - i would need to tokenize the truck name to a string which is lowercased, has spaces replaced by '-' and stripped of non alphanumeric characters, and append 'san-francisco'
+      - Philz Coffee Truck reviews can be found in yelp as [Philz Coffee Truck](https://www.yelp.com/biz/philz-coffee-truck-san-francisco)
+
 - Use existing libraries to accelerate the development of APIs, UIs and CLIs.
   - **API** => `express` for quickly defining an API
   - **UI** => using the `vite` framework to create a `react` project. Using `MaterialUI` for component framework.
