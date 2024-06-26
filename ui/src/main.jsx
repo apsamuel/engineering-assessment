@@ -54,7 +54,22 @@ const browserRouter = createBrowserRouter([
         children: []
       }
     ]
-  }
+  },
+  // {
+  //   path: '/viz',
+  //   element: <Visualize />,
+  //   children: []
+  // },
+  // {
+  //   path: '/trucks',
+  //   element: <Trucks />,
+  //   children: []
+  // },
+  // {
+  //   path: '/reviews',
+  //   element: <Reviews />,
+  //   children: []
+  // }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
