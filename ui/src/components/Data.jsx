@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 
 
 Data.propTypes = {
+  setFilterTrucks: PropTypes.func,
   trucks: PropTypes.arrayOf(PropTypes.object).isRequired,
   location: PropTypes.arrayOf(PropTypes.number),
   vendor: PropTypes.string,
@@ -18,7 +19,8 @@ Data.propTypes = {
   foods: PropTypes.arrayOf(PropTypes.string)
 }
 export default function Data({
-  trucks = [], location = [], vendor = null, distance = 10000, foods = []
+  trucks = [], location = [], vendor = null, distance = 10000, foods = [],
+  setFilterTrucks = () => { console.log('setFilterTrucks not implemented') }
 }) {
   let [filteredTrucks, setFilteredTrucks] = useState(trucks);
   const [paginationModel, setPaginationModel] = useState({
@@ -98,6 +100,7 @@ export default function Data({
       //   foods ? truck.fooditems.includes(foods) : true
       // )
     )
+    setFilterTrucks(filtered)
 
   }, [vendor, distance, foods, location, trucks, apiRef]);
   return (

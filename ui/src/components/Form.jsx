@@ -64,6 +64,7 @@ export default function Form({
       direction={'row'}
 
       sx={{
+        // flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 2,
@@ -90,13 +91,13 @@ export default function Form({
         },
         border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
       }}
-      spacing={8}
+      // spacing={10}
     >
       {/* distance controls */}
       <FormControl
         variant='filled'
       >
-        <Box sx={{ width: 200 }}>
+        <Box sx={{  }}>
           <InputLabel
             id='vendor-distance-slider-label'
             sx={{

@@ -61,6 +61,7 @@ function App() {
   //
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
+  const [filterTrucks, setFilterTrucks] = useState([])
   const [browserLocation, setBrowserLocation] = useState([]);
   // set the distance to 10,000 km for now...
   const [distance, setDistance] = useState(10000);
@@ -161,8 +162,31 @@ function App() {
           >
               <Stack
                 direction='row'
+                sx={{
+                  display: 'flex',
+                  flexGrowth: 1,
+                  width: '100%',
+                  border: '1px solid',
+                  // height: '100%',
+                }}
+                // spacing={2}
               >
-              <Outlet/>
+              <Outlet
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+                context={{
+                  trucks: trucks,
+                  filterTrucks: filterTrucks,
+                  location: browserLocation,
+                  vendor: vendor,
+                  distance: distance,
+                  foods: foods
+                }}
+              />
+
+
               <Form
                 trucks={trucks}
                 setDistance={setDistance}
@@ -175,6 +199,7 @@ function App() {
               </Stack>
 
               <Data
+                setFilterTrucks={setFilterTrucks}
                 trucks={trucks}
                 location={browserLocation}
                 vendor={vendor}
