@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 
 // eslint-disable-next-line no-unused-vars
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
-  height: 250,
+  height: 550,
 }))
 
 Gauge.propTypes = {
@@ -26,13 +26,37 @@ export default function Gauge({ trucks = [] }) {
     if (frequencies.find((frequency) => frequency.name === category)) {
       frequencies.find((frequency) => frequency.name === category).value++;
     } else {
-      frequencies.push({ name: category, value: 1 });
+      const categoriesLength = categories.length;
+      console.log('offset.center', {
+        title: {
+          offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 10.0}%`
+        },
+        detail: {
+          offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 15.0}%`
+        }
+
+      })
+      frequencies.push({
+        name: category,
+        value: 1,
+        title: {
+          offsetCenter: [
+            0, `${((categories.indexOf(category) / categoriesLength) * 100) - 10.0}%`
+          ]
+        },
+        detail: {
+          valueAnimation: true,
+          offsetCenter: [
+            0, `${((categories.indexOf(category) / categoriesLength) * 100) - 15.0}%`
+          ]
+        }
+      });
     }
   }
 
   const sortedFrequencies = frequencies
     .sort((a, b) => b.value - a.value)
-    .slice(0, 10);
+    .slice(0, 3);
 
 
   const option = {
@@ -42,7 +66,7 @@ export default function Gauge({ trucks = [] }) {
         startAngle: 90,
         endAngle: -270,
         pointer: {
-          show: false
+          show: true
         },
         progress: {
           show: true,
@@ -60,29 +84,29 @@ export default function Gauge({ trucks = [] }) {
           }
         },
         splitLine: {
-          show: false,
+          show: true,
           distance: 0,
           length: 10
         },
         axisTick: {
-          show: false
+          show: true
         },
         axisLabel: {
-          show: false,
+          show: true,
           distance: 50
         },
         data: sortedFrequencies,
         title: {
-          fontSize: 14
+          fontSize: (sortedFrequencies.length === 1) ? 20 : 15,
         },
         detail: {
           width: 50,
           height: 14,
-          fontSize: 14,
+          fontSize: 12,
           color: 'inherit',
           borderColor: 'inherit',
           borderRadius: 20,
-          borderWidth: 1,
+          borderWidth: 0.1,
           formatter: '{value}%'
         }
       }
@@ -104,7 +128,7 @@ export default function Gauge({ trucks = [] }) {
         }
       }}
     >
-      <StyledReactECharts style={{ height: 500}} option={option} />
+      <StyledReactECharts  option={option} />
     </Box>
   );
 }

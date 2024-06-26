@@ -65,10 +65,10 @@ export default function Form({
   });
   return (
     <Stack
-      direction={'row'}
+      // direction={'row'}
 
       sx={{
-        flexGrow: 1,
+        // flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 2,

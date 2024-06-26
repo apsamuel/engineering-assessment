@@ -1,8 +1,9 @@
 import SanFrancLogo from '../assets/sanfran.svg';
+import Box from '@mui/material/Box';
 export default function Trucks() {
   return (
-    <div>
+    <Box>
       <img src={SanFrancLogo} alt='San Francisco' />
-    </div>
+    </Box>
   );
 }

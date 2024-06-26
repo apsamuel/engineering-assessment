@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { createRef, useLayoutEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -78,6 +78,7 @@ export default function Navigation({
     console.log('setTheme not implemented');
   }
 }) {
+  const ref = createRef();
   // const pages = ['Trucks', 'Visualize', 'Reviews'];
   const pages = [
     {
@@ -97,10 +98,28 @@ export default function Navigation({
     }
   ];
 
-  useEffect(() => {});
+  useLayoutEffect(() => {
+    const { clientHeight, clientWidth, offsetHeight, offsetWidth } = ref.current;
+    console.log(ref)
+    // const { clientHeight: parentHeight, clientWidth: parentWidth } = ref.current.parentElement;
+
+    console.log('navi.dimensions', {
+      // parentHeight,
+      // parentWidth,
+      offsetHeight,
+      offsetWidth,
+      clientHeight,
+      clientWidth
+
+    });
+  });
 
   return (
-    <AppBar position='absolute' sx={{ top: 0 }}>
+    <AppBar
+      position='absolute'
+      sx={{ top: 0 }}
+      ref={ref}
+    >
       <Container
         maxWidth='xl'
         sx={{
@@ -214,8 +233,8 @@ export default function Navigation({
                   aria-label='hungree-app-theme-switch'
                   onChange={(event) =>
                     event.target.checked
-                      ? setTheme(darkTheme)
-                      : setTheme(lightTheme)
+                      ? setTheme(lightTheme)
+                      : setTheme(darkTheme)
                   }
                   inputProps={{ 'aria-label': 'controlled' }}
                 />

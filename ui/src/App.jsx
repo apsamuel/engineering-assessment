@@ -114,10 +114,7 @@ function App() {
     // }
   }, [latitude, longitude]);
 
-  useLayoutEffect(() => {
-    console.log('event.application.layout.refresh', rootRef);
 
-  })
   return (
     <ThemeProvider theme={theme}>
       <Stack
@@ -134,12 +131,12 @@ function App() {
           <Navigation
             // ref={naviRef}
             setTheme={setTheme}
+            theme={theme}
             lightTheme={lightTheme}
             darkTheme={darkTheme}
           />
           <Stack
             // ref={contentRef}
-            spacing={2}
             sx={{
               backgroundColor: 'primary.main',
               alignContent: 'center',
@@ -147,7 +144,7 @@ function App() {
               justifyContent: 'center',
               display: {
                 xs: 'none',
-                sm: 'none',
+                sm: 'flex',
                 md: 'flex',
                 lg: 'flex',
                 xl: 'flex'
