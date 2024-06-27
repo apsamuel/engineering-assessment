@@ -48,15 +48,17 @@ app.get('/api/trucks', async (req, res) => {
   res.json(data)
 })
 
-app.get('/api/trucks/vendors', async (req, res) => {
-  const compiled = await compileData();
-  const headers = compiled[0];
-  const data = compiled.slice(1, )
-  const vendors = Array.from(new Set(data.map((truck) => truck.applicant)));
-  res.json(vendors)
-})
+// app.get('/api/trucks/vendors', async (req, res) => {
+//   apiLogger(req, res);
+//   const compiled = await compileData();
+//   const headers = compiled[0];
+//   const data = compiled.slice(1, )
+//   const vendors = Array.from(new Set(data.map((truck) => truck.applicant)));
+//   res.json(vendors)
+// })
 
 app.get('/api/trucks/categories', async (req, res) => {
+  apiLogger(req, res);
   const compiled = await compileData();
   const headers = compiled[0];
   const data = compiled.slice(1, )
@@ -65,34 +67,60 @@ app.get('/api/trucks/categories', async (req, res) => {
     .filter(Boolean)
     .join(';')
     .split(new RegExp('[;:.]', 'g'))
+    .map((item) => item.trim().toLowerCase().replace( /[/]/, ' & '  ))
+    // .map((item) => {
+    //   return item === 'soft serve ice cream & frozen virgin daiquiris' ? [
+    //     'soft serve ice cream',
+    //     'frozen virgin daiquiris'
+    //   ] : item
+    // })
+    .map((item) => item.replace('all types of food except for bbq on site per fire safety', 'general'))
+    .map((item) => item.replace('asian fusion - japanese sandwiches/sliders/misubi', 'asian fusion'))
+    .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'local organics'))
+    .map((item) => item.replace('pre-packaged swiches', 'packaged sandwiches'))
+    // .map((item) => item.replace(/(and)/, ''))
     .map((item) => item.trim().toLowerCase())
+    // .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetables', 'local organics')
     .filter(Boolean);
   res.json(Array.from(new Set(categories)))
 })
 
-app.get('/api/trucks/:vendor', async (req, res) => {
+app.get('/api/trucks/vendors', async (req, res) => {
+  apiLogger(req, res);
   const compiled = await compileData();
   const headers = compiled[0];
   const data = compiled.slice(1, )
-  const vendor = req.params.vendor;
+  const vendors = Array.from(new Set(data.map((truck) => truck.applicant)));
+  res.json(vendors)
+})
+
+app.get('/api/trucks/vendors/:vendor', async (req, res) => {
+  apiLogger(req, res);
+  const compiled = await compileData();
+  const headers = compiled[0];
+  const data = compiled.slice(1, )
+  const vendor = decodeURIComponent(req.params.vendor);
   const trucks = data.filter((truck) => truck.applicant === vendor);
   res.json(trucks)
 })
 
-app.get('/api/trucks/:name/categories', async (req, res) => {
+app.get('/api/trucks/vendors/:vendor/categories', async (req, res) => {
+  apiLogger(req, res);
   const compiled = await compileData();
   const headers = compiled[0];
   const data = compiled.slice(1, )
-  const name = req.params.name;
-  const trucks = data.filter((truck) => truck.applicant === name);
+  const vendor = decodeURIComponent(req.params.vendor);
+  const trucks = data.filter((truck) => truck.applicant === vendor);
   const categories = trucks
     .map((truck) => truck.fooditems)
     .filter(Boolean)
     .join(';')
     .split(new RegExp('[;:.]', 'g'))
     .map((item) => item.trim().toLowerCase())
+    // specific replacements
+    .map((item) => item.replace('asian fusion - japanese sandwiches/sliders/misubi', 'asian fusion'))
     .filter(Boolean);
-  return res.json(categories)
+  return res.json(Array.from(new Set(categories)))
 })
 
 app.listen(port, () => {
