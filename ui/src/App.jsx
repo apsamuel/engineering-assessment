@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef, useLayoutEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import {
   createTheme,
   responsiveFontSizes,
@@ -16,7 +16,18 @@ import './App.css';
 
 
 let darkTheme = createTheme({
+  mixins: {
+    MuiDataGrid: {
+      // pinnedBackground: Colors.grey['A700'],
+      // containerBackground: Colors.grey['A700'],
+    }
+  },
   palette: {
+    mode: 'dark',
+    background: {
+      default: Colors.grey[900],
+      paper: Colors.grey[900]
+    },
     primary: {
       light: Colors.grey[300],
       main: Colors.grey[900],
@@ -35,7 +46,18 @@ let darkTheme = createTheme({
 darkTheme = responsiveFontSizes(darkTheme);
 
 let lightTheme = createTheme({
+  mixins: {
+    MuiDataGrid: {
+      // pinnedBackground: Colors.grey['A700'],
+      // containerBackground: Colors.grey['A700'],
+    }
+  },
   palette: {
+    mode: 'light',
+    background: {
+      default: Colors.grey[50],
+      paper: Colors.grey[50]
+    },
     primary: {
       light: Colors.grey[300],
       main: Colors.grey[50],
@@ -115,6 +137,7 @@ function App() {
   }, [latitude, longitude]);
 
 
+  console.log('spacing: ', lightTheme.spacing(2))
   return (
     <ThemeProvider theme={theme}>
       <Stack
@@ -150,13 +173,8 @@ function App() {
                 xl: 'flex'
               },
               // TODO: I should grab a reference to the AppBar and properly store/memoize the dimensions, brute-forcing the padding is not the best solution
-              top: {
-                xs: '30%',
-                sm: '30%',
-                md: '30%',
-                lg: '30%',
-                xl: '30%'
-              },
+
+              top: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(5)})`,
               width: {
                 xs: '80%',
                 sm: '80%',
