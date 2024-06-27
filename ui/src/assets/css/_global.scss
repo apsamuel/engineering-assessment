@@ -1,0 +1,63 @@
+@use 'sass:math';
+
+$default-font-size: 16px;
+$default-padding: 10px;
+$viewport-width: 100vw;
+$viewport-height: 100vh;
+$default-text-justify: center;
+$default-vertical-align: middle;
+$default-item-align: center;
+$default-content-align: center;
+
+
+@function pxToRem($px) {
+  @return math.div($px, 16px) * 1rem;
+}
+
+@function fakePxToRem($px) {
+  @return 1rem;
+}
+
+@function remToPx($rem) {
+  @return math.div($rem, 1rem) * 16px;
+}
+
+@function remToPercent($rem) {
+  @return math.div($rem, 1rem) * 100%;
+}
+
+@mixin fontSize($size) {
+  font-size: $size;
+  font-size: pxToRem($size);
+}
+
+// use media queries to debug layout
+@mixin debugBorder($color: red) {
+  border: 1px solid $color;
+  @media (max-width: 576px) {
+    border: 1px solid green;
+  }
+  @media (min-width: 576px) {
+    border: 1px solid yellowgreen;
+  }
+
+  @media (min-width: 768px) {
+    border: 1px solid blue;
+  }
+
+  @media (min-width: 992px) {
+    border: 1px solid orange;
+  }
+
+  @media (min-width: 1200px) {
+    border: 1px solid purple;
+  }
+
+  @media (min-width: 1400px) {
+    border: 1px solid pink;
+  }
+
+  @media (min-width: 1600px) {
+    border: 1px solid $color;
+  }
+}
