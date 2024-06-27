@@ -1,13 +1,41 @@
 import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
-import { DataGrid, useGridApiRef } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridToolbar,
+  useGridApiRef,
+  // gridClasses
+} from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import haversine from 'haversine-distance'
 import Box from '@mui/material/Box';
-// import { darken, lighten, styled } from '@mui/material/styles';
+import {
+  // alpha,
+  // darken,
+  // lighten,
+  styled,
+  useTheme
+} from '@mui/material/styles';
 
-
+const StyledDataGrid = styled(DataGrid)(({ theme}) => ({
+  border: 0,
+  color: theme.palette.primary.contrastText,
+  fontFamily: [
+    'Roboto',
+  ].join(','),
+  WebkitFontSmoothing: 'auto',
+  letterSpacing: 'normal',
+  '& .MuiDataGrid-root': {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontFamily: [
+      'Roboto',
+    ].join(','),
+    WebkitFontSmoothing: 'auto',
+    letterSpacing: 'normal',
+  },
+}))
 Data.propTypes = {
   setFilterTrucks: PropTypes.func,
   trucks: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -20,6 +48,8 @@ export default function Data({
   trucks = [], location = [], vendor = null, distance = 10000, foods = [],
   setFilterTrucks = () => { console.log('setFilterTrucks not implemented') }
 }) {
+  // eslint-disable-next-line no-unused-vars
+  const theme = useTheme();
   let [filteredTrucks, setFilteredTrucks] = useState(trucks);
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 25,
@@ -28,8 +58,8 @@ export default function Data({
   const apiRef = useGridApiRef();
 
   const columns = [
-    { field: 'applicant', headerName: 'Vendor', width: 200 },
-    { field: 'facilitytype', headerName: 'Type', width: 150 },
+    { field: 'applicant', headerName: 'Vendor', minWidth: 250, maxWidth: 350 },
+    { field: 'facilitytype', headerName: 'Type', minWidth: 100, maxWidth: 200 },
     { field: 'address', headerName: 'Address', width: 250 },
     {
       field: 'distance',
@@ -54,7 +84,7 @@ export default function Data({
             direction={'row'}
             // spacing={1}
           >
-            {params.value.split(new RegExp('[:;]', 'g')).map(val => val.trim()).slice(0, 3).map((category, index) => (
+            {params.value.split(new RegExp('[:;]', 'g')).map(val => val.trim()).slice(0, 5).map((category, index) => (
               <Chip
                 key={index}
                 sx={{
@@ -76,9 +106,6 @@ export default function Data({
   ];
 
   useEffect(() => {
-    // apiRef.current.setPageSize(paginationModel.pageSize)
-    // apiRef.current.setPage(paginationModel.page)
-
     let filtered = trucks
     if (vendor) {
       filtered = filtered.filter((truck) => truck.applicant === vendor)
@@ -98,24 +125,33 @@ export default function Data({
   return (
       <Box
         style={{
-          height: 500,
           width: '100%',
-          color: 'primary.contrastText',
+          // color: 'primary.contrastText',
         }}
       >
-        <DataGrid
+        <StyledDataGrid
           sx={{
             boxShadow: 1,
-            border: 5,
-            borderColor: 'primary.contrastText',
-            color: 'primary.contrastText',
+            border: 1,
+            // borderColor: 'primary.contrastText',
+            // color: 'primary.contrastText',
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-autoHeight': {
+            },
+            '& .MuiDataGrid-toolbarContainer': {
+              backgroundColor: 'primary.light',
+            }
           }}
           apiRef={apiRef}
           density='compact'
           rows={filteredTrucks}
           columns={columns}
           autoHeight
+          autoColumnHeights
           loading={filteredTrucks.length === 0}
+          slots={{
+            toolbar: GridToolbar
+          }}
           initialState={{
             pagination: {
               rowCount: filteredTrucks.length,
