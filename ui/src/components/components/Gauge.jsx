@@ -33,15 +33,15 @@ export default function Gauge({ trucks = [] }) {
       frequencies.find((frequency) => frequency.name === category).value++;
     } else {
       const categoriesLength = categories.length;
-      console.log('offset.center', {
-        title: {
-          offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 10.0}%`
-        },
-        detail: {
-          offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 15.0}%`
-        }
+      // console.log('offset.center', {
+      //   title: {
+      //     offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 10.0}%`
+      //   },
+      //   detail: {
+      //     offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 15.0}%`
+      //   }
 
-      })
+      // })
       frequencies.push({
         name: category,
         value: 1,

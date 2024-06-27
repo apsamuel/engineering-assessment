@@ -5,8 +5,11 @@ import {
   ThemeProvider
 } from '@mui/material/styles';
 import * as Colors from '@mui/material/colors';
-import { useGeolocation } from '@uidotdev/usehooks';
+import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
 import Stack from '@mui/material/Stack';
+// import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
@@ -80,21 +83,20 @@ function App() {
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
   const [filterTrucks, setFilterTrucks] = useState([])
+  const [windowSize, setWindowSize] = useState([0, 0]);
   const [browserLocation, setBrowserLocation] = useState([]);
   // set the distance to 10,000 km for now...
   const [distance, setDistance] = useState(10000);
   const [vendor, setVendor] = useState(null);
   const [foods, setFoods] = useState([]);
 
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { loading, error, longitude, latitude } = useGeolocation();
-  if (loading) console.log('loading location...');
-  if (error) console.log('error getting location');
+  if (loading) console.log('load.location', { loading });
+  if (error) console.log('location.error', { error });
 
   // create references
   const rootRef = createRef();
-  // const naviRef = createRef();
-  // const contentRef = createRef();
-  // const outletRef = createRef();
 
   useEffect(() => {
     fetch('http://localhost:3000/api/trucks')
@@ -131,40 +133,45 @@ function App() {
       setBrowserLocation([latitude, longitude]);
     }
 
+    if (windowWidth && windowHeight) {
+      console.log('window.dimensions', JSON.stringify({ windowSize }))
+      setWindowSize([windowWidth, windowHeight]);
+
+    }
+
+
+
     // if (theme === 'dark') {
     //  //
     // }
-  }, [latitude, longitude]);
+  }, [latitude, longitude, windowHeight, windowWidth, theme]);
 
 
-  console.log('spacing: ', lightTheme.spacing(2))
   return (
     <ThemeProvider theme={theme}>
       <Stack
         ref={rootRef}
-
+        className='App'
       >
         <Stack
-          style={{
+          sx={{
             flexDirection: 'row',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            padding: (theme) => theme.spacing(1),
           }}
         >
           <Navigation
-            // ref={naviRef}
             setTheme={setTheme}
             theme={theme}
             lightTheme={lightTheme}
             darkTheme={darkTheme}
           />
           <Stack
-            // ref={contentRef}
             sx={{
-              backgroundColor: 'primary.main',
-              alignContent: 'center',
-              alignItems: 'center',
-              justifyContent: 'center',
+              /* contentStart = navigationHeight(px) + themePadding(px) */
+              top: (theme) =>
+                `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(1)})`,
               display: {
                 xs: 'none',
                 sm: 'flex',
@@ -172,58 +179,69 @@ function App() {
                 lg: 'flex',
                 xl: 'flex'
               },
-              top: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(5)})`,
-              width: {
-                xs: '80%',
-                sm: '80%',
-                md: '80%',
-                lg: '80%',
-                xl: '80%'
-              }
+              flexGrowth: 1,
+              backgroundColor: 'primary.main',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
             }}
             style={{
               position: 'absolute',
             }}
             direction='column'
           >
+              {/* application content is rendered in this stack */}
               <Stack
                 direction='row'
                 sx={{
                   display: 'flex',
-                  flexGrowth: 1,
-                  width: '100%',
-                  // border: '1px solid',
-                  padding: 5,
-                  // height: '100%',
+                  // flexGrow: 1,
+                  padding: (theme) => theme.spacing(5),
                 }}
-                // spacing={2}
               >
-              <Outlet
-                // ref={outletRef}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
+              <Box
+                sx={{
+                  width: '100%',
+                  border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
                 }}
-                context={{
-                  trucks: trucks,
-                  filterTrucks: filterTrucks,
-                  location: browserLocation,
-                  vendor: vendor,
-                  distance: distance,
-                  foods: foods
-                }}
-              />
+              >
+
+                <Outlet
+                  style={{
+                    display: 'flex',
+                    flexGrowth: 1,
+                    justifyContent: 'center',
+                  }}
+                  context={{
+                    trucks: trucks,
+                    filterTrucks: filterTrucks,
+                    location: browserLocation,
+                    vendor: vendor,
+                    distance: distance,
+                    foods: foods
+                  }}
+                />
+
+              </Box>
 
 
-              <Form
-                trucks={trucks}
-                setDistance={setDistance}
-                distance={distance}
-                setVendor={setVendor}
-                vendor={vendor}
-                setFoods={setFoods}
-                foods={foods}
-              />
+              <Box
+                sx={{
+                  border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
+                }}
+              >
+                <Form
+                  trucks={trucks}
+                  setDistance={setDistance}
+                  distance={distance}
+                  setVendor={setVendor}
+                  vendor={vendor}
+                  setFoods={setFoods}
+                  foods={foods}
+                />
+              </Box>
+
               </Stack>
 
               <Data

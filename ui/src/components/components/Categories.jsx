@@ -67,6 +67,7 @@ export default function Categories({ trucks = [] }) {
     <Box
       sx={{
         width: '100%',
+        // height: '250',
         flexGrow: 1,
         display: {
           xs: 'none',
