@@ -1,5 +1,5 @@
 // import { useEffect } from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
+// import OutlinedInput from '@mui/material/OutlinedInput';
 import InputBase from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -96,6 +96,7 @@ const StyledSlider = styled(Slider)(( { theme }) => ({
   },
 }))
 
+// eslint-disable-next-line no-unused-vars
 const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
   // color: 'yellow',
   fontSize: {
@@ -107,6 +108,7 @@ const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
   },
 }))
 
+// eslint-disable-next-line no-unused-vars
 const StyledHelperText = styled(FormHelperText)(({ theme }) => ({
   color: 'yellow',
   fontSize: {

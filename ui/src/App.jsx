@@ -8,7 +8,7 @@ import * as Colors from '@mui/material/colors';
 import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
 import Stack from '@mui/material/Stack';
 // import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Navigation from './components/Navigation';
 import Data from './components/Data';

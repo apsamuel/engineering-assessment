@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
-import SanFrancLogo from '../assets/sanfran.svg';
+// import SanFrancLogo from '../assets/sanfran.svg';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 // eslint-disable-next-line no-unused-vars
