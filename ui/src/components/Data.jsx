@@ -144,6 +144,8 @@ export default function Data({
           }}
           apiRef={apiRef}
           density='compact'
+          checkboxSelection
+          disableRowSelectionOnClick
           rows={filteredTrucks}
           columns={columns}
           autoHeight
@@ -162,7 +164,7 @@ export default function Data({
             }
           }}
           pageSizeOptions={[5, 10, 20, 25]}
-          checkboxSelection
+          // checkboxSelection
           disableSelectionOnClick
           paginationModel={paginationModel}
           onSortModelChange={(model) => {

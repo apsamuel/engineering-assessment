@@ -188,7 +188,7 @@ export default function Navigation({
                     width: '2rem',
                     height: '2rem'
                   }}
-                  src={'../../src/assets/truck.svg'}
+                  src={'../../src/assets/images/truck.svg'}
                 />
               </Icon>
             </Box>

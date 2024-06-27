@@ -172,8 +172,6 @@ function App() {
                 lg: 'flex',
                 xl: 'flex'
               },
-              // TODO: I should grab a reference to the AppBar and properly store/memoize the dimensions, brute-forcing the padding is not the best solution
-
               top: (theme) => `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(5)})`,
               width: {
                 xs: '80%',

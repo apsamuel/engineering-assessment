@@ -13,6 +13,12 @@ Gauge.propTypes = {
 };
 
 export default function Gauge({ trucks = [] }) {
+  // TODO: positioning the gauge labels/legend
+  // rings
+    // trucks total (all trucks)
+      // approved trucks (all trucks)
+        // approved trucks with fooditems (all trucks)
+          // approved trucks with fooditems and selected categories (filtered trucks)
   const frequencies = [];
   const categories = trucks
     .map((truck) => truck.fooditems)
