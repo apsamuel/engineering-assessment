@@ -7,113 +7,6 @@ import haversine from 'haversine-distance'
 import Box from '@mui/material/Box';
 // import { darken, lighten, styled } from '@mui/material/styles';
 
-// const getBackgroundColor = (color, mode) =>
-//   mode === 'dark' ? darken(color, 0.7) : lighten(color, 0.7);
-
-// const getHoverBackgroundColor = (color, mode) =>
-//   mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
-
-// const getSelectedBackgroundColor = (color, mode) =>
-//   mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
-
-// const getSelectedHoverBackgroundColor = (color, mode) =>
-//   mode === 'dark' ? darken(color, 0.4) : lighten(color, 0.4);
-
-// const StyledDataGrid = styled(DataGrid(({ theme }) => ({
-//   '& .super-app-theme--Open': {
-//     backgroundColor: getBackgroundColor(theme.palette.info.main, theme.palette.mode),
-//     '&:hover': {
-//       backgroundColor: getHoverBackgroundColor(
-//         theme.palette.info.main,
-//         theme.palette.mode,
-//       ),
-//     },
-//     '&.Mui-selected': {
-//       backgroundColor: getSelectedBackgroundColor(
-//         theme.palette.info.main,
-//         theme.palette.mode,
-//       ),
-//       '&:hover': {
-//         backgroundColor: getSelectedHoverBackgroundColor(
-//           theme.palette.info.main,
-//           theme.palette.mode,
-//         ),
-//       },
-//     },
-//   },
-//   '& .super-app-theme--Filled': {
-//     backgroundColor: getBackgroundColor(
-//       theme.palette.success.main,
-//       theme.palette.mode,
-//     ),
-//     '&:hover': {
-//       backgroundColor: getHoverBackgroundColor(
-//         theme.palette.success.main,
-//         theme.palette.mode,
-//       ),
-//     },
-//     '&.Mui-selected': {
-//       backgroundColor: getSelectedBackgroundColor(
-//         theme.palette.success.main,
-//         theme.palette.mode,
-//       ),
-//       '&:hover': {
-//         backgroundColor: getSelectedHoverBackgroundColor(
-//           theme.palette.success.main,
-//           theme.palette.mode,
-//         ),
-//       },
-//     },
-//   },
-//   '& .super-app-theme--PartiallyFilled': {
-//     backgroundColor: getBackgroundColor(
-//       theme.palette.warning.main,
-//       theme.palette.mode,
-//     ),
-//     '&:hover': {
-//       backgroundColor: getHoverBackgroundColor(
-//         theme.palette.warning.main,
-//         theme.palette.mode,
-//       ),
-//     },
-//     '&.Mui-selected': {
-//       backgroundColor: getSelectedBackgroundColor(
-//         theme.palette.warning.main,
-//         theme.palette.mode,
-//       ),
-//       '&:hover': {
-//         backgroundColor: getSelectedHoverBackgroundColor(
-//           theme.palette.warning.main,
-//           theme.palette.mode,
-//         ),
-//       },
-//     },
-//   },
-//   '& .super-app-theme--Rejected': {
-//     backgroundColor: getBackgroundColor(
-//       theme.palette.error.main,
-//       theme.palette.mode,
-//     ),
-//     '&:hover': {
-//       backgroundColor: getHoverBackgroundColor(
-//         theme.palette.error.main,
-//         theme.palette.mode,
-//       ),
-//     },
-//     '&.Mui-selected': {
-//       backgroundColor: getSelectedBackgroundColor(
-//         theme.palette.error.main,
-//         theme.palette.mode,
-//       ),
-//       '&:hover': {
-//         backgroundColor: getSelectedHoverBackgroundColor(
-//           theme.palette.error.main,
-//           theme.palette.mode,
-//         ),
-//       },
-//     },
-//   },
-// })))
 
 Data.propTypes = {
   setFilterTrucks: PropTypes.func,
@@ -194,16 +87,10 @@ export default function Data({
       filtered = filtered.filter((truck) => haversine(location, [truck.latitude, truck.longitude]) / 1000 < distance)
     }
     if (foods) {
-      console.log('foods', foods)
       filtered = filtered.filter((truck) => truck.fooditems.includes(foods))
     }
     setFilteredTrucks(
       filtered
-      // trucks.filter((truck) =>
-      //   vendor ? truck.applicant === vendor : true &&
-      //   distance ? haversine(location, [truck.latitude, truck.longitude]) / 1000 < distance : true &&
-      //   foods ? truck.fooditems.includes(foods) : true
-      // )
     )
     setFilterTrucks(filtered)
 
@@ -218,6 +105,9 @@ export default function Data({
       >
         <DataGrid
           sx={{
+            boxShadow: 1,
+            border: 5,
+            borderColor: 'primary.contrastText',
             color: 'primary.contrastText',
           }}
           apiRef={apiRef}
@@ -240,7 +130,7 @@ export default function Data({
           disableSelectionOnClick
           paginationModel={paginationModel}
           onSortModelChange={(model) => {
-            console.log('sort model change', model)
+            console.log('data.sort.update', model)
           }}
           onPaginationModelChange={(model) => {
             setPaginationModel(model)
