@@ -46,12 +46,39 @@ export default function Trucks() {
 
   // const map = useMap();
 
+  const createCoordinateMarkers = (trucks, limit = 100) => {
+    if (trucks.length > limit) {
+      trucks = trucks.slice(0, limit);
+    }
+    return trucks.map((truck) => {
+      return (
+        <CustomMarker
+          key={truck.objectid}
+          position={[truck.latitude, truck.longitude]}
+        >
+          <Popup>
+            <Typography
+              variant={'h6'}
+            >
+              {truck.applicant}
+            </Typography>
+            <Typography
+              variant={'subtitle1'}
+            >
+              {truck.address}
+            </Typography>
+          </Popup>
+        </CustomMarker>
+      )
+    })
+  }
   return (
+
     <Box
       sx={{
         border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
-        // width: '100vw',
-        // height: '100vh',
+        width: '100%',
+        height: '100%',
       }}
     >
       <MapContainer
@@ -60,19 +87,13 @@ export default function Trucks() {
           height: '100%',
         }}
         center={[37.777399395507075, -122.41982705224395]}
-        zoom={20}
+        zoom={10}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-          <CustomMarker position={[37.777399395507075, -122.41982705224395]}>
-            <Popup>
-              <Typography>
-                <img src={SanFrancLogo} alt='San Francisco Logo' />
-              </Typography>
-            </Popup>
-          </CustomMarker>
+          {createCoordinateMarkers(filterTrucks)}
       </MapContainer>
 
     </Box>
