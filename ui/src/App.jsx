@@ -16,32 +16,27 @@ import Form from './components/Form';
 import { Outlet } from 'react-router-dom';
 import './App.css';
 
-
-
 let darkTheme = createTheme({
   mixins: {
-    MuiDataGrid: {
-      // pinnedBackground: Colors.grey['A700'],
-      // containerBackground: Colors.grey['A700'],
-    }
+    MuiDataGrid: {}
   },
   palette: {
     mode: 'dark',
     background: {
-      default: Colors.grey[900],
-      paper: Colors.grey[900]
+      default: '#000000',
+      paper: '#000000'
     },
     primary: {
-      light: Colors.grey[300],
-      main: Colors.grey[900],
-      dark: Colors.grey[900],
-      contrastText: '#fff'
+      light: '#9E9DB6',
+      main: '#2B2A2A',
+      dark: '#101010',
+      contrastText: '#8E8181'
     },
     secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#fff'
+      light: '#737C97',
+      main: '#615F8C',
+      dark: '#2B2768',
+      contrastText: '#696161'
     }
   }
 });
@@ -82,7 +77,7 @@ function App() {
   //
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
-  const [filterTrucks, setFilterTrucks] = useState([])
+  const [filterTrucks, setFilterTrucks] = useState([]);
   const [windowSize, setWindowSize] = useState([0, 0]);
   const [browserLocation, setBrowserLocation] = useState([]);
   // set the distance to 10,000 km for now...
@@ -134,31 +129,21 @@ function App() {
     }
 
     if (windowWidth && windowHeight) {
-      console.log('window.dimensions', JSON.stringify({ windowSize }))
+      console.log('window.dimensions', JSON.stringify({ windowSize }));
       setWindowSize([windowWidth, windowHeight]);
-
     }
-
-
-
-    // if (theme === 'dark') {
-    //  //
-    // }
-  }, [latitude, longitude, windowHeight, windowWidth, theme]);
-
+  }, [latitude, longitude, windowHeight, windowWidth, theme, windowSize]);
 
   return (
     <ThemeProvider theme={theme}>
-      <Stack
-        ref={rootRef}
-        className='App'
-      >
+      <Stack ref={rootRef} className='App'>
         <Stack
           sx={{
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: (theme) => theme.spacing(1),
+            padding: (theme) =>
+              `${theme.spacing(10)}`
           }}
         >
           <Navigation
@@ -171,7 +156,9 @@ function App() {
             sx={{
               /* contentStart = navigationHeight(px) + themePadding(px) */
               top: (theme) =>
-                `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(1)})`,
+                `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(
+                  1
+                )})`,
               display: {
                 xs: 'none',
                 sm: 'flex',
@@ -184,34 +171,37 @@ function App() {
               alignContent: 'center',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%',
+              width: '100%'
             }}
             style={{
-              position: 'absolute',
+              position: 'absolute'
             }}
             direction='column'
           >
-              {/* application content is rendered in this stack */}
-              <Stack
-                direction='row'
-                sx={{
-                  display: 'flex',
-                  // flexGrow: 1,
-                  padding: (theme) => theme.spacing(5),
-                }}
-              >
+            {/* application content is rendered in this component */}
+            <Stack
+              direction='row'
+              sx={{
+                display: 'flex',
+                flexGrow: 1,
+                width: '100%',
+                padding: (theme) => theme.spacing(5)
+              }}
+            >
               <Box
                 sx={{
-                  width: '100%',
-                  border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
+                  display: 'flex',
+                  width: '50%',
+                  // width: '100%',
+                  // border: (theme) =>
+                  //   `1px solid ${theme.palette.primary.contrastText}`
                 }}
               >
-
                 <Outlet
                   style={{
                     display: 'flex',
                     flexGrowth: 1,
-                    justifyContent: 'center',
+                    justifyContent: 'center'
                   }}
                   context={{
                     trucks: trucks,
@@ -222,13 +212,13 @@ function App() {
                     foods: foods
                   }}
                 />
-
               </Box>
-
 
               <Box
                 sx={{
-                  border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
+                  width: '50%',
+                  // border: (theme) =>
+                  //   `1px solid ${theme.palette.primary.contrastText}`
                 }}
               >
                 <Form
@@ -241,18 +231,16 @@ function App() {
                   foods={foods}
                 />
               </Box>
-
-              </Stack>
-
-              <Data
-                setFilterTrucks={setFilterTrucks}
-                trucks={trucks}
-                location={browserLocation}
-                vendor={vendor}
-                distance={distance}
-                foods={foods}
-              />
-
+            </Stack>
+            {/* DataGrid can preserve it's own reactivity when given the proper paramters */}
+            <Data
+              setFilterTrucks={setFilterTrucks}
+              trucks={trucks}
+              location={browserLocation}
+              vendor={vendor}
+              distance={distance}
+              foods={foods}
+            />
           </Stack>
         </Stack>
       </Stack>

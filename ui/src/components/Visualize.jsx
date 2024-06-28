@@ -52,9 +52,9 @@ export default function Visualize() {
       <Box>
         <Categories trucks={filterTrucks} />
       </Box>
-      <Box>
+      {/* <Box>
         <Gauge trucks={filterTrucks} />
-      </Box>
+      </Box> */}
     </Stack>
   );
 }

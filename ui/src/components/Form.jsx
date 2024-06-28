@@ -110,7 +110,7 @@ const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
 
 // eslint-disable-next-line no-unused-vars
 const StyledHelperText = styled(FormHelperText)(({ theme }) => ({
-  color: 'yellow',
+  // color: 'yellow',
   fontSize: {
     xs: 5,
     sm: 5,
@@ -170,6 +170,7 @@ export default function Form({
           xl: 'flex'
         },
         // width: '100%',
+        height: '100%',
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
