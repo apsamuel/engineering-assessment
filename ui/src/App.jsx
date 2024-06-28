@@ -85,7 +85,7 @@ function App() {
   // set the distance to 10,000 km for now...
   const [distance, setDistance] = useState(10000);
   const [vendor, setVendor] = useState(null);
-  const [foods, setFoods] = useState([]);
+  const [foods, setFoods] = useState(null);
 
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { loading, error, longitude, latitude } = useGeolocation();

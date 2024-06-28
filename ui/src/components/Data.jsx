@@ -123,6 +123,7 @@ export default function Data({
   useEffect(() => {
     let filtered = trucks;
     if (vendor) {
+      console.log('vendor', vendor)
       filtered = vendor === 'All' ? trucks : filtered.filter((truck) => truck.applicant === vendor);
     }
     if (distance) {
@@ -133,6 +134,7 @@ export default function Data({
       );
     }
     if (foods) {
+      console.log('foods', foods)
       filtered = foods === 'All' ? trucks : filtered.filter((truck) => truck.fooditems.includes(foods));
     }
     setFilteredTrucks(filtered);

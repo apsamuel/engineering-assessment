@@ -228,7 +228,7 @@ export default function Form({
         <Select
           labelId='vendor-name-multiple-select-label'
           id='vendor-name-multiple-select'
-          value={vendor}
+          value={vendor || 'All'}
           input={<StyledInputBase id='vendor' label='Vendor' />}
           label='Vendor'
           MenuProps={{

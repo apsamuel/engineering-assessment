@@ -1,4 +1,4 @@
-import { useState, useEffect, } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactECharts from 'echarts-for-react';
 import Typography from '@mui/material/Typography';
@@ -12,22 +12,29 @@ import haversineDistance from 'haversine-distance';
 
 // eslint-disable-next-line no-unused-vars
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
-  height: 250,
-}))
+  height: 250
+}));
 DataViews.propTypes = {
   allTrucks: PropTypes.arrayOf(PropTypes.object),
   trucks: PropTypes.arrayOf(PropTypes.object),
   vendor: PropTypes.string,
   foods: PropTypes.string,
   distance: PropTypes.number,
-  location: PropTypes.arrayOf(PropTypes.number),
+  location: PropTypes.arrayOf(PropTypes.number)
 };
-export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, distance, location }) {
-  console.log('all.length', allTrucks.length)
-  console.log('filtered.length', trucks.length)
+export default function DataViews({
+  allTrucks = [],
+  trucks = [],
+  vendor,
+  foods,
+  distance,
+  location
+}) {
+  console.log('all.length', allTrucks.length);
+  console.log('filtered.length', trucks.length);
   const getUniqueVendors = (data) => {
     return Array.from(new Set(data.map((truck) => truck.applicant)));
-  }
+  };
 
   const getUniqueCategories = (data) => {
     return Array.from(
@@ -41,7 +48,7 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
           .filter(Boolean)
       )
     );
-  }
+  };
 
   const getAllCategories = (data) => {
     return data
@@ -50,8 +57,8 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
       .join(';')
       .split(new RegExp('[;:.]', 'g'))
       .map((item) => item.trim().toLowerCase())
-      .filter(Boolean)
-  }
+      .filter(Boolean);
+  };
 
   const prettifyCategories = (foodItems) => {
     const items = foodItems
@@ -60,19 +67,40 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
       .map((item) => item.trim())
       .map((item) => item.toLowerCase())
       // if the item contains spaces, capitalize each word
-      .map((item) => item.split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' '))
+      .map((item) =>
+        item
+          .split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      )
       // very specific updates
-      .map((item) => item.replace('all types of food except for bbq on site per fire safety', 'General'))
-      .map((item) => item.replace('asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'))
-      .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
-      .map((item) => item.replace('pre-packaged swiches', 'Packaged Sandwiches'))
-      .filter(Boolean)
+      .map((item) =>
+        item.replace(
+          'all types of food except for bbq on site per fire safety',
+          'General'
+        )
+      )
+      .map((item) =>
+        item.replace(
+          'asian fusion - japanese sandwiches/sliders/misubi',
+          'Asian Fusion'
+        )
+      )
+      .map((item) =>
+        item.replace(
+          'daily rotating menus consisting of various local & organic vegetable',
+          'Local Organic'
+        )
+      )
+      .map((item) =>
+        item.replace('pre-packaged swiches', 'Packaged Sandwiches')
+      )
+      .filter(Boolean);
 
-      const itemsLength = items.length
-      // const itemsString = items.join(', ')
-      return itemsLength > 3 ? items.slice(0, 3).join(', ') : items.join(', ')
-  }
-
+    const itemsLength = items.length;
+    // const itemsString = items.join(', ')
+    return itemsLength > 3 ? items.slice(0, 3).join(', ') : items.join(', ');
+  };
 
   const optionMap = {
     gauge: (data) => {
@@ -114,7 +142,7 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             },
             data,
             title: {
-              fontSize: (data.length === 1) ? 20 : 15,
+              fontSize: data.length === 1 ? 20 : 15
             },
             detail: {
               width: 50,
@@ -128,7 +156,7 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             }
           }
         ]
-      }
+      };
     },
     pie: (data) => {
       return {
@@ -151,12 +179,10 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             itemStyle: {
               borderRadius: 8
             },
-            data: [
-              ...data
-            ]
+            data: [...data]
           }
         ]
-      }
+      };
     },
     treemap: (data) => {
       return {
@@ -172,7 +198,7 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             data: data.length > 50 ? data.slice(0, 50) : data
           }
         ]
-      }
+      };
     },
     // needs work
     sunburst: (data) => {
@@ -185,20 +211,20 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             data: data.length > 50 ? data.slice(0, 50) : data
           }
         ]
-      }
+      };
     }
-  }
+  };
 
-  const chartTypes = Object.keys(optionMap)
+  const chartTypes = Object.keys(optionMap);
 
-  const [option, setOption] = useState('pie')
-  const [chartData, setChartData] = useState([])
+  const [option, setOption] = useState('pie');
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     // eslint-disable-next-line no-unused-vars
     const getSunburstData = (data) => {
-      const sunburstData = []
-      const vendors = getUniqueVendors(data)
+      const sunburstData = [];
+      const vendors = getUniqueVendors(data);
       for (const vendor of vendors) {
         sunburstData.push({
           name: vendor,
@@ -208,19 +234,21 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             .filter((truck) => truck.applicant === vendor)
             .map((truck) => {
               return {
-                name: prettifyCategories(truck.fooditems) ,
+                name: prettifyCategories(truck.fooditems),
                 value: getUniqueCategories([truck]).length
-              }
+              };
             })
-        })
+        });
       }
 
-      return sunburstData.length > 30 ? sunburstData.slice(0, 30) : sunburstData
-    }
+      return sunburstData.length > 30
+        ? sunburstData.slice(0, 30)
+        : sunburstData;
+    };
 
     const getPieData = (data) => {
-      const pieData =  []
-      const categories = getAllCategories(data)
+      const pieData = [];
+      const categories = getAllCategories(data);
       // collect the frequency of each category
       for (const category of categories) {
         if (pieData.find((entry) => entry.name === category)) {
@@ -229,14 +257,12 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
           pieData.push({ name: category, value: 1 });
         }
       }
-      return pieData
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 10);
-    }
+      return pieData.sort((a, b) => b.value - a.value).slice(0, 10);
+    };
 
     const getTreeMapData = (data) => {
-      const treeMapData = []
-      const vendors = getUniqueVendors(data)
+      const treeMapData = [];
+      const vendors = getUniqueVendors(data);
       for (const vendor of vendors) {
         treeMapData.push({
           name: vendor,
@@ -246,16 +272,18 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             .map((truck) => {
               return {
                 name: truck.address,
-                value: Math.round(haversineDistance(location, [
-                  truck.latitude,
-                  truck.longitude
-                ]) / 1000)
-              }
+                value: Math.round(
+                  haversineDistance(location, [
+                    truck.latitude,
+                    truck.longitude
+                  ]) / 1000
+                )
+              };
             })
-        })
+        });
       }
-      return treeMapData
-    }
+      return treeMapData;
+    };
 
     const getGaugeData = (data) => {
       return [
@@ -292,29 +320,27 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
             offsetCenter: ['0%', '40%']
           }
         }
-      ]
-    }
+      ];
+    };
 
-    if (option==='pie') {
+    if (option === 'pie') {
       // setChartData(sortedFrequencies)
-      setChartData(getPieData(trucks))
+      setChartData(getPieData(trucks));
     }
-    if (option==='gauge') {
+    if (option === 'gauge') {
       // setChartData(sortedFrequencies)
       // setChartData(gaugeData)
-      setChartData(getGaugeData(trucks))
+      setChartData(getGaugeData(trucks));
     }
-    if (option==='treemap') {
+    if (option === 'treemap') {
       // console.log('treemap data', treeMapData)
       // setChartData(treeMapData)
-      setChartData(getTreeMapData(trucks))
+      setChartData(getTreeMapData(trucks));
     }
-    if (option==='sunburst') {
+    if (option === 'sunburst') {
       // setChartData(getTreeMapData(trucks))
-      setChartData(getSunburstData(trucks))
+      setChartData(getSunburstData(trucks));
     }
-
-
   }, [
     // sortedFrequencies,
     // treeMapData,
@@ -323,67 +349,63 @@ export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, 
     // getGaugeData,
     option,
     location
-  ])
+  ]);
 
   return (
     <Stack>
-    <Stack
-      direction={'row'}
-      spacing={5}
-    >
-    <FormControl
-      sx={{
-        width: '20%'
-      }}
-    >
-      <Select
-        size='small'
-        variant='filled'
-        label='Graph Type'
-        value={option}
-        onChange={(event) => {
-          setOption(event.target.value);
+      <Stack direction={'row'} spacing={5}>
+        <FormControl
+          sx={{
+            width: '20%'
+          }}
+        >
+          <Select
+            size='small'
+            variant='filled'
+            label='Graph Type'
+            value={option}
+            onChange={(event) => {
+              setOption(event.target.value);
+            }}
+          >
+            {chartTypes.map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Box>
+          <Typography>
+            {trucks.length} Trucks |{vendor === 'All' ? ' All Vendors' : vendor}{' '}
+            |{foods === 'All' ? ' All Categories' : ` ${foods}`} |
+            {` ${distance}`} km
+          </Typography>
+        </Box>
+      </Stack>
+
+      <Box
+        sx={{
+          // flexGrow: 1,
+          width: '100%',
+          padding: (theme) => theme.spacing(1),
+          // border: (theme) =>
+          //   `1px solid ${theme.palette.primary.contrastText}`,
+          flexGrow: 1,
+          display: {
+            xs: 'none',
+            sm: 'none',
+            md: 'none',
+            lg: 'block',
+            xl: 'block'
+          }
         }}
       >
-        {chartTypes.map((category) => (
-          <MenuItem key={category} value={category}>
-            {category}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-    <Box>
-      <Typography>
-        {trucks.length} Trucks |
-        {vendor === 'All' ? ' All Vendors': vendor} |
-        {foods === 'All' ? ' All Categories': ` ${foods}`} |
-        {` ${distance}`} km
-      </Typography>
-
-    </Box>
+        <StyledReactECharts
+          style={{ height: 500 }}
+          option={optionMap[option](chartData)}
+        />
+      </Box>
     </Stack>
-
-    <Box
-      sx={{
-        // flexGrow: 1,
-        width: '100%',
-        padding: (theme) => theme.spacing(1),
-        // border: (theme) =>
-        //   `1px solid ${theme.palette.primary.contrastText}`,
-        flexGrow: 1,
-        display: {
-          xs: 'none',
-          sm: 'none',
-          md: 'none',
-          lg: 'block',
-          xl: 'block'
-
-        }
-      }}
-    >
-      <StyledReactECharts style={{ height: 500}} option={optionMap[option](chartData)} />
-    </Box>
-    </Stack>
-
   );
 }
