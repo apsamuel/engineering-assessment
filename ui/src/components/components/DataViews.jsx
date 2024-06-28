@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, } from 'react';
 import PropTypes from 'prop-types';
 import ReactECharts from 'echarts-for-react';
 import Typography from '@mui/material/Typography';
@@ -15,62 +15,64 @@ const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
   height: 250,
 }))
 DataViews.propTypes = {
+  allTrucks: PropTypes.arrayOf(PropTypes.object),
   trucks: PropTypes.arrayOf(PropTypes.object),
   vendor: PropTypes.string,
+  foods: PropTypes.string,
   distance: PropTypes.number,
   location: PropTypes.arrayOf(PropTypes.number),
 };
-export default function DataViews({ trucks = [], vendor, distance, location }) {
-  const frequencies = [];
-  const treeMapData = [];
-
-  const vendors = Array.from(
-    new Set(
-      trucks
-        .map((truck) => truck.applicant)
-        .filter(Boolean)
-    )
-  );
-  // we need to get a count for each vendor, how many times they appear in the list
-
-  for (const vendor of vendors) {
-    treeMapData.push({
-      name: vendor,
-      value: trucks.filter((truck) => truck.applicant === vendor).length,
-      // the nodes children will be each store that belongs to the vendor, with the value being its distance from you
-      children: trucks
-        .filter((truck) => truck.applicant === vendor)
-        .map((truck) => {
-          return {
-            name: truck.address,
-            value: Math.round(haversineDistance(location, [
-              truck.latitude,
-              truck.longitude
-            ]) / 1000)
-          }
-        })
-    })
+export default function DataViews({ allTrucks = [], trucks = [], vendor, foods, distance, location }) {
+  console.log('all.length', allTrucks.length)
+  console.log('filtered.length', trucks.length)
+  const getUniqueVendors = (data) => {
+    return Array.from(new Set(data.map((truck) => truck.applicant)));
   }
 
-  const categories = trucks
-    .map((truck) => truck.fooditems)
-    .filter(Boolean)
-    .join(';')
-    .split(new RegExp('[;:.]', 'g'))
-    .map((item) => item.trim().toLowerCase())
-    .filter(Boolean);
-
-  for (const category of categories) {
-    if (frequencies.find((frequency) => frequency.name === category)) {
-      frequencies.find((frequency) => frequency.name === category).value++;
-    } else {
-      frequencies.push({ name: category, value: 1 });
-    }
+  const getUniqueCategories = (data) => {
+    return Array.from(
+      new Set(
+        data
+          .map((truck) => truck.fooditems)
+          .filter(Boolean)
+          .join(';')
+          .split(new RegExp('[;:.]', 'g'))
+          .map((item) => item.trim().toLowerCase())
+          .filter(Boolean)
+      )
+    );
   }
 
-  const sortedFrequencies = frequencies
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 10);
+  const getAllCategories = (data) => {
+    return data
+      .map((truck) => truck.fooditems)
+      .filter(Boolean)
+      .join(';')
+      .split(new RegExp('[;:.]', 'g'))
+      .map((item) => item.trim().toLowerCase())
+      .filter(Boolean)
+  }
+
+  const prettifyCategories = (foodItems) => {
+    const items = foodItems
+      .split(new RegExp('[;:.]', 'g'))
+      // remove any empty strings
+      .map((item) => item.trim())
+      .map((item) => item.toLowerCase())
+      // if the item contains spaces, capitalize each word
+      .map((item) => item.split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' '))
+      // very specific updates
+      .map((item) => item.replace('all types of food except for bbq on site per fire safety', 'General'))
+      .map((item) => item.replace('asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'))
+      .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
+      .map((item) => item.replace('pre-packaged swiches', 'Packaged Sandwiches'))
+      .filter(Boolean)
+
+      const itemsLength = items.length
+      // const itemsString = items.join(', ')
+      return itemsLength > 3 ? items.slice(0, 3).join(', ') : items.join(', ')
+  }
+
 
   const optionMap = {
     gauge: (data) => {
@@ -81,7 +83,7 @@ export default function DataViews({ trucks = [], vendor, distance, location }) {
             startAngle: 90,
             endAngle: -270,
             pointer: {
-              show: true
+              show: false
             },
             progress: {
               show: true,
@@ -122,7 +124,7 @@ export default function DataViews({ trucks = [], vendor, distance, location }) {
               borderColor: 'inherit',
               borderRadius: 20,
               borderWidth: 0.1,
-              formatter: '{value}%'
+              formatter: '{value}'
             }
           }
         ]
@@ -161,12 +163,26 @@ export default function DataViews({ trucks = [], vendor, distance, location }) {
         series: [
           {
             name: 'Vendors',
+            // visibleMin: 30,
             label: {
               show: true,
               formatter: '{b}'
             },
             type: 'treemap',
-            data
+            data: data.length > 50 ? data.slice(0, 50) : data
+          }
+        ]
+      }
+    },
+    // needs work
+    sunburst: (data) => {
+      return {
+        series: [
+          {
+            name: 'Vendors',
+            // visibleMin: 25,
+            type: 'sunburst',
+            data: data.length > 50 ? data.slice(0, 50) : data
           }
         ]
       }
@@ -176,24 +192,139 @@ export default function DataViews({ trucks = [], vendor, distance, location }) {
   const chartTypes = Object.keys(optionMap)
 
   const [option, setOption] = useState('pie')
-  const [chartData, setChartData] = useState(sortedFrequencies)
+  const [chartData, setChartData] = useState([])
 
-  // console.log('chart data', chartData)
   useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
+    const getSunburstData = (data) => {
+      const sunburstData = []
+      const vendors = getUniqueVendors(data)
+      for (const vendor of vendors) {
+        sunburstData.push({
+          name: vendor,
+          value: data.filter((truck) => truck.applicant === vendor).length,
+          // for the sunburst child nodes, we will use the count of food categories grouped by vendor
+          children: data
+            .filter((truck) => truck.applicant === vendor)
+            .map((truck) => {
+              return {
+                name: prettifyCategories(truck.fooditems) ,
+                value: getUniqueCategories([truck]).length
+              }
+            })
+        })
+      }
+
+      return sunburstData.length > 30 ? sunburstData.slice(0, 30) : sunburstData
+    }
+
+    const getPieData = (data) => {
+      const pieData =  []
+      const categories = getAllCategories(data)
+      // collect the frequency of each category
+      for (const category of categories) {
+        if (pieData.find((entry) => entry.name === category)) {
+          pieData.find((entry) => entry.name === category).value++;
+        } else {
+          pieData.push({ name: category, value: 1 });
+        }
+      }
+      return pieData
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 10);
+    }
+
+    const getTreeMapData = (data) => {
+      const treeMapData = []
+      const vendors = getUniqueVendors(data)
+      for (const vendor of vendors) {
+        treeMapData.push({
+          name: vendor,
+          value: data.filter((truck) => truck.applicant === vendor).length,
+          children: data
+            .filter((truck) => truck.applicant === vendor)
+            .map((truck) => {
+              return {
+                name: truck.address,
+                value: Math.round(haversineDistance(location, [
+                  truck.latitude,
+                  truck.longitude
+                ]) / 1000)
+              }
+            })
+        })
+      }
+      return treeMapData
+    }
+
+    const getGaugeData = (data) => {
+      return [
+        {
+          name: 'Unique Vendors',
+          value: getUniqueVendors(data).length,
+          title: {
+            offsetCenter: ['0%', '-30%']
+          },
+          detail: {
+            valueAnimation: true,
+            offsetCenter: ['0%', '-20%']
+          }
+        },
+        {
+          name: 'Food Categories',
+          value: getUniqueCategories(data).length,
+          title: {
+            offsetCenter: ['0%', '0%']
+          },
+          detail: {
+            valueAnimation: true,
+            offsetCenter: ['0%', '10%']
+          }
+        },
+        {
+          name: 'Unique Locations',
+          value: data.length,
+          title: {
+            offsetCenter: ['0%', '30%']
+          },
+          detail: {
+            valueAnimation: true,
+            offsetCenter: ['0%', '40%']
+          }
+        }
+      ]
+    }
+
     if (option==='pie') {
-      setChartData(sortedFrequencies)
+      // setChartData(sortedFrequencies)
+      setChartData(getPieData(trucks))
     }
     if (option==='gauge') {
-      setChartData(sortedFrequencies)
+      // setChartData(sortedFrequencies)
+      // setChartData(gaugeData)
+      setChartData(getGaugeData(trucks))
     }
     if (option==='treemap') {
-      console.log('treemap data', treeMapData)
-      setChartData(treeMapData)
+      // console.log('treemap data', treeMapData)
+      // setChartData(treeMapData)
+      setChartData(getTreeMapData(trucks))
+    }
+    if (option==='sunburst') {
+      // setChartData(getTreeMapData(trucks))
+      setChartData(getSunburstData(trucks))
     }
 
-    // console.log('chart data', chartData)
-  }, [sortedFrequencies, treeMapData, option])
-  // const options =
+
+  }, [
+    // sortedFrequencies,
+    // treeMapData,
+    // gaugeData,
+    trucks,
+    // getGaugeData,
+    option,
+    location
+  ])
+
   return (
     <Stack>
     <Stack
@@ -223,7 +354,10 @@ export default function DataViews({ trucks = [], vendor, distance, location }) {
     </FormControl>
     <Box>
       <Typography>
-        {trucks.length} Trucks ({vendor || 'All Vendors'})
+        {trucks.length} Trucks |
+        {vendor === 'All' ? ' All Vendors': vendor} |
+        {foods === 'All' ? ' All Categories': ` ${foods}`} |
+        {` ${distance}`} km
       </Typography>
 
     </Box>
@@ -247,7 +381,7 @@ export default function DataViews({ trucks = [], vendor, distance, location }) {
         }
       }}
     >
-      <StyledReactECharts style={{ height: 500}} option={optionMap[option](sortedFrequencies)} />
+      <StyledReactECharts style={{ height: 500}} option={optionMap[option](chartData)} />
     </Box>
     </Stack>
 
