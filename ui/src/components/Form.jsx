@@ -30,7 +30,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     marginTop: theme.spacing(3),
   },
   '& .MuiInputBase-input': {
-    borderRadius: 4,
+    borderRadius: theme.shape.borderRadius,
     position: 'relative',
     backgroundColor: theme.palette.background.paper,
     border: '1px solid #ced4da',
@@ -175,13 +175,7 @@ export default function Form({
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
-        borderRadius: {
-          xs: 0,
-          sm: 2,
-          md: 3,
-          lg: 4,
-          xl: 5
-        },
+        borderRadius: (theme) => theme.shape.borderRadius,
         border: (theme) => `1px solid ${theme.palette.primary.contrastText}`
       }}
     >
@@ -234,7 +228,7 @@ export default function Form({
         <Select
           labelId='vendor-name-multiple-select-label'
           id='vendor-name-multiple-select'
-          value={[vendors[0]]}
+          value={vendor}
           input={<StyledInputBase id='vendor' label='Vendor' />}
           label='Vendor'
           MenuProps={{
@@ -253,7 +247,7 @@ export default function Form({
             setVendor(event.target.value);
           }}
         >
-          {vendors.map((vendor) => (
+          {['All',...vendors].map((vendor) => (
             <MenuItem key={vendor} value={vendor}>
               {vendor}
             </MenuItem>
@@ -285,7 +279,7 @@ export default function Form({
           labelId='category-name-multiple-select-label'
           label='Category'
           id='category-name-multiple-select'
-          value={[foodItems[0]]}
+          value={foods || 'All'}
           // value={[]}
           input={<StyledInputBase id='category' label='Category' />}
           placeholder='Select a Category'
@@ -294,7 +288,7 @@ export default function Form({
             setFoods(event.target.value);
           }}
         >
-          {foodItems.map((category) => (
+          {['All', ...foodItems,].map((category) => (
             <MenuItem key={category} value={category}>
               {category}
             </MenuItem>
