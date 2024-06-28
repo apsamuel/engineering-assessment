@@ -1,17 +1,16 @@
+import './Navigation.scss';
 import { createRef, useLayoutEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Icon from '@mui/material/Icon';
-import Container from '@mui/material/Container';
-import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
-import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
 import { NavLink } from 'react-router-dom';
-// import NavLink from './components/NavLink.jsx'
-// import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 
 Navigation.propTypes = {

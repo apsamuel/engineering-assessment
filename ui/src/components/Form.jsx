@@ -1,5 +1,4 @@
-// import { useEffect } from 'react';
-// import OutlinedInput from '@mui/material/OutlinedInput';
+import './Form.scss';
 import InputBase from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,11 +6,10 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
-// import DirectionsWalk from '@mui/icons-material/DirectionsWalk';
-// import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
-// import Box from '@mui/material/Box';
+// eslint-disable-next-line no-unused-vars
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 Form.propTypes = {

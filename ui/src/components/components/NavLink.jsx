@@ -1,4 +1,4 @@
-// import './NavLink.scss';
+import './NavLink.scss';
 import { NavLink as NavigationLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -12,9 +12,7 @@ export default function NavLink({
   children,
   userStyle = {}
 }) {
-  // configure target based on to property
-  // ^/about$ -> _blank
-  // ^/contact$ -> _self
+
   return (
     <NavigationLink
       to={to}

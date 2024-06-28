@@ -1,8 +1,7 @@
+import './Visualize.scss'
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-// import Categories from './components/Categories.jsx';
 import DataViews from './components/DataViews.jsx';
-// import Gauge from './components/Gauge.jsx';
 import { useOutletContext } from 'react-router-dom';
 
 export default function Visualize() {

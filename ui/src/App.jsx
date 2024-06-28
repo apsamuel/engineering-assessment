@@ -7,17 +7,16 @@ import {
 } from '@mui/material/styles';
 import * as Colors from '@mui/material/colors';
 import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
+import { Outlet } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
-// import Container from '@mui/material/Container';
-// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
-import { Outlet } from 'react-router-dom';
 
 
-let darkTheme = createTheme({
+
+const darkTheme = responsiveFontSizes(createTheme({
   mixins: {
     MuiDataGrid: {}
   },
@@ -40,11 +39,10 @@ let darkTheme = createTheme({
       contrastText: '#696161'
     }
   }
-});
+}));
 
-darkTheme = responsiveFontSizes(darkTheme);
 
-let lightTheme = createTheme({
+const lightTheme =responsiveFontSizes(createTheme({
   mixins: {
     MuiDataGrid: {
       // pinnedBackground: Colors.grey['A700'],
@@ -70,27 +68,32 @@ let lightTheme = createTheme({
       contrastText: '#000'
     }
   }
-});
+}));
 
-lightTheme = responsiveFontSizes(lightTheme);
 
 function App() {
-  //
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
+  const { loading, error, longitude, latitude } = useGeolocation();
+
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
   const [filterTrucks, setFilterTrucks] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const [windowSize, setWindowSize] = useState([0, 0]);
   const [browserLocation, setBrowserLocation] = useState([]);
-  // set the distance to 10,000 km for now...
+  // we're in NYC, and we want to see all the trucks...
   const [distance, setDistance] = useState(10000);
+  // selected vendor(s)
   const [vendor, setVendor] = useState(null);
+  // selected food(s)
   const [foods, setFoods] = useState(null);
 
-  const { width: windowWidth, height: windowHeight } = useWindowSize();
-  const { loading, error, longitude, latitude } = useGeolocation();
-  if (loading) console.log('load.location', { loading });
-  if (error) console.log('location.error', { error });
+  if (loading) {
+    console.log('location.loading', { loading })
+  }
+  if (error) {
+    console.log('location.error', { error });
+  }
 
   // create references
   const rootRef = createRef();
@@ -133,7 +136,11 @@ function App() {
       console.log('window.dimensions', windowSize);
       setWindowSize([windowWidth, windowHeight]);
     }
-  }, [latitude, longitude, theme]);
+  }, [
+    latitude,
+    longitude,
+    theme
+  ]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -144,6 +151,7 @@ function App() {
           display: 'flex',
           width: '100%',
           height: '100%',
+          padding: (theme) => theme.spacing(5),
         }}
       >
         <Stack

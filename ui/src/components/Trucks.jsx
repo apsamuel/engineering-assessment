@@ -1,12 +1,9 @@
-// eslint-disable-next-line no-unused-vars
-import React from 'react';
+import './Trucks.scss'
 import 'leaflet/dist/leaflet.css';
-// import SanFrancLogo from '../assets/sanfran.svg';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-// eslint-disable-next-line no-unused-vars
-import L from 'leaflet';
+// import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { useOutletContext } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -45,8 +42,6 @@ export default function Trucks() {
     foods
   } = useOutletContext();
 
-  // const map = useMap();
-
   const createCoordinateMarkers = (trucks, limit = 100) => {
     if (trucks.length > limit) {
       trucks = trucks.slice(0, limit);
@@ -65,6 +60,7 @@ export default function Trucks() {
       );
     });
   };
+
   return (
     <Stack>
       <Box

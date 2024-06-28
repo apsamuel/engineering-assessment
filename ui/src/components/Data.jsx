@@ -193,6 +193,7 @@ export default function Data({
         onStateChange={(state) => {
           setPaginationModel(state.pagination.paginationModel);
         }}
+        // loading={filteredTrucks.length === 0}
       />
     </Stack>
   );

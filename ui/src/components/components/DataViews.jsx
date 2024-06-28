@@ -1,3 +1,4 @@
+import './DataViews.scss';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactECharts from 'echarts-for-react';
@@ -10,9 +11,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import haversineDistance from 'haversine-distance';
 
-// eslint-disable-next-line no-unused-vars
+// TODO: import from ThemedComponents
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
-  height: 250
+  height: 250,
+  border: `1px solid ${theme.palette.primary.contrastText}`
 }));
 DataViews.propTypes = {
   allTrucks: PropTypes.arrayOf(PropTypes.object),
@@ -98,7 +100,6 @@ export default function DataViews({
       .filter(Boolean);
 
     const itemsLength = items.length;
-    // const itemsString = items.join(', ')
     return itemsLength > 3 ? items.slice(0, 3).join(', ') : items.join(', ');
   };
 
@@ -200,7 +201,7 @@ export default function DataViews({
         ]
       };
     },
-    // needs work
+    // TODO: fix sunburst chart, it is not rendering properly, names are too long
     sunburst: (data) => {
       return {
         series: [
@@ -229,7 +230,6 @@ export default function DataViews({
         sunburstData.push({
           name: vendor,
           value: data.filter((truck) => truck.applicant === vendor).length,
-          // for the sunburst child nodes, we will use the count of food categories grouped by vendor
           children: data
             .filter((truck) => truck.applicant === vendor)
             .map((truck) => {
