@@ -100,12 +100,8 @@ export default function Navigation({
 
   useLayoutEffect(() => {
     const { clientHeight, clientWidth, offsetHeight, offsetWidth } = ref.current;
-    console.log(ref)
-    // const { clientHeight: parentHeight, clientWidth: parentWidth } = ref.current.parentElement;
 
     console.log('navi.dimensions', {
-      // parentHeight,
-      // parentWidth,
       offsetHeight,
       offsetWidth,
       clientHeight,
