@@ -1,7 +1,8 @@
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Categories from './components/Categories.jsx';
-import Gauge from './components/Gauge.jsx';
+// import Categories from './components/Categories.jsx';
+import DataViews from './components/DataViews.jsx';
+// import Gauge from './components/Gauge.jsx';
 import { useOutletContext } from 'react-router-dom';
 
 export default function Visualize() {
@@ -50,7 +51,7 @@ export default function Visualize() {
       }}
     >
       <Box>
-        <Categories trucks={filterTrucks} />
+        <DataViews trucks={filterTrucks} vendor={vendor} distance={distance} foods={foods} location={location}/>
       </Box>
       {/* <Box>
         <Gauge trucks={filterTrucks} />
