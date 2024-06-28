@@ -26,12 +26,14 @@ const apiLogger = (req, res, next) => {
 
 app.use(cors());
 app.get('/', (req, res) => {
-  res.send('Hungree?');
+  res.send('Hungree? You came to the right place!');
 })
 
 app.get('/api', (req, res) => {
+  apiLogger(req, res);
   res.json({
     message: 'Welcome to the API',
+    description: "this is a get specific API (currently)",
     usage: {
       '/api': 'this message',
       '/api/trucks': 'all trucks',
