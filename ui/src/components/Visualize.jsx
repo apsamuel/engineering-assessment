@@ -20,10 +20,7 @@ export default function Visualize() {
     foods
   } = useOutletContext();
 
-  console.log('visualize', {
-    trucks: trucks.length,
-    filteredTrucks: filterTrucks.length
-  });
+
 
   return (
     <Stack
@@ -51,7 +48,14 @@ export default function Visualize() {
       }}
     >
       <Box>
-        <DataViews trucks={filterTrucks} vendor={vendor} distance={distance} foods={foods} location={location}/>
+        <DataViews
+          allTrucks={trucks}
+          trucks={filterTrucks}
+          vendor={vendor}
+          foods={foods}
+          distance={distance}
+          location={location}
+        />
       </Box>
       {/* <Box>
         <Gauge trucks={filterTrucks} />
