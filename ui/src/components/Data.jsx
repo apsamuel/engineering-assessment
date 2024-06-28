@@ -9,7 +9,7 @@ import {
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import haversine from 'haversine-distance';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import {
   // alpha,
   // darken,
@@ -183,7 +183,7 @@ export default function Data({
         disableSelectionOnClick
         paginationModel={paginationModel}
         onSortModelChange={(model) => {
-          console.log('data.sort.update', model);
+          console.log('data.sortModel', model);
         }}
         onPaginationModelChange={(model) => {
           setPaginationModel(model);

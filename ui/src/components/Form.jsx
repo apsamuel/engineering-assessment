@@ -234,9 +234,20 @@ export default function Form({
         <Select
           labelId='vendor-name-multiple-select-label'
           id='vendor-name-multiple-select'
-          value={[]}
+          value={[vendors[0]]}
           input={<StyledInputBase id='vendor' label='Vendor' />}
           label='Vendor'
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'bottom'
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left"
+            },
+            getContentAnchorEl: null
+          }}
           onChange={(event) => {
             console.log('setting.vendor', { vendor: event.target.value});
             setVendor(event.target.value);
@@ -274,8 +285,8 @@ export default function Form({
           labelId='category-name-multiple-select-label'
           label='Category'
           id='category-name-multiple-select'
-          // value={[foodItems[0]]}
-          value={[]}
+          value={[foodItems[0]]}
+          // value={[]}
           input={<StyledInputBase id='category' label='Category' />}
           placeholder='Select a Category'
           onChange={(event) => {
