@@ -9,10 +9,11 @@ const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
 }))
 
 Gauge.propTypes = {
-  trucks: PropTypes.arrayOf(PropTypes.object)
+  trucks: PropTypes.arrayOf(PropTypes.object),
+
 };
 
-export default function Gauge({ trucks = [] }) {
+export default function Gauge({ trucks = [], }) {
   // TODO: positioning the gauge labels/legend
   // rings
     // trucks total (all trucks)
@@ -33,15 +34,7 @@ export default function Gauge({ trucks = [] }) {
       frequencies.find((frequency) => frequency.name === category).value++;
     } else {
       const categoriesLength = categories.length;
-      // console.log('offset.center', {
-      //   title: {
-      //     offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 10.0}%`
-      //   },
-      //   detail: {
-      //     offsetCenter: `${((categories.indexOf(category) / categoriesLength) * 100) - 15.0}%`
-      //   }
 
-      // })
       frequencies.push({
         name: category,
         value: 1,
