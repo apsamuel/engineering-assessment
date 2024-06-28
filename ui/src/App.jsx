@@ -63,9 +63,9 @@ let lightTheme = createTheme({
       contrastText: '#000'
     },
     secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
+      light: '#61B5FF',
+      main: '#57A1E1',
+      dark: '#2C5172',
       contrastText: '#000'
     }
   }
@@ -78,6 +78,7 @@ function App() {
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
   const [filterTrucks, setFilterTrucks] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [windowSize, setWindowSize] = useState([0, 0]);
   const [browserLocation, setBrowserLocation] = useState([]);
   // set the distance to 10,000 km for now...
@@ -120,7 +121,6 @@ function App() {
               truck.longitude &&
               truck.longitude !== '0'
           );
-        // console.log(data)
         setTrucks(data);
       });
 
@@ -132,7 +132,7 @@ function App() {
       console.log('window.dimensions', JSON.stringify({ windowSize }));
       setWindowSize([windowWidth, windowHeight]);
     }
-  }, [latitude, longitude, windowHeight, windowWidth, theme, windowSize]);
+  }, [latitude, longitude, theme]);
 
   return (
     <ThemeProvider theme={theme}>
