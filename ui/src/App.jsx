@@ -1,3 +1,4 @@
+import './App.scss';
 import { useState, useEffect, createRef } from 'react';
 import {
   createTheme,
@@ -14,7 +15,7 @@ import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
 import { Outlet } from 'react-router-dom';
-import './App.css';
+
 
 let darkTheme = createTheme({
   mixins: {
@@ -129,21 +130,27 @@ function App() {
     }
 
     if (windowWidth && windowHeight) {
-      console.log('window.dimensions', JSON.stringify({ windowSize }));
+      console.log('window.dimensions', windowSize);
       setWindowSize([windowWidth, windowHeight]);
     }
   }, [latitude, longitude, theme]);
 
   return (
     <ThemeProvider theme={theme}>
-      <Stack ref={rootRef} className='App'>
+      <Stack
+        ref={rootRef}
+        className='App'
+        sx={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+        }}
+      >
         <Stack
           sx={{
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: (theme) =>
-              `${theme.spacing(10)}`
           }}
         >
           <Navigation
@@ -152,12 +159,13 @@ function App() {
             lightTheme={lightTheme}
             darkTheme={darkTheme}
           />
+          {/* application content is rendered in this component */}
           <Stack
             sx={{
               /* contentStart = navigationHeight(px) + themePadding(px) */
               top: (theme) =>
                 `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(
-                  1
+                  5
                 )})`,
               display: {
                 xs: 'none',
@@ -166,6 +174,9 @@ function App() {
                 lg: 'flex',
                 xl: 'flex'
               },
+              // paddingLeft: (theme) => theme.spacing(5),
+              // paddingRight: (theme) => theme.spacing(5),
+              // paddingBottom: (theme) => theme.spacing(5),
               flexGrowth: 1,
               backgroundColor: 'primary.main',
               alignContent: 'center',
@@ -177,24 +188,26 @@ function App() {
               position: 'absolute'
             }}
             direction='column'
+            spacing={5}
           >
-            {/* application content is rendered in this component */}
+            {/* contains a form, and an outlet which renders routed child components */}
             <Stack
               direction='row'
               sx={{
                 display: 'flex',
                 flexGrow: 1,
                 width: '100%',
-                padding: (theme) => theme.spacing(5)
+                alignContent: 'space-between',
+                // border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
+
+                padding: (theme) => theme.spacing(2)
               }}
             >
               <Box
                 sx={{
                   display: 'flex',
-                  width: '50%',
-                  // width: '100%',
-                  // border: (theme) =>
-                  //   `1px solid ${theme.palette.primary.contrastText}`
+                  minWidth: '50%',
+
                 }}
               >
                 <Outlet
@@ -216,9 +229,7 @@ function App() {
 
               <Box
                 sx={{
-                  width: '50%',
-                  // border: (theme) =>
-                  //   `1px solid ${theme.palette.primary.contrastText}`
+                  minWidth: '25%',
                 }}
               >
                 <Form
