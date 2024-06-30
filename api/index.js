@@ -47,15 +47,21 @@ app.get('/api', (req, res) => {
 
 app.get('/api/trucks', async (req, res) => {
   apiLogger(req, res);
-  const query = req.query;
-  let { format } = query;
-  if (!format) format = 'csv'
-  const compiled = await compileData(
-    // TODO: validate we can switch the
-  );
-  const headers = compiled[0];
-  const data = compiled.slice(1, )
-  res.json(data)
+  try {
+    const query = req.query;
+    let { format } = query;
+    if (!format) format = 'csv'
+    const compiled = await compileData(
+      // TODO: validate we can switch the
+    );
+    const headers = compiled[0];
+    const data = compiled.slice(1, )
+    res.json(data)
+  } catch (error) {
+    // how to send an http error?
+    console.error('error', error)
+  }
+
 })
 
 
