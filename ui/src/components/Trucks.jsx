@@ -1,4 +1,4 @@
-import './Trucks.scss'
+import './Trucks.scss';
 import 'leaflet/dist/leaflet.css';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';

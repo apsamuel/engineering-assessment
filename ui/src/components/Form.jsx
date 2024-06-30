@@ -1,17 +1,21 @@
 import './Form.scss';
-import InputBase from '@mui/material/InputBase';
-import InputLabel from '@mui/material/InputLabel';
+import { useNavigate, useLocation } from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
-import Slider from '@mui/material/Slider';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 // eslint-disable-next-line no-unused-vars
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import {
+  StyledInputBase,
+  StyledSlider,
+  StyledInputLabel,
+  StyledHelperText
+} from './components/ThemedComponents.jsx';
+// import Placeholder from './components/Placeholder.jsx';
+// import { styled } from '@mui/material/styles';
 Form.propTypes = {
   trucks: PropTypes.arrayOf(PropTypes.string).isRequired,
   setTrucks: PropTypes.func,
@@ -23,100 +27,6 @@ Form.propTypes = {
   foods: PropTypes.arrayOf(PropTypes.string)
 };
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-'label + &': {
-    marginTop: theme.spacing(3),
-  },
-  '& .MuiInputBase-input': {
-    borderRadius: theme.shape.borderRadius,
-    position: 'relative',
-    backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 26px 10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-}))
-const StyledSlider = styled(Slider)(( { theme }) => ({
-  color: theme.palette.secondary.main,
-  height: 8,
-  '& .MuiSlider-track': {
-    border: 'none',
-  },
-  '& .MuiSlider-thumb': {
-    height: 24,
-    width: 24,
-    backgroundColor: '#fff',
-    border: '2px solid currentColor',
-    '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
-      boxShadow: 'inherit',
-    },
-    '&::before': {
-      display: 'none',
-    },
-  },
-  '& .MuiSlider-valueLabel': {
-    lineHeight: 1.2,
-    fontSize: 12,
-    background: 'unset',
-    padding: 0,
-    width: 32,
-    height: 32,
-    borderRadius: '50% 50% 50% 0',
-    backgroundColor: '#52af77',
-    transformOrigin: 'bottom left',
-    transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
-    '&::before': { display: 'none' },
-    '&.MuiSlider-valueLabelOpen': {
-      transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
-    },
-    '& > *': {
-      transform: 'rotate(45deg)',
-    },
-  },
-}))
-
-// eslint-disable-next-line no-unused-vars
-const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
-  // color: 'yellow',
-  fontSize: {
-    xs: 5,
-    sm: 5,
-    md: 5,
-    lg: 5,
-    xl: 15
-  },
-}))
-
-// eslint-disable-next-line no-unused-vars
-const StyledHelperText = styled(FormHelperText)(({ theme }) => ({
-  // color: 'yellow',
-  fontSize: {
-    xs: 5,
-    sm: 5,
-    md: 5,
-    lg: 5,
-    xl: 15
-  }
-}))
 
 export default function Form({
   trucks = [],
@@ -140,6 +50,12 @@ export default function Form({
     console.log('setFoods not implemented');
   }
 }) {
+
+  // eslint-disable-next-line no-unused-vars
+  const history = useNavigate();
+  // eslint-disable-next-line no-unused-vars
+  const appLocation = useLocation();
+
   // gather unique vendors
   const vendors = Array.from(new Set(trucks.map((truck) => truck.applicant)));
   // gather unique food categories
@@ -160,6 +76,7 @@ export default function Form({
   return (
     <Stack
       sx={{
+        // padding: 0,
         display: {
           xs: 'flex',
           sm: 'flex',
@@ -167,41 +84,43 @@ export default function Form({
           lg: 'flex',
           xl: 'flex'
         },
-        // width: '100%',
-        height: '100%',
-        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         alignContent: 'center',
         borderRadius: (theme) => theme.shape.borderRadius,
-        border: (theme) => `1px solid ${theme.palette.primary.contrastText}`
+        border: (theme) => `2px solid ${theme.palette.primary.contrastText}`,
+
       }}
     >
+      {/* <Placeholder/> */}
       {/* distance controls */}
       <FormControl  variant='filled' sx={{
-        flexGrow: 1,
-        width: '33%'
+        flexGrow: 0.5,
+        minWidth: '33%'
       }}>
-        {/* <InputLabel
-          id='vendor-distance-slider-label'
-        >
-        </InputLabel> */}
         <StyledSlider
           label='Distance'
           // labelId='vendor-distance-slider-label'
           aria-label='vendor-distance-slider'
           defaultValue={5000}
           getAriaValueText={(value) => `${value} km`}
-          // the step may be a little unrealistic for real-world applications, i'm in NYC, the data is reflective of trucks in San Francisco
+          valueLabelDisplay='auto'
+          /*
+            NOTE: the step may be a little unrealistic for real-world applications,
+            i'm in NYC, the data is reflective of trucks in San Francisco, to enable geolocation/distance calculations,
+            I need to fake some data, these trucks are within 5000 km of NYC, so the slider is set to 5000 km as a base value
+            since someone testing this may be in Alaska, I've set the max to 10000 km to provide some flexibility
+
+            TODO: test REACT environment variables to set the max distance based on the user's location, as well as other defaults to make this more flexible for users and developers
+          */
           step={250}
           shiftStep={1000}
-          valueLabelDisplay='auto'
           min={5000}
           max={10000}
-          // from 5000 km to 10000 km
           color={'primary.main'}
           marks
           onChange={(_, value) => {
+            console.log('truck.distance', { value });
             setDistance(value);
           }}
         />
@@ -214,8 +133,8 @@ export default function Form({
       <FormControl
         variant='filled'
         sx={{
-          flexGrow: 1,
-          width: '33%',
+          flexGrow: 0.333,
+          minWidth: '33%',
         }}
       >
         <StyledInputLabel
@@ -237,11 +156,10 @@ export default function Form({
             transformOrigin: {
               vertical: "top",
               horizontal: "left"
-            },
-            getContentAnchorEl: null
+            }
           }}
           onChange={(event) => {
-            console.log('setting.vendor', { vendor: event.target.value});
+            console.log('truck.vendor', { value: event.target.value});
             setVendor(event.target.value);
           }}
         >
@@ -260,8 +178,8 @@ export default function Form({
       <FormControl
         variant={'filled'}
         sx={{
-          flexGrow: 1,
-          width: '33%',
+          flexGrow: 0.333,
+          minWidth: '33%',
         }}
       >
         <StyledInputLabel
@@ -282,7 +200,7 @@ export default function Form({
           input={<StyledInputBase id='category' label='Category' />}
           placeholder='Select a Category'
           onChange={(event) => {
-            console.log('setting food category:', event.target.value);
+            console.log('truck.category', { value: event.target.value});
             setFoods(event.target.value);
           }}
         >

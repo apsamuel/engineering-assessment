@@ -1,101 +1,104 @@
 import './App.scss';
 import { useState, useEffect, createRef } from 'react';
+import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
+import { useNavigate, useLocation } from 'react-router-dom';
+// import { useHistory, useLocation } from 'react-router-dom';
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider
 } from '@mui/material/styles';
 import * as Colors from '@mui/material/colors';
-import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
-import { Outlet } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import { Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
 
-
-
-const darkTheme = responsiveFontSizes(createTheme({
-  mixins: {
-    MuiDataGrid: {}
-  },
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#000000',
-      paper: '#000000'
+const darkTheme = responsiveFontSizes(
+  createTheme({
+    mixins: {
+      MuiDataGrid: {}
     },
-    primary: {
-      light: '#9E9DB6',
-      main: '#2B2A2A',
-      dark: '#101010',
-      contrastText: '#8E8181'
-    },
-    secondary: {
-      light: '#737C97',
-      main: '#615F8C',
-      dark: '#2B2768',
-      contrastText: '#696161'
+    palette: {
+      mode: 'dark',
+      background: {
+        default: '#000000',
+        paper: '#000000'
+      },
+      primary: {
+        light: '#9E9DB6',
+        main: '#2B2A2A',
+        dark: '#101010',
+        contrastText: '#8E8181'
+      },
+      secondary: {
+        light: '#737C97',
+        main: '#615F8C',
+        dark: '#2B2768',
+        contrastText: '#696161'
+      }
     }
-  }
-}));
+  })
+);
 
-
-const lightTheme =responsiveFontSizes(createTheme({
-  mixins: {
-    MuiDataGrid: {
-      // pinnedBackground: Colors.grey['A700'],
-      // containerBackground: Colors.grey['A700'],
-    }
-  },
-  palette: {
-    mode: 'light',
-    background: {
-      default: Colors.grey[50],
-      paper: Colors.grey[50]
+const lightTheme = responsiveFontSizes(
+  createTheme({
+    mixins: {
+      MuiDataGrid: {
+        // pinnedBackground: Colors.grey['A700'],
+        // containerBackground: Colors.grey['A700'],
+      }
     },
-    primary: {
-      light: Colors.grey[300],
-      main: Colors.grey[50],
-      dark: Colors.grey[500],
-      contrastText: '#000'
-    },
-    secondary: {
-      light: '#61B5FF',
-      main: '#57A1E1',
-      dark: '#2C5172',
-      contrastText: '#000'
+    palette: {
+      mode: 'light',
+      background: {
+        default: Colors.grey[50],
+        paper: Colors.grey[50]
+      },
+      primary: {
+        light: Colors.grey[300],
+        main: Colors.grey[50],
+        dark: Colors.grey[500],
+        contrastText: '#000'
+      },
+      secondary: {
+        light: '#61B5FF',
+        main: '#57A1E1',
+        dark: '#2C5172',
+        contrastText: '#000'
+      }
     }
-  }
-}));
-
+  })
+);
 
 function App() {
+  const history = useNavigate();
+  const appLocation = useLocation();
+  // const [ appHistory, setAppHistory ] = useState(history);
+
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { loading, error, longitude, latitude } = useGeolocation();
-
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
   const [filterTrucks, setFilterTrucks] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [windowSize, setWindowSize] = useState([0, 0]);
   const [browserLocation, setBrowserLocation] = useState([]);
   // we're in NYC, and we want to see all the trucks...
   const [distance, setDistance] = useState(10000);
-  // selected vendor(s)
   const [vendor, setVendor] = useState(null);
-  // selected food(s)
   const [foods, setFoods] = useState(null);
 
   if (loading) {
-    console.log('location.loading', { loading })
+    console.log('user.location', { loading });
   }
   if (error) {
-    console.log('location.error', { error });
+    console.log('user.location', { error });
   }
 
-  // create references
+  console.log('browser.location', appLocation);
+
   const rootRef = createRef();
 
   useEffect(() => {
@@ -136,91 +139,116 @@ function App() {
       console.log('window.dimensions', windowSize);
       setWindowSize([windowWidth, windowHeight]);
     }
-  }, [
-    latitude,
-    longitude,
-    theme
-  ]);
+  }, [latitude, longitude, theme]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} id='ThemeProvider'>
+      {/* controls high level application characteristics */}
       <Stack
         ref={rootRef}
-        className='App'
+        id='AppContainer'
+        className='AppContainer'
         sx={{
           display: 'flex',
-          width: '100%',
-          height: '100%',
-          padding: (theme) => theme.spacing(5),
+          minWidth: '100%',
+          minHeight: '100%',
+          transition: (theme) =>
+            theme.transitions.create(['width', 'height'], {
+              easing: theme.transitions.easing.easeIn,
+              duration: theme.transitions.duration.enteringScreen
+            })
         }}
       >
         <Stack
+          useFlexGap
+          id='AppController'
+          spacing={5}
           sx={{
-            flexDirection: 'row',
+            display: 'flex',
+            flexGrowth: 1,
             justifyContent: 'center',
             alignItems: 'center',
+            top: (theme) =>
+              `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(5)})`,
+
           }}
         >
           <Navigation
+            id='Navigation'
             setTheme={setTheme}
             theme={theme}
             lightTheme={lightTheme}
             darkTheme={darkTheme}
+            history={history}
           />
-          {/* application content is rendered in this component */}
+          {/*
+            app content is rendered here!
+          */}
           <Stack
+            id='AppContentContainer'
             sx={{
-              /* contentStart = navigationHeight(px) + themePadding(px) */
+              /*
+                contentStart = navigationHeight(px) + themePadding(px)
+              */
+              position: 'relative',
+              backgroundColor: 'primary.main',
+              borderRadius: (theme) => theme.shape.borderRadius,
+              border: (theme) =>
+                `1px solid ${theme.palette.primary.contrastText}`,
               top: (theme) =>
                 `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(
-                  5
+                  2
                 )})`,
+              padding: (theme) => theme.spacing(2),
+              // paddingRight: '1',
               display: {
-                xs: 'none',
+                xs: 'flex',
                 sm: 'flex',
                 md: 'flex',
                 lg: 'flex',
                 xl: 'flex'
               },
-              // paddingLeft: (theme) => theme.spacing(5),
-              // paddingRight: (theme) => theme.spacing(5),
-              // paddingBottom: (theme) => theme.spacing(5),
               flexGrowth: 1,
-              backgroundColor: 'primary.main',
               alignContent: 'center',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '100%'
-            }}
-            style={{
-              position: 'absolute'
+              minWidth: '90%'
             }}
             direction='column'
-            spacing={5}
+            // margin={2}
+            spacing={{
+              xs: 1,
+              sm: 2,
+              md: 3,
+              lg: 4,
+              xl: 5
+            }}
           >
-            {/* contains a form, and an outlet which renders routed child components */}
+            {/*
+              main content container
+            */}
             <Stack
+              id='ReactiveContentContainer'
               direction='row'
+              spacing={10}
               sx={{
                 display: 'flex',
                 flexGrow: 1,
-                width: '100%',
-                alignContent: 'space-between',
-                // border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
-
-                padding: (theme) => theme.spacing(2)
+                width: '100%'
               }}
             >
+              {/* controls high-level characteristics of routed child components */}
               <Box
+                id='OutletController'
                 sx={{
-                  display: 'flex',
+                  flexGrow: 1,
+                  display: appLocation.pathname === '/' ? 'none' : 'flex',
                   minWidth: '50%',
-
+                  maxWith: '100%'
                 }}
               >
                 <Outlet
                   style={{
-                    display: 'flex',
                     flexGrowth: 1,
                     justifyContent: 'center'
                   }}
@@ -235,9 +263,16 @@ function App() {
                 />
               </Box>
 
+              {/* controls form size and high level characteristics */}
               <Box
+                id='FormController'
                 sx={{
-                  minWidth: '25%',
+                  alignSelf: 'center',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexGrow: appLocation.pathname === '/' ? 1 : 0.666,
+                  minWidth: appLocation.pathname === '/' ? '80%' : '40%'
                 }}
               >
                 <Form
@@ -252,7 +287,9 @@ function App() {
               </Box>
             </Stack>
             {/* DataGrid can preserve it's own reactivity when given the proper paramters */}
+
             <Data
+              id='DataGrid'
               setFilterTrucks={setFilterTrucks}
               trucks={trucks}
               location={browserLocation}

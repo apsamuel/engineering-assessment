@@ -2,38 +2,50 @@ import './index.scss'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import Visualize from './components/Visualize.jsx'
-import Trucks from './components/Trucks.jsx'
-import Reviews from './components/Reviews.jsx'
-
+// import Visualize from './components/Visualize.jsx'
+// import Trucks from './components/Trucks.jsx'
+// import Reviews from './components/Reviews.jsx'
+// import About from './components/About.jsx'
+// TODO: document SiteConfiguration.js
+import { navigationLinks } from './components/config/SiteConfiguration.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const browserRouter = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    children: [
-      {
-        path: 'viz',
-        element: <Visualize />,
-        children: []
-      },
-      {
-        path: 'trucks',
-        element: <Trucks />,
-        children: []
-      },
-      {
-        path: 'reviews',
-        element: <Reviews />,
-        children: []
+    element: React.createElement(App),
+    children: navigationLinks.map((link) => {
+      return {
+        path: link.path,
+        element: link.element,
+        children: link.children
       }
-    ]
+    })
+    // children: [
+    //   {
+    //     path: 'viz',
+    //     element: React.createElement(Visualize),
+    //     children: []
+    //   },
+    //   {
+    //     path: 'trucks',
+    //     element: React.createElement(Trucks),
+    //     children: []
+    //   },
+    //   {
+    //     path: 'reviews',
+    //     element: React.createElement(Reviews),
+    //     children: []
+    //   },
+    //   {
+    //     path: 'about',
+    //     element: React.createElement(About),
+    //     children: []
+    //   }
+    // ]
   },
 ])
-/*
-  render elements within root div
-*/
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider

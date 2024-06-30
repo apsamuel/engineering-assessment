@@ -1,9 +1,9 @@
-import './Reviews.scss';
+// import './Reviews.scss';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export default function Reviews() {
+export default function About() {
   return (
     <Stack
       sx={{
@@ -13,7 +13,7 @@ export default function Reviews() {
         alignContent: 'center',
         borderRadius: (theme) => theme.shape.borderRadius,
         border: (theme) => `1px solid ${theme.palette.primary.contrastText}`
-        // height: '100%',
+
       }}
     >
       <Box>
@@ -28,7 +28,7 @@ export default function Reviews() {
           }}
         >
           {' '}
-          Truck Reviews. Coming Soon!{' '}
+          About Hungrèe. Coming Soon!{' '}
         </Typography>
       </Box>
     </Stack>

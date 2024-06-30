@@ -13,10 +13,14 @@ import Switch from '@mui/material/Switch';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+// configuration data
+import { navigationLinks } from './config/SiteConfiguration.js';
+
 Navigation.propTypes = {
   lightTheme: PropTypes.object,
   darkTheme: PropTypes.object,
-  setTheme: PropTypes.func
+  setTheme: PropTypes.func,
+  history: PropTypes.func
 };
 
 const ToggleThemeSwitch = styled(Switch)(({ theme }) => ({
@@ -66,84 +70,66 @@ const ToggleThemeSwitch = styled(Switch)(({ theme }) => ({
   }
 }));
 
-const StyledNavLink = styled(NavLink)(({ theme}) => ({
-  color: theme.palette.primary.contrastText,
-}))
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+  color: theme.palette.primary.contrastText
+}));
 
 export default function Navigation({
   lightTheme = {},
   darkTheme = {},
   setTheme = () => {
     console.log('setTheme not implemented');
+  },
+  // eslint-disable-next-line no-unused-vars
+  history = () => {
+    console.log('history not implemented');
   }
 }) {
   const ref = createRef();
-  // const pages = ['Trucks', 'Visualize', 'Reviews'];
-  const pages = [
-    {
-      name: 'Trucks',
-      to: '/trucks',
-      position: 1
-    },
-    {
-      name: 'Visualize',
-      to: '/viz',
-      position: 2
-    },
-    {
-      name: 'Reviews',
-      to: '/reviews',
-      position: 3
-    }
-  ];
 
   useLayoutEffect(() => {
-    const { clientHeight, clientWidth, offsetHeight, offsetWidth } = ref.current;
+    const { clientHeight, clientWidth, offsetHeight, offsetWidth } =
+      ref.current;
 
     console.log('navi.dimensions', {
       offsetHeight,
       offsetWidth,
       clientHeight,
       clientWidth
-
     });
   });
 
   return (
-    <AppBar
-      position='absolute'
-      sx={{ top: 0 }}
-      ref={ref}
-    >
+    <AppBar position='absolute' sx={{ top: 0 }} ref={ref}>
       <Container
+        id={'NavigationController'}
         maxWidth='xl'
         sx={{
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start'
+          flexGrow: 1,
         }}
       >
-        <Toolbar disableGutters>
+        <Toolbar
+          disableGutters
+        >
           <Stack
             direction={'row'}
             sx={{
               flexGrow: 1,
-              alignContent: 'center',
-              justifyContent: 'baseline'
+              alignContent: 'space-around',
+              justifyContent: 'baseline',
+
             }}
           >
             <Box
-                style={{
-                  color: 'primary.contrastText'
-                }}
-                sx={{
-                  color: 'primary.contrastText',
-                  textDecoration: 'none'
-                }}
+              style={{
+                // color: 'primary.contrastText'
+              }}
+              sx={{
+                // color: 'primary.contrastText',
+                textDecoration: 'none'
+              }}
             >
-              <StyledNavLink
-                to='/'
-
-              >
+              <StyledNavLink to='/'>
                 <Typography
                   variant='h6'
                   component='div'
@@ -195,7 +181,7 @@ export default function Navigation({
             sx={{ alignContent: 'center', justifyContent: 'center' }}
           >
             {/* page links */}
-            {pages.map((page) => (
+            {navigationLinks.map((page) => (
               <Box key={`box-${page.name}`}>
                 <StyledNavLink
                   key={page.name}
@@ -207,7 +193,6 @@ export default function Navigation({
                   style={({ isActive, isPending, isTransitioning }) => {
                     return {
                       fontWeight: isActive ? 'bold' : 'normal',
-                      // color: isPending ? 'red' : 'white',
                       viewTransitionName: isTransitioning ? 'fade' : 'none'
                     };
                   }}

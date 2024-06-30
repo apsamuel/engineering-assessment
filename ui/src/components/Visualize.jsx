@@ -31,12 +31,12 @@ export default function Visualize() {
           lg: 'block',
           xl: 'block'
         },
-        padding: {
-          sm: 2,
-          md: 2,
-          lg: 2,
-          xl: 2
-        },
+        // padding: {
+        //   sm: 2,
+        //   md: 2,
+        //   lg: 2,
+        //   xl: 2
+        // },
         width: {
           xs: '100%',
           sm: '100%',

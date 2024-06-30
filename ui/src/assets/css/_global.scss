@@ -2,12 +2,16 @@
 
 $default-font-size: 16px;
 $default-padding: 10px;
-$viewport-width: 100vw;
-$viewport-height: 100vh;
+$default-viewport-width: 100vw;
+$default-viewport-height: 100vh;
 $default-text-justify: center;
 $default-vertical-align: middle;
 $default-item-align: center;
 $default-content-align: center;
+$default-border-color-light: black;
+$default-border-color-dark: white;
+$default-text-color-light: black;
+$default-text-color-dark: white;
 
 
 @function pxToRem($px) {

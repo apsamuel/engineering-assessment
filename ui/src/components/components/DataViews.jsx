@@ -14,7 +14,9 @@ import haversineDistance from 'haversine-distance';
 // TODO: import from ThemedComponents
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
   height: 250,
-  border: `1px solid ${theme.palette.primary.contrastText}`
+  border: `1px solid ${theme.palette.primary.contrastText}`,
+  borderRadius: theme.shape.borderRadius,
+  padding: theme.spacing(5)
 }));
 DataViews.propTypes = {
   allTrucks: PropTypes.arrayOf(PropTypes.object),
@@ -375,13 +377,29 @@ export default function DataViews({
             ))}
           </Select>
         </FormControl>
-        <Box>
-          <Typography>
-            {trucks.length} Trucks |{vendor === 'All' ? ' All Vendors' : vendor}{' '}
-            |{foods === 'All' ? ' All Categories' : ` ${foods}`} |
-            {` ${distance}`} km
-          </Typography>
-        </Box>
+        <Stack direction='row' spacing={2}>
+          <Box>
+            <Typography
+              variant='overline'
+            >{trucks.length} Trucks</Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant='overline'
+            >{' '}{(vendor === 'All' || !vendor) ? ' All Vendors' : vendor}{' '}</Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant='overline'
+            >{' '}{(foods === 'All' || !foods) ? ' All Categories' : ` ${foods}`}{' '}</Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant='overline'
+            >{' '}Within {` ${distance}`} km</Typography>
+          </Box>
+
+        </Stack>
       </Stack>
 
       <Box

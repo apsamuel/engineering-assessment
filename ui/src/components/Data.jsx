@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
+// import Box from '@mui/material/Box';
+// import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 import {
-  DataGrid,
+  // DataGrid,
   GridToolbar,
   useGridApiRef
   // gridClasses
@@ -14,30 +17,15 @@ import {
   // alpha,
   // darken,
   // lighten,
-  styled,
+  // styled,
   useTheme
 } from '@mui/material/styles';
 
-const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
-  display: {
-    sm: 'none',
-    md: 'none',
-    lg: 'flex',
-  },
-  border: 0,
-  color: theme.palette.primary.contrastText,
-  fontFamily: ['Roboto'].join(','),
-  WebkitFontSmoothing: 'auto',
-  letterSpacing: 'normal',
-  '& .MuiDataGrid-root': {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-    fontFamily: ['Roboto'].join(','),
-    WebkitFontSmoothing: 'auto',
-    letterSpacing: 'normal'
-  }
-}));
+import { StyledDataGrid } from './components/ThemedComponents.jsx';
+
+
 Data.propTypes = {
+  // id: PropTypes.string,
   setFilterTrucks: PropTypes.func,
   trucks: PropTypes.arrayOf(PropTypes.object).isRequired,
   location: PropTypes.arrayOf(PropTypes.number),
@@ -46,6 +34,7 @@ Data.propTypes = {
   foods: PropTypes.arrayOf(PropTypes.string)
 };
 export default function Data({
+  // id = 'DataGridController',
   trucks = [],
   location = [],
   vendor = null,
@@ -64,26 +53,52 @@ export default function Data({
   });
   const apiRef = useGridApiRef();
 
+  const parseFoodItems = (fooditems) => {
+    if (fooditems) {
+      return fooditems
+        .split(new RegExp('[:;.]', 'g'))
+        .map((item) => item.trim())
+        .map((item) => item.toLowerCase())
+        .map((item) => item.replace(
+          new RegExp(`(${[
+            'all types of food except for bbq on site per fire safety',
+            'various menu items & drinks',
+            'multiple food trucks & food types'
+          ]})`, 'g')
+        ), 'General Market')
+        .map((item) => item.replace(
+          'asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'
+        ))
+        .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
+        .map((item) => item.replace('pre-packaged swiches', 'Sandwiches'))
+        .map((item) => item.replace('peruvian food served hot', 'Peruvian Cuisine'))
+        .map((item) => {
+          return item === 'tacos burritos quesadillas tortas pupusas flautas tamales' ?  ['tacos', 'burritos', 'quesadillas', 'tortas', 'pupusas', 'flautas', 'tamales'] : item;
+        })
+        .flat()
+    }
+    return [];
+  }
+
   const columns = [
-    { field: 'applicant', headerName: 'Truck Name', flex: 1, maxWidth: 550 },
-    { field: 'facilitytype', headerName: 'Truck Type', flex: 0.5, maxWidth: 100},
-    { field: 'address', headerName: 'Truck Address', flex: 0.5 },
+    // TODO: render Tooltip for applicant containing fooditems
+    { field: 'applicant', headerName: 'Truck Name', flex: 0.5, minWidth: 250 },
+    { field: 'facilitytype', headerName: 'Truck Type', flex: 0.2},
+    { field: 'address', headerName: 'Truck Address', flex: 0.333 },
     {
       field: 'distance',
       headerName: 'Truck Distance',
-      flex: 0.5,
+      flex: 0.3333,
       valueGetter: (value, row) =>
         `${
           Math.round(haversine(location, [row.latitude, row.longitude])) / 1000
         } km`
     },
+    // TODO: use icons or emoji mappings for food items
     {
       field: 'fooditems',
       headerName: 'Food Categories',
-      flex: 1,
-      minWidth: 200,
-      maxWidth: 500,
-
+      flex: 0.333,
       renderCell: (params) => {
         return (
           <Stack
@@ -95,10 +110,9 @@ export default function Data({
             direction={'row'}
             // spacing={1}
           >
-            {params.value
-              .split(new RegExp('[:;.]', 'g'))
-              .map((val) => val.trim().toLowerCase())
-              .slice(0, 5)
+            {
+              parseFoodItems(params.value)
+              .slice(0, 3)
               .map((category, index) => (
                 <Chip
                   key={index}
@@ -142,14 +156,16 @@ export default function Data({
   }, [vendor, distance, foods, location, trucks, apiRef, setFilterTrucks]);
   return (
     <Stack
+      id={'DataGridController'}
       sx={{
-        width: '80%',
-        // height: '50%'
+        minWidth: '50%',
+        maxWidth: '80%',
       }}
       style={{
       }}
     >
       <StyledDataGrid
+        id={'DataGrid'}
         sx={{
           boxShadow: 1,
           border: 1,
@@ -160,7 +176,8 @@ export default function Data({
           }
         }}
         apiRef={apiRef}
-        density='compact'
+        density={'compact'}
+        disableSelectionOnClick
         checkboxSelection
         disableRowSelectionOnClick
         rows={filteredTrucks}
@@ -181,8 +198,6 @@ export default function Data({
           }
         }}
         pageSizeOptions={[5, 10, 20, 25]}
-        // checkboxSelection
-        disableSelectionOnClick
         paginationModel={paginationModel}
         onSortModelChange={(model) => {
           console.log('data.sortModel', model);
@@ -193,7 +208,6 @@ export default function Data({
         onStateChange={(state) => {
           setPaginationModel(state.pagination.paginationModel);
         }}
-        // loading={filteredTrucks.length === 0}
       />
     </Stack>
   );

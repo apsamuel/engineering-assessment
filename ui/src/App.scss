@@ -1,13 +1,16 @@
 @use '../src/assets/css/global' as global;
 @use '../src/assets/css/media' as media;
 
-#root {
-  margin: 0 auto;
-  text-align: center;
-  // overflow: hidden !important;
-}
+html {
+  div#root {
+    margin: 0 auto;
+    text-align: center;
+    // overflow: hidden !important;
+    div.AppRoot {
+      padding: 5;
+      // border: 1px solid #000;
+      // overflow-x: hidden;
+    }
+  }
 
-div.App {
-  // padding: 10;
-  // overflow-x: hidden;
 }
