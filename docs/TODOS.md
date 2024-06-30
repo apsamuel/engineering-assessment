@@ -17,7 +17,7 @@
 |    ~~refactor `categories` column~~     |                  ~~reformat presentation layer~~                  | Development |   ✅   |
 |    review DataGrid rendering issues     |                ~~pagination~~ is rendering poorly                 | Development |   ✅   |
 |  ~~centralize core filters/mappings~~   | ~~we should not have to repeat the filters and mappings so much~~ | Development |   🤣   |
-| formatting, presentation, visual tweaks |                  wrapping up the design efforts                   |  UI Design  |   💻   |
+| formatting, presentation, visual tweaks |                  wrapping up the design efforts                   |  UI Design  |   ✅   |
 
 ## Notes about items on TO DO
 

@@ -4,7 +4,7 @@
 > Hungrèe manages your food truck habits at Estèe
 
 ```js
-!! await handleAppetite()
+!! await handleYourAppetite()
 ```
 
 ![food-truck](./ui/public/truck.svg)
@@ -13,10 +13,12 @@
 
 - we'll keep you safe by only returning approved vendors, with well defined locations and food categories
 - we'll let you know the distance between you and your target truck!
+- we'll drop pins on the street map to let you know where your truck is located!
+- we'll provide some data driven views about selected vendors and the foods they offer!
 
 ## Prerequisites
 
-- **docker-compose**
+- **docker & docker-compose**
 
 ## Get Started
 
@@ -42,7 +44,7 @@ After following the steps in [Get Started](#get-started) you will have three ent
 
 ## Tips
 
-- Are you playing with this tool and not in the San Franciso Metropolitan area? No sweat, we got you covered ...
+- Are you playing with this tool and not in the San Franciso Metropolitan area? No sweat, we got you covered,
 
 ## To Dos
 
