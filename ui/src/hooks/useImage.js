@@ -28,9 +28,6 @@ export default function useImage(fileName) {
           const { base, } = parse(fileName);
           const imageAsset = (await import(`../assets/images/${base}.svg`)).default;
           // TEST: can we load this asset as a component using the svg loader?
-          // const { ReactComponent: SvgComponent }  = (await import(`../assets/images/${base}.svg`)).default;
-          // console.log('SvgComponent: ', SvgComponent)
-          // console.log('imageAsset: ', imageAsset)
           setImage(imageAsset);
         }
       } catch (err) {

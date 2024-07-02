@@ -7,11 +7,11 @@ export default function useTheme (mode = 'dark', userTheme = {}) {
   const themes = createTheme(userTheme, )
   let [theme, setTheme] = useState(mode)
 
+  // eslint-disable-next-line no-unused-vars
   const getThemes = () => {
     return themes.map((theme) => theme.name)
   }
 
-  console.log('themes: ', getThemes())
 
   useEffect(() => {
     setTheme(themes[theme])
