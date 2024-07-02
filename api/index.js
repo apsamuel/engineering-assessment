@@ -75,26 +75,31 @@ app.get('/api/trucks/categories', async (req, res) => {
     .map((truck) => truck.fooditems)
     .filter(Boolean)
     .join(';')
-    .split(new RegExp('[;:.]', 'g'))
-    .map((item) => item.trim().toLowerCase())
-    // General Market replacements
+    .split(new RegExp('[;:./]', 'g'))
     .map((item) => item.replace(
       new RegExp(`(${[
         'all types of food except for bbq on site per fire safety',
         'various menu items & drinks',
         'multiple food trucks & food types'
-      ].join('|')})`, 'g'), 'General Market'
-    ))
-    // Asian Fusion replacements
+      ]})`, 'g')
+    ), 'General Market')
     .map((item) => item.replace(
       'asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'
     ))
-    // Locally Sourced Organics
+    .map((item) => item.replace('vegetable and meat sandwiches filled with asian-flavored meats and vegetables', 'Sandwiches'))
     .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
-    // Sandwiches
     .map((item) => item.replace('pre-packaged swiches', 'Sandwiches'))
-    // .map((item) => item.trim().toLowerCase())
-    .filter(Boolean);
+    .map((item) => item.replace('peruvian food served hot', 'Peruvian Cuisine'))
+    .map((item) => {
+      return item === 'tacos burritos quesadillas tortas pupusas flautas tamales' ?  ['tacos', 'burritos', 'quesadillas', 'tortas', 'pupusas', 'flautas', 'tamales'] : item;
+    })
+    .filter(Boolean)
+    .map((item) =>
+      item.split ? item.split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ') : item
+    )
+    .flat()
   res.json(Array.from(new Set(categories)))
 })
 
@@ -137,8 +142,18 @@ app.get('/api/trucks/vendors/:vendor/categories', async (req, res) => {
     .map((item) => item.replace('all types of food except for bbq on site per fire safety', 'General Market'))
     .map((item) => item.replace('asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'))
     .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
-    .map((item) => item.replace('pre-packaged swiches', 'Packaged Sandwiches'))
-    .filter(Boolean);
+    .map((item) => item.replace('pre-packaged swiches', 'Sandwiches'))
+    .map((item) => item.replace('peruvian food served hot', 'Peruvian Cuisine'))
+    .map((item) => {
+      return item === 'tacos burritos quesadillas tortas pupusas flautas tamales' ?  ['tacos', 'burritos', 'quesadillas', 'tortas', 'pupusas', 'flautas', 'tamales'] : item;
+    })
+    .map((item) =>
+      item.split ? item.split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ') : item
+    )
+    .filter(Boolean)
+    .flat()
   return res.json(Array.from(new Set(categories)))
 })
 
