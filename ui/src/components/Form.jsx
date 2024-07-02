@@ -8,14 +8,14 @@ import Stack from '@mui/material/Stack';
 // eslint-disable-next-line no-unused-vars
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+// import { motion } from 'framer-motion';
 import {
-  StyledInputBase,
+  AnimatedStyledInputBase,
   StyledSlider,
   StyledInputLabel,
   StyledHelperText
 } from './components/ThemedComponents.jsx';
-// import Placeholder from './components/Placeholder.jsx';
-// import { styled } from '@mui/material/styles';
+
 Form.propTypes = {
   trucks: PropTypes.arrayOf(PropTypes.string).isRequired,
   setTrucks: PropTypes.func,
@@ -75,6 +75,8 @@ export default function Form({
 
   return (
     <Stack
+      id={'Form'}
+      className={'FormComponent'}
       sx={{
         // padding: 0,
         display: {
@@ -146,17 +148,18 @@ export default function Form({
           labelId='vendor-name-multiple-select-label'
           id='vendor-name-multiple-select'
           value={vendor || 'All'}
-          input={<StyledInputBase id='vendor' label='Vendor' />}
+          input={<AnimatedStyledInputBase id='vendor' label='Vendor' />}
           label='Vendor'
           MenuProps={{
             anchorOrigin: {
               vertical: 'bottom',
               horizontal: 'bottom'
             },
-            transformOrigin: {
-              vertical: "top",
-              horizontal: "left"
-            }
+            getAnchorEl: null,
+            // transformOrigin: {
+            //   vertical: "top",
+            //   horizontal: "left"
+            // }
           }}
           onChange={(event) => {
             console.log('truck.vendor', { value: event.target.value});
@@ -197,10 +200,9 @@ export default function Form({
           id='category-name-multiple-select'
           value={foods || 'All'}
           // value={[]}
-          input={<StyledInputBase id='category' label='Category' />}
+          input={<AnimatedStyledInputBase id='category' label='Category' />}
           placeholder='Select a Category'
           onChange={(event) => {
-            console.log('truck.category', { value: event.target.value});
             setFoods(event.target.value);
           }}
         >

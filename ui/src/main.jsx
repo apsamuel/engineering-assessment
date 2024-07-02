@@ -9,6 +9,7 @@ import App from './App.jsx'
 // TODO: document SiteConfiguration.js
 import { navigationLinks } from './components/config/SiteConfiguration.js'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import AnimatedRoute from './components/components/AnimatedRoute.jsx'
 
 const browserRouter = createBrowserRouter([
   {
@@ -17,7 +18,8 @@ const browserRouter = createBrowserRouter([
     children: navigationLinks.map((link) => {
       return {
         path: link.path,
-        element: link.element,
+        // element: link.element,
+        element: React.createElement(AnimatedRoute, {}, link.element),
         children: link.children
       }
     })

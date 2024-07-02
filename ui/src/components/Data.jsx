@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import { useLocation } from 'react-router-dom';
 // import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
@@ -22,6 +24,7 @@ import {
 } from '@mui/material/styles';
 
 import { StyledDataGrid } from './components/ThemedComponents.jsx';
+import { categoryToEmoji } from './config/Tools.js';
 
 
 Data.propTypes = {
@@ -34,7 +37,6 @@ Data.propTypes = {
   foods: PropTypes.arrayOf(PropTypes.string)
 };
 export default function Data({
-  // id = 'DataGridController',
   trucks = [],
   location = [],
   vendor = null,
@@ -44,6 +46,7 @@ export default function Data({
     console.log('setFilterTrucks not implemented');
   }
 }) {
+  const browserLocation = useLocation();
   // eslint-disable-next-line no-unused-vars
   const theme = useTheme();
   let [filteredTrucks, setFilteredTrucks] = useState(trucks);
@@ -69,22 +72,75 @@ export default function Data({
         .map((item) => item.replace(
           'asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'
         ))
+        .map((item) => item.replace('vegetable and meat sandwiches filled with asian-flavored meats and vegetables', 'Sandwiches'))
         .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
         .map((item) => item.replace('pre-packaged swiches', 'Sandwiches'))
         .map((item) => item.replace('peruvian food served hot', 'Peruvian Cuisine'))
         .map((item) => {
           return item === 'tacos burritos quesadillas tortas pupusas flautas tamales' ?  ['tacos', 'burritos', 'quesadillas', 'tortas', 'pupusas', 'flautas', 'tamales'] : item;
         })
+        .filter(Boolean)
+        // upper case first letter of each word
+        .map((item) =>
+          item.split ? item.split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ') : item
+        )
+        // .map((item) => item.replace(/[^\s+|\s+$]/g, ''))
         .flat()
     }
     return [];
   }
 
   const columns = [
-    // TODO: render Tooltip for applicant containing fooditems
-    { field: 'applicant', headerName: 'Truck Name', flex: 0.5, minWidth: 250 },
-    { field: 'facilitytype', headerName: 'Truck Type', flex: 0.2},
-    { field: 'address', headerName: 'Truck Address', flex: 0.333 },
+    { field: 'applicant', headerName: 'Truck Name', flex: 0.5, minWidth: 250,
+      renderCell: (params) => {
+        const fooditems = parseFoodItems(params.row.fooditems);
+        return (
+          <Tooltip
+            arrow
+            title={
+              Array.from(
+                new Set(
+                  fooditems.map(
+                    (category) => `${categoryToEmoji(category)}`
+                  )
+                )
+              )
+              .join(' | ')
+            }
+            placement='top-start'
+          >
+            <span>{params.value}</span>
+          </Tooltip>
+        );
+      }
+    },
+    { field: 'facilitytype', headerName: 'Truck Type', flex: 0.2,
+      renderCell: (params) => {
+        return (
+          <span>
+            {params.row.facilitytype}
+          </span>
+        )
+      }
+    },
+    {
+      field: 'address', headerName: 'Truck Address', flex: 0.333,
+      renderCell: (params) => {
+        // get latitude and longitude
+        const lat = params.row.latitude;
+        const lon = params.row.longitude;
+
+        return (
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${lat},${lon}`}
+            target='_blank'
+            rel='noreferrer'
+          >{params.row.address}</a>
+        )
+      }
+    },
     {
       field: 'distance',
       headerName: 'Truck Distance',
@@ -98,7 +154,7 @@ export default function Data({
     {
       field: 'fooditems',
       headerName: 'Food Categories',
-      flex: 0.333,
+      flex: 0.55,
       renderCell: (params) => {
         return (
           <Stack
@@ -108,7 +164,7 @@ export default function Data({
               alignItems: 'center'
             }}
             direction={'row'}
-            // spacing={1}
+            spacing={1}
           >
             {
               parseFoodItems(params.value)
@@ -125,7 +181,8 @@ export default function Data({
                   }}
                   size='small'
                   // key={category}
-                  label={category}
+                  // label={category}
+                  label={`${categoryToEmoji(category)} ${category}`}
                 />
               ))}
           </Stack>
@@ -137,8 +194,7 @@ export default function Data({
   useEffect(() => {
     let filtered = trucks;
     if (vendor) {
-      console.log('vendor', vendor)
-      filtered = vendor === 'All' ? trucks : filtered.filter((truck) => truck.applicant === vendor);
+      filtered = vendor === 'All' ? filtered : filtered.filter((truck) => truck.applicant.toLowerCase() === vendor.toLowerCase());
     }
     if (distance) {
       filtered = filtered.filter(
@@ -148,8 +204,7 @@ export default function Data({
       );
     }
     if (foods) {
-      console.log('foods', foods)
-      filtered = foods === 'All' ? trucks : filtered.filter((truck) => truck.fooditems.includes(foods));
+      filtered = foods === 'All' ? filtered : filtered.filter((truck) => truck.fooditems.toLowerCase().includes(foods.toLowerCase()));
     }
     setFilteredTrucks(filtered);
     setFilterTrucks(filtered);
@@ -158,8 +213,9 @@ export default function Data({
     <Stack
       id={'DataGridController'}
       sx={{
-        minWidth: '50%',
+        minWidth: '40%',
         maxWidth: '80%',
+        width:  '100%',
       }}
       style={{
       }}
@@ -176,7 +232,9 @@ export default function Data({
           }
         }}
         apiRef={apiRef}
-        density={'compact'}
+        density={
+          browserLocation.pathname === '/' ? 'comfortable' : 'compact'
+        }
         disableSelectionOnClick
         checkboxSelection
         disableRowSelectionOnClick

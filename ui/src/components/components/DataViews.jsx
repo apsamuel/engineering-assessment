@@ -27,6 +27,7 @@ DataViews.propTypes = {
   location: PropTypes.arrayOf(PropTypes.number)
 };
 export default function DataViews({
+  // eslint-disable-next-line no-unused-vars
   allTrucks = [],
   trucks = [],
   vendor,
@@ -34,8 +35,6 @@ export default function DataViews({
   distance,
   location
 }) {
-  console.log('all.length', allTrucks.length);
-  console.log('filtered.length', trucks.length);
   const getUniqueVendors = (data) => {
     return Array.from(new Set(data.map((truck) => truck.applicant)));
   };
@@ -225,6 +224,7 @@ export default function DataViews({
 
   useEffect(() => {
     // eslint-disable-next-line no-unused-vars
+    // TODO: the data structure needs to be reworked
     const getSunburstData = (data) => {
       const sunburstData = [];
       const vendors = getUniqueVendors(data);
@@ -248,6 +248,7 @@ export default function DataViews({
         : sunburstData;
     };
 
+    // TODO: investigate how to improve usability of the pie, popups, backlinks
     const getPieData = (data) => {
       const pieData = [];
       const categories = getAllCategories(data);
@@ -262,6 +263,7 @@ export default function DataViews({
       return pieData.sort((a, b) => b.value - a.value).slice(0, 10);
     };
 
+    // TODO: presentation needs to be reworked
     const getTreeMapData = (data) => {
       const treeMapData = [];
       const vendors = getUniqueVendors(data);
@@ -326,35 +328,28 @@ export default function DataViews({
     };
 
     if (option === 'pie') {
-      // setChartData(sortedFrequencies)
       setChartData(getPieData(trucks));
     }
     if (option === 'gauge') {
-      // setChartData(sortedFrequencies)
-      // setChartData(gaugeData)
       setChartData(getGaugeData(trucks));
     }
     if (option === 'treemap') {
-      // console.log('treemap data', treeMapData)
-      // setChartData(treeMapData)
       setChartData(getTreeMapData(trucks));
     }
     if (option === 'sunburst') {
-      // setChartData(getTreeMapData(trucks))
       setChartData(getSunburstData(trucks));
     }
   }, [
-    // sortedFrequencies,
-    // treeMapData,
-    // gaugeData,
     trucks,
-    // getGaugeData,
     option,
     location
   ]);
 
   return (
-    <Stack>
+    <Stack
+      id={'DataViews'}
+      className='DataComponent'
+    >
       <Stack direction={'row'} spacing={5}>
         <FormControl
           sx={{
@@ -377,7 +372,13 @@ export default function DataViews({
             ))}
           </Select>
         </FormControl>
-        <Stack direction='row' spacing={2}>
+        <Stack
+          direction='row'
+          spacing={2}
+          sx={{
+            color: (theme) => theme.palette.primary.contrastText
+          }}
+        >
           <Box>
             <Typography
               variant='overline'

@@ -1,11 +1,13 @@
 import './Reviews.scss';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import {AnimatedStyledTypography } from './components/ThemedComponents.jsx';
 
 export default function Reviews() {
   return (
     <Stack
+      id={'Reviews'}
+      className={'ReviewsComponent'}
       sx={{
         flexGrow: 1,
         alignItems: 'center',
@@ -17,7 +19,7 @@ export default function Reviews() {
       }}
     >
       <Box>
-        <Typography
+        <AnimatedStyledTypography
           variant='h6'
           component='div'
           sx={{
@@ -29,7 +31,7 @@ export default function Reviews() {
         >
           {' '}
           Truck Reviews. Coming Soon!{' '}
-        </Typography>
+        </AnimatedStyledTypography>
       </Box>
     </Stack>
   );

@@ -15,9 +15,35 @@ import { Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
+import { motion } from 'framer-motion';
+// import { gridRowMaximumTreeDepthSelector } from '@mui/x-data-grid';
 
 const darkTheme = responsiveFontSizes(
   createTheme({
+    components: {
+      DataGrid: {
+        styleOverrides: {
+          root: {
+            // backgroundColor: '#F00909'
+          }
+        }
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            // backgroundColor: '#A92323'
+          }
+
+        }
+      }
+    },
+    menu: {
+      '& .MuiPaper-root': {
+        // backgroundColor: '#000000'
+        // backgroundColor: '#D31919'
+      }
+
+    },
     mixins: {
       MuiDataGrid: {}
     },
@@ -73,22 +99,27 @@ const lightTheme = responsiveFontSizes(
   })
 );
 
+// const AnimatedForm = motion(Form);
+const AnimatedStack = motion(Stack);
+
 function App() {
+  // test env var availability
+  console.log(import.meta.env)
   const history = useNavigate();
   const appLocation = useLocation();
-  // const [ appHistory, setAppHistory ] = useState(history);
 
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { loading, error, longitude, latitude } = useGeolocation();
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
   const [filterTrucks, setFilterTrucks] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [windowSize, setWindowSize] = useState([0, 0]);
   const [browserLocation, setBrowserLocation] = useState([]);
   // we're in NYC, and we want to see all the trucks...
   const [distance, setDistance] = useState(10000);
-  const [vendor, setVendor] = useState(null);
-  const [foods, setFoods] = useState(null);
+  const [vendor, setVendor] = useState('All');
+  const [foods, setFoods] = useState('All');
 
   if (loading) {
     console.log('user.location', { loading });
@@ -97,12 +128,11 @@ function App() {
     console.log('user.location', { error });
   }
 
-  console.log('browser.location', appLocation);
 
   const rootRef = createRef();
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/trucks')
+    fetch(`${import.meta.env.VITE_API_HOST}/api/trucks`)
       .then((res) => res.json())
       .then((data) => {
         data = data
@@ -136,14 +166,23 @@ function App() {
     }
 
     if (windowWidth && windowHeight) {
-      console.log('window.dimensions', windowSize);
       setWindowSize([windowWidth, windowHeight]);
     }
-  }, [latitude, longitude, theme]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // windowHeight,
+    // windowWidth,
+    // windowSize,
+    latitude,
+    longitude,
+    theme
+  ]);
 
   return (
     <ThemeProvider theme={theme} id='ThemeProvider'>
-      {/* controls high level application characteristics */}
+      {/*
+        contains the application's root element
+      */}
       <Stack
         ref={rootRef}
         id='AppContainer'
@@ -152,13 +191,16 @@ function App() {
           display: 'flex',
           minWidth: '100%',
           minHeight: '100%',
-          transition: (theme) =>
-            theme.transitions.create(['width', 'height'], {
-              easing: theme.transitions.easing.easeIn,
-              duration: theme.transitions.duration.enteringScreen
-            })
+          // transition: (theme) =>
+          //   theme.transitions.create(['width', 'height'], {
+          //     easing: theme.transitions.easing.easeIn,
+          //     duration: theme.transitions.duration.enteringScreen
+          //   })
         }}
       >
+        {/*
+          controls high-level characteristics of the application
+         */}
         <Stack
           useFlexGap
           id='AppController'
@@ -173,8 +215,10 @@ function App() {
 
           }}
         >
+          {/*
+            navigation controls are rendered here!
+          */}
           <Navigation
-            id='Navigation'
             setTheme={setTheme}
             theme={theme}
             lightTheme={lightTheme}
@@ -184,11 +228,17 @@ function App() {
           {/*
             app content is rendered here!
           */}
-          <Stack
+          <AnimatedStack
+            animate={{
+              opacity: 1
+            }}
+            transition={{
+              duration: 0.5
+            }}
             id='AppContentContainer'
             sx={{
               /*
-                contentStart = navigationHeight(px) + themePadding(px)
+                contentStart = navigationHeight(px) + themePadding(px)*2
               */
               position: 'relative',
               backgroundColor: 'primary.main',
@@ -200,7 +250,6 @@ function App() {
                   2
                 )})`,
               padding: (theme) => theme.spacing(2),
-              // paddingRight: '1',
               display: {
                 xs: 'flex',
                 sm: 'flex',
@@ -215,7 +264,6 @@ function App() {
               minWidth: '90%'
             }}
             direction='column'
-            // margin={2}
             spacing={{
               xs: 1,
               sm: 2,
@@ -234,7 +282,8 @@ function App() {
               sx={{
                 display: 'flex',
                 flexGrow: 1,
-                width: '100%'
+                width: '100%',
+                // minHeight: '50%'
               }}
             >
               {/* controls high-level characteristics of routed child components */}
@@ -247,9 +296,10 @@ function App() {
                   maxWith: '100%'
                 }}
               >
+
                 <Outlet
                   style={{
-                    flexGrowth: 1,
+                    flexGrow: 1,
                     justifyContent: 'center'
                   }}
                   context={{
@@ -297,7 +347,7 @@ function App() {
               distance={distance}
               foods={foods}
             />
-          </Stack>
+          </AnimatedStack>
         </Stack>
       </Stack>
     </ThemeProvider>

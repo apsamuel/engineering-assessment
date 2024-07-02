@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import Icon from '@mui/material/Icon';
 import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
@@ -88,19 +89,27 @@ export default function Navigation({
   const ref = createRef();
 
   useLayoutEffect(() => {
-    const { clientHeight, clientWidth, offsetHeight, offsetWidth } =
+    const {
+      // eslint-disable-next-line no-unused-vars
+      clientHeight,
+      // eslint-disable-next-line no-unused-vars
+      clientWidth,
+      // eslint-disable-next-line no-unused-vars
+      offsetHeight,
+      // eslint-disable-next-line no-unused-vars
+      offsetWidth } =
       ref.current;
 
-    console.log('navi.dimensions', {
-      offsetHeight,
-      offsetWidth,
-      clientHeight,
-      clientWidth
-    });
   });
 
   return (
-    <AppBar position='absolute' sx={{ top: 0 }} ref={ref}>
+    <AppBar
+      id={'AppBar'}
+      className={'AppBarComponent'}
+      position='absolute'
+      sx={{ top: 0 }}
+      ref={ref}
+    >
       <Container
         id={'NavigationController'}
         maxWidth='xl'
@@ -181,26 +190,44 @@ export default function Navigation({
             sx={{ alignContent: 'center', justifyContent: 'center' }}
           >
             {/* page links */}
-            {navigationLinks.map((page) => (
-              <Box key={`box-${page.name}`}>
-                <StyledNavLink
-                  key={page.name}
-                  to={page.to}
-                  sx={{
-                    color: 'primary.contrastText'
-                  }}
-                  // eslint-disable-next-line no-unused-vars
-                  style={({ isActive, isPending, isTransitioning }) => {
-                    return {
-                      fontWeight: isActive ? 'bold' : 'normal',
-                      viewTransitionName: isTransitioning ? 'fade' : 'none'
-                    };
-                  }}
-                >
-                  {page.name}
-                </StyledNavLink>
-              </Box>
-            ))}
+            <Stack  direction={'row'} spacing={5}>
+              {navigationLinks.map((page) => (
+                  <StyledNavLink
+                    key={page.name}
+                    to={page.to}
+                    sx={{
+                      color: 'primary.contrastText'
+                    }}
+                    // eslint-disable-next-line no-unused-vars
+                    style={({ isActive, isPending, isTransitioning }) => {
+                      return {
+                        fontWeight: isActive ? 'bold' : 'normal',
+                        viewTransitionName: isTransitioning ? 'fade' : 'none'
+                      };
+                    }}
+                  >
+                    <Tooltip
+                      title={page.description}
+                      placement='top'
+                      arrow
+                    >
+                    <Stack direction={'row'} spacing={1}>
+                    <Box>{page.icon}</Box>
+                    <Box>
+                    <Typography
+                      key={`typography-${page.name}`}
+                    >{page.name}</Typography>
+                    </Box>
+                    </Stack>
+                    </Tooltip>
+
+
+
+
+                  </StyledNavLink>
+                // </Stack>
+              ))}
+            </Stack>
 
             {/* toggle theme controls */}
             <FormGroup

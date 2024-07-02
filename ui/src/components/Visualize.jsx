@@ -23,6 +23,8 @@ export default function Visualize() {
 
   return (
     <Stack
+      id={'Visualize'}
+      className={'VisualizeComponent'}
       sx={{
         display: {
           xs: 'none',

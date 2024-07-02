@@ -1,7 +1,6 @@
 import './ThemedComponents.scss';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-// import Stack from '@mui/material/Stack';
 import { NavLink } from 'react-router-dom';
 import ReactECharts from 'echarts-for-react';
 import {
@@ -14,6 +13,18 @@ import FormHelperText from '@mui/material/FormHelperText';
 import InputBase from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
 import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
+
+
+
+const StyledTypography = styled(Typography)(( { theme}) => ({
+  display: 'flex',
+  color: theme.palette.primary.contrastText
+}));
+
+const AnimatedStyledTypography = motion(StyledTypography);
+
 
 const StyledThemeToggleSwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -60,16 +71,23 @@ const StyledThemeToggleSwitch = styled(Switch)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
     borderRadius: 20 / 2
   }
-}));
+}))
+
+const AnimatedStyledThemeToggleSwitch = motion(StyledThemeToggleSwitch);
 
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   color: theme.palette.primary.contrastText
 }));
 
+const AnimatedStyledNavLink = motion(StyledNavLink);
+
 // eslint-disable-next-line no-unused-vars
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
   height: 250
 }));
+
+const AnimatedStyledReactECharts = motion(StyledReactECharts);
+
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   display: {
@@ -90,6 +108,8 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     letterSpacing: 'normal'
   }
 }));
+
+const AnimatedStyledDataGrid = motion(StyledDataGrid);
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -123,6 +143,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
   }
 }));
+
+const AnimatedStyledInputBase = motion(StyledInputBase);
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
   color: theme.palette.secondary.main,
@@ -163,6 +185,8 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
   }
 }));
 
+const AnimatedStyledSlider = motion(StyledSlider);
+
 // eslint-disable-next-line no-unused-vars
 const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
   fontSize: {
@@ -173,6 +197,8 @@ const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
     xl: 15
   },
 }))
+
+const AnimatedStyledInputLabel = motion(StyledInputLabel);
 
 // eslint-disable-next-line no-unused-vars
 const StyledHelperText = styled(FormHelperText)(({ theme }) => ({
@@ -185,13 +211,25 @@ const StyledHelperText = styled(FormHelperText)(({ theme }) => ({
   }
 }))
 
+const AnimatedStyledHelperText = motion(StyledHelperText);
+
 export {
   StyledThemeToggleSwitch,
+  AnimatedStyledThemeToggleSwitch,
   StyledNavLink,
+  AnimatedStyledNavLink,
   StyledReactECharts,
+  AnimatedStyledReactECharts,
   StyledDataGrid,
+  AnimatedStyledDataGrid,
   StyledInputBase,
+  AnimatedStyledInputBase,
   StyledInputLabel,
+  AnimatedStyledInputLabel,
   StyledHelperText,
-  StyledSlider
+  AnimatedStyledHelperText,
+  StyledSlider,
+  AnimatedStyledSlider,
+  StyledTypography,
+  AnimatedStyledTypography
 };
