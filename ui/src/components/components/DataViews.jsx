@@ -24,7 +24,7 @@ const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
 DataViews.propTypes = {
   allTrucks: PropTypes.arrayOf(PropTypes.object),
   trucks: PropTypes.arrayOf(PropTypes.object),
-  vendor: PropTypes.string,
+  foodVendors: PropTypes.string,
   foodCategories: PropTypes.string,
   distance: PropTypes.number,
   location: PropTypes.arrayOf(PropTypes.number)
@@ -33,7 +33,7 @@ export default function DataViews({
   // eslint-disable-next-line no-unused-vars
   allTrucks = [],
   trucks = [],
-  vendor,
+  foodVendors,
   foodCategories,
   distance,
   location
@@ -251,12 +251,12 @@ export default function DataViews({
     const getSunburstData = (data) => {
       const sunburstData = [];
       const vendors = getUniqueVendors(data);
-      for (const vendor of vendors) {
+      for (const foodVendors of vendors) {
         sunburstData.push({
-          name: vendor,
-          value: data.filter((truck) => truck.applicant === vendor).length,
+          name: foodVendors,
+          value: data.filter((truck) => truck.applicant === foodVendors).length,
           children: data
-            .filter((truck) => truck.applicant === vendor)
+            .filter((truck) => truck.applicant === foodVendors)
             .map((truck) => {
               return {
                 // name: prettifyCategories(truck.fooditems),
@@ -294,12 +294,12 @@ export default function DataViews({
     const getTreeMapData = (data) => {
       const treeMapData = [];
       const vendors = getUniqueVendors(data);
-      for (const vendor of vendors) {
+      for (const foodVendors of vendors) {
         treeMapData.push({
-          name: vendor,
-          value: data.filter((truck) => truck.applicant === vendor).length,
+          name: foodVendors,
+          value: data.filter((truck) => truck.applicant === foodVendors).length,
           children: data
-            .filter((truck) => truck.applicant === vendor)
+            .filter((truck) => truck.applicant === foodVendors)
             .map((truck) => {
               return {
                 name: truck.address,
@@ -414,7 +414,7 @@ export default function DataViews({
           <Box>
             <Typography
               variant='overline'
-            >{' '}{(vendor === 'All' || !vendor) ? ' All Vendors' : vendor}{' '}</Typography>
+            >{' '}{(foodVendors === 'All' || !foodVendors) ? ' All Vendors' : foodVendors}{' '}</Typography>
           </Box>
           <Box>
             <Typography

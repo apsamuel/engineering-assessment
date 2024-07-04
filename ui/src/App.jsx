@@ -148,12 +148,10 @@ function App() {
   const [browserLocation, setBrowserLocation] = useState([]);
   // we're in NYC, and we want to see all the trucks...
   const [distance, setDistance] = useState(10000);
-  const [vendor, setVendor] = useState('All');
+  // TODO: support mult-select
+  // TODO: maybe switch to an auto-complete text field
+  const [foodVendors, setFoodVendors] = useState('All');
   const [foodCategories, setFoodCategories] = useState('All');
-
-  // prepare for cutover
-  // const [foodCategories, setFoodCategories] = useState(['All'])
-  // const [vendors, setVendors] = useState(['All']);
 
   if (loading) {
     console.log('geo.location', { loading });
@@ -362,7 +360,7 @@ function App() {
                     trucks: trucks,
                     filterTrucks: filterTrucks,
                     location: browserLocation,
-                    vendor: vendor,
+                    foodVendors: foodVendors,
                     distance: distance,
                     foodCategories: foodCategories
                   }}
@@ -385,8 +383,8 @@ function App() {
                   trucks={trucks}
                   setDistance={setDistance}
                   distance={distance}
-                  setVendor={setVendor}
-                  vendor={vendor}
+                  setFoodVendors={setFoodVendors}
+                  foodVendors={foodVendors}
                   setFoodCategories={setFoodCategories}
                   foodCategories={foodCategories}
                 />
@@ -399,7 +397,7 @@ function App() {
               setFilterTrucks={setFilterTrucks}
               trucks={trucks}
               location={browserLocation}
-              vendor={vendor}
+              foodVendors={foodVendors}
               distance={distance}
               foodCategories={foodCategories}
             />

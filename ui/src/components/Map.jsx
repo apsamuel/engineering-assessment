@@ -36,7 +36,7 @@ export default function Trucks() {
     // eslint-disable-next-line no-unused-vars
     location,
     // eslint-disable-next-line no-unused-vars
-    vendor,
+    foodVendors,
     // eslint-disable-next-line no-unused-vars
     distance,
     // eslint-disable-next-line no-unused-vars

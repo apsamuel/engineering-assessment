@@ -20,9 +20,9 @@ Form.propTypes = {
   trucks: PropTypes.arrayOf(PropTypes.string).isRequired,
   setTrucks: PropTypes.func,
   setDistance: PropTypes.func,
-  setVendor: PropTypes.func,
+  setFoodVendors: PropTypes.func,
   setFoodCategories: PropTypes.func,
-  vendor: PropTypes.string,
+  foodVendors: PropTypes.string,
   distance: PropTypes.number,
   foodCategories: PropTypes.arrayOf(PropTypes.string)
 };
@@ -36,10 +36,10 @@ export default function Form({
     });
   },
   // eslint-disable-next-line no-unused-vars
-  vendor = null,
-  setVendor = () => {
-    console.log('set.vendor', {
-      error: 'setVendor not implemented'
+  foodVendors = null,
+  setFoodVendors = () => {
+    console.log('set.foodVendors', {
+      error: 'setFoodVendors not implemented'
     });
   },
   // eslint-disable-next-line no-unused-vars
@@ -121,8 +121,8 @@ export default function Form({
           <StyledSlider
             ref={distanceInputRef}
             label='Distance'
-            // labelId='vendor-distance-slider-label'
-            aria-label='vendor-distance-slider'
+            // labelId='foodVendors-distance-slider-label'
+            aria-label='foodVendors-distance-slider'
             defaultValue={distance}
             getAriaValueText={(value) => `${value} km`}
             valueLabelDisplay='always'
@@ -147,7 +147,7 @@ export default function Form({
           />
           <StyledHelperText>Distance</StyledHelperText>
         </Stack>
-        {/*  vendor controls */}
+        {/*  foodVendors controls */}
         <FormControl
           // variant='filled'
           sx={{
@@ -155,16 +155,16 @@ export default function Form({
             minWidth: '33%'
           }}
         >
-          <StyledInputLabel id='vendor-name-multiple-select-label'>
+          <StyledInputLabel id='foodVendors-name-multiple-select-label'>
             <Typography>Vendor</Typography>
           </StyledInputLabel>
           <Select
             ref={vendorInputRef}
             autoWidth
             size={'small'}
-            labelId='vendor-name-multiple-select-label'
-            id='vendor-name-multiple-select'
-            value={vendor || 'All'}
+            labelId='foodVendors-name-multiple-select-label'
+            id='foodVendors-name-multiple-select'
+            value={foodVendors || 'All'}
             label='Vendor'
             // open=
             MenuProps={{
@@ -178,13 +178,13 @@ export default function Form({
               }
             }}
             onChange={(event) => {
-              console.log('truck.vendor', { value: event.target.value });
-              setVendor(event.target.value);
+              console.log('truck.foodVendors', { value: event.target.value });
+              setFoodVendors(event.target.value);
             }}
           >
-            {['All', ...vendors].map((vendor) => (
-              <MenuItem key={vendor} value={vendor}>
-                {vendor}
+            {['All', ...vendors].map((foodVendors) => (
+              <MenuItem key={foodVendors} value={foodVendors}>
+                {foodVendors}
               </MenuItem>
             ))}
           </Select>

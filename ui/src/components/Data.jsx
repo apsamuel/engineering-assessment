@@ -32,14 +32,14 @@ Data.propTypes = {
   setFilterTrucks: PropTypes.func,
   trucks: PropTypes.arrayOf(PropTypes.object).isRequired,
   location: PropTypes.arrayOf(PropTypes.number),
-  vendor: PropTypes.string,
+  foodVendors: PropTypes.string,
   distance: PropTypes.number,
   foodCategories: PropTypes.arrayOf(PropTypes.string)
 };
 export default function Data({
   trucks = [],
   location = [],
-  vendor = null,
+  foodVendors = null,
   distance = 10000,
   foodCategories = [],
   setFilterTrucks = () => {
@@ -202,8 +202,8 @@ export default function Data({
 
   useEffect(() => {
     let filtered = trucks;
-    if (vendor) {
-      filtered = vendor === 'All' ? filtered : filtered.filter((truck) => truck.applicant.toLowerCase() === vendor.toLowerCase());
+    if (foodVendors) {
+      filtered = foodVendors === 'All' ? filtered : filtered.filter((truck) => truck.applicant.toLowerCase() === foodVendors.toLowerCase());
     }
     if (distance) {
       filtered = filtered.filter(
@@ -217,7 +217,7 @@ export default function Data({
     }
     setFilteredTrucks(filtered);
     setFilterTrucks(filtered);
-  }, [vendor, distance, foodCategories, location, trucks, apiRef, setFilterTrucks]);
+  }, [foodVendors, distance, foodCategories, location, trucks, apiRef, setFilterTrucks]);
   return (
     <Stack
       id={'DataGridController'}
