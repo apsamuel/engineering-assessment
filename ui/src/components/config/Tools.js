@@ -207,16 +207,16 @@ const categoryToEmoji = (category) => {
 
 }
 
-const vendorToEnrichment = (vendor) => {
+const vendorToEnrichment = (foodVendors) => {
   let results = {
     siteLink: null,
     menuLink: null,
     imageLink: null
   }
-  vendor = vendor.toLowerCase().replace(new RegExp('[\'.,:]', 'g'), '')
+  foodVendors = foodVendors.toLowerCase().replace(new RegExp('[\'.,:]', 'g'), '')
   for (const entry of Object.entries(vendors)) {
     let [key, value ] = entry
-    if (vendor.includes(key)) {
+    if (foodVendors.includes(key)) {
       results = value
       break;
     }
