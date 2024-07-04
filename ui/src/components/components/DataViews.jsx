@@ -25,7 +25,7 @@ DataViews.propTypes = {
   allTrucks: PropTypes.arrayOf(PropTypes.object),
   trucks: PropTypes.arrayOf(PropTypes.object),
   vendor: PropTypes.string,
-  foods: PropTypes.string,
+  foodCategories: PropTypes.string,
   distance: PropTypes.number,
   location: PropTypes.arrayOf(PropTypes.number)
 };
@@ -34,7 +34,7 @@ export default function DataViews({
   allTrucks = [],
   trucks = [],
   vendor,
-  foods,
+  foodCategories,
   distance,
   location
 }) {
@@ -419,7 +419,7 @@ export default function DataViews({
           <Box>
             <Typography
               variant='overline'
-            >{' '}{(foods === 'All' || !foods) ? ' All Categories' : ` ${foods}`}{' '}</Typography>
+            >{' '}{(foodCategories === 'All' || !foodCategories) ? ' All Categories' : ` ${foodCategories}`}{' '}</Typography>
           </Box>
           <Box>
             <Typography

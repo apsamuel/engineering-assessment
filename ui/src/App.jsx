@@ -149,7 +149,7 @@ function App() {
   // we're in NYC, and we want to see all the trucks...
   const [distance, setDistance] = useState(10000);
   const [vendor, setVendor] = useState('All');
-  const [foods, setFoods] = useState('All');
+  const [foodCategories, setFoodCategories] = useState('All');
 
   // prepare for cutover
   // const [foodCategories, setFoodCategories] = useState(['All'])
@@ -364,7 +364,7 @@ function App() {
                     location: browserLocation,
                     vendor: vendor,
                     distance: distance,
-                    foods: foods
+                    foodCategories: foodCategories
                   }}
                 />
               </Box>
@@ -387,8 +387,8 @@ function App() {
                   distance={distance}
                   setVendor={setVendor}
                   vendor={vendor}
-                  setFoods={setFoods}
-                  foods={foods}
+                  setFoodCategories={setFoodCategories}
+                  foodCategories={foodCategories}
                 />
               </Box>
             </Stack>
@@ -401,7 +401,7 @@ function App() {
               location={browserLocation}
               vendor={vendor}
               distance={distance}
-              foods={foods}
+              foodCategories={foodCategories}
             />
           </AnimatedStack>
         </Stack>

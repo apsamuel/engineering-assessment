@@ -21,10 +21,10 @@ Form.propTypes = {
   setTrucks: PropTypes.func,
   setDistance: PropTypes.func,
   setVendor: PropTypes.func,
-  setFoods: PropTypes.func,
+  setFoodCategories: PropTypes.func,
   vendor: PropTypes.string,
   distance: PropTypes.number,
-  foods: PropTypes.arrayOf(PropTypes.string)
+  foodCategories: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default function Form({
@@ -51,9 +51,9 @@ export default function Form({
     // console.log('setDistance not implemented');
   },
   // eslint-disable-next-line no-unused-vars
-  foods = null,
-  setFoods = () => {
-    console.log('setFoods not implemented');
+  foodCategories = null,
+  setFoodCategories = () => {
+    console.log('setFoodCategories not implemented');
   }
 }) {
   const vendorInputRef = createRef();
@@ -213,10 +213,10 @@ export default function Form({
             labelId='category-name-multiple-select-label'
             label='Category'
             id='category-name-multiple-select'
-            value={foods || 'All'}
+            value={foodCategories || 'All'}
             // placeholder='Food Category'
             onChange={(event) => {
-              setFoods(event.target.value);
+              setFoodCategories(event.target.value);
             }}
           >
             {['All', ...foodItems].filter(Boolean).map((category) => (

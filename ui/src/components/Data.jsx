@@ -34,14 +34,14 @@ Data.propTypes = {
   location: PropTypes.arrayOf(PropTypes.number),
   vendor: PropTypes.string,
   distance: PropTypes.number,
-  foods: PropTypes.arrayOf(PropTypes.string)
+  foodCategories: PropTypes.arrayOf(PropTypes.string)
 };
 export default function Data({
   trucks = [],
   location = [],
   vendor = null,
   distance = 10000,
-  foods = [],
+  foodCategories = [],
   setFilterTrucks = () => {
     console.log('setFilterTrucks not implemented');
   }
@@ -212,12 +212,12 @@ export default function Data({
           distance
       );
     }
-    if (foods) {
-      filtered = foods === 'All' ? filtered : filtered.filter((truck) => truck.fooditems.toLowerCase().includes(foods.toLowerCase()));
+    if (foodCategories) {
+      filtered = foodCategories === 'All' ? filtered : filtered.filter((truck) => truck.fooditems.toLowerCase().includes(foodCategories.toLowerCase()));
     }
     setFilteredTrucks(filtered);
     setFilterTrucks(filtered);
-  }, [vendor, distance, foods, location, trucks, apiRef, setFilterTrucks]);
+  }, [vendor, distance, foodCategories, location, trucks, apiRef, setFilterTrucks]);
   return (
     <Stack
       id={'DataGridController'}

@@ -17,7 +17,7 @@ export default function Visualize() {
     // eslint-disable-next-line no-unused-vars
     distance,
     // eslint-disable-next-line no-unused-vars
-    foods
+    foodCategories
   } = useOutletContext();
 
   const mediaQuery = useMediaQuery(
@@ -41,7 +41,7 @@ export default function Visualize() {
           allTrucks={trucks}
           trucks={filterTrucks}
           vendor={vendor}
-          foods={foods}
+          foodCategories={foodCategories}
           distance={distance}
           location={location}
         />

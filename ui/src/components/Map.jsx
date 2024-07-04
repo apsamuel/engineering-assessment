@@ -40,7 +40,7 @@ export default function Trucks() {
     // eslint-disable-next-line no-unused-vars
     distance,
     // eslint-disable-next-line no-unused-vars
-    foods
+    foodCategories
   } = useOutletContext();
 
   const createCoordinateMarkers = (trucks, limit = 100) => {
