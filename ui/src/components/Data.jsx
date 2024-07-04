@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
-// import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+// eslint-disable-next-line no-unused-vars
+import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
@@ -49,9 +49,10 @@ export default function Data({
   const browserLocation = useLocation();
   // eslint-disable-next-line no-unused-vars
   const theme = useTheme();
+  let [rowSelectionModel, setRowSelectionModel] = useState([]);
   let [filteredTrucks, setFilteredTrucks] = useState(trucks);
   const [paginationModel, setPaginationModel] = useState({
-    pageSize: 25,
+    pageSize: 10,
     page: 0
   });
   const apiRef = useGridApiRef();
@@ -93,7 +94,7 @@ export default function Data({
   }
 
   const columns = [
-    { field: 'applicant', headerName: 'Truck Name', flex: 0.5, minWidth: 250,
+    { field: 'applicant', headerName: 'Vendor', flex: 0.5, minWidth: 250,
       renderCell: (params) => {
         const fooditems = parseFoodItems(params.row.fooditems);
         return (
@@ -116,7 +117,7 @@ export default function Data({
         );
       }
     },
-    { field: 'facilitytype', headerName: 'Truck Type', flex: 0.2,
+    { field: 'facilitytype', headerName: 'Type', flex: 0.2,
       renderCell: (params) => {
         return (
           <span>
@@ -126,7 +127,7 @@ export default function Data({
       }
     },
     {
-      field: 'address', headerName: 'Truck Address', flex: 0.333,
+      field: 'address', headerName: 'Address', flex: 0.333,
       renderCell: (params) => {
         // get latitude and longitude
         const lat = params.row.latitude;
@@ -143,7 +144,7 @@ export default function Data({
     },
     {
       field: 'distance',
-      headerName: 'Truck Distance',
+      headerName: 'Distance',
       flex: 0.3333,
       valueGetter: (value, row) =>
         `${
@@ -153,7 +154,7 @@ export default function Data({
     // TODO: use icons or emoji mappings for food items
     {
       field: 'fooditems',
-      headerName: 'Food Categories',
+      headerName: 'Categories',
       flex: 0.55,
       renderCell: (params) => {
         return (
@@ -168,10 +169,15 @@ export default function Data({
           >
             {
               parseFoodItems(params.value)
-              .slice(0, 3)
+              // .slice(0, 3)
               .map((category, index) => (
+                <Tooltip
+                  arrow
+                  title={category}
+                  key={`${params.row.objectid}-${index}-${category}-tip`}
+                >
                 <Chip
-                  key={index}
+                  key={`${params.row.objectid}-${index}-${category}-chip`}
                   sx={{
                     display: {
                       xs: 'none',
@@ -182,8 +188,11 @@ export default function Data({
                   size='small'
                   // key={category}
                   // label={category}
-                  label={`${categoryToEmoji(category)} ${category}`}
+                  // label={`${categoryToEmoji(category)} ${category}`}
+                  label={categoryToEmoji(category)}
                 />
+                </Tooltip>
+
               ))}
           </Stack>
         );
@@ -213,9 +222,9 @@ export default function Data({
     <Stack
       id={'DataGridController'}
       sx={{
-        minWidth: '40%',
-        maxWidth: '80%',
-        width:  '100%',
+        // minWidth: '40%',
+        // maxWidth: '100%',
+        width:  '80%',
       }}
       style={{
       }}
@@ -233,7 +242,7 @@ export default function Data({
         }}
         apiRef={apiRef}
         density={
-          browserLocation.pathname === '/' ? 'comfortable' : 'compact'
+          browserLocation.pathname === '/' ? 'standard' : 'compact'
         }
         disableSelectionOnClick
         checkboxSelection
@@ -266,6 +275,15 @@ export default function Data({
         onStateChange={(state) => {
           setPaginationModel(state.pagination.paginationModel);
         }}
+        onRowSelectionModelChange={(newRowSelectionModel, details) => {
+          // const { data } = details.api.caches.;
+          console.log('data.rowSelectionModel', newRowSelectionModel);
+          console.log('data.rowSelectionModel.details', details)
+          setRowSelectionModel([
+            ...newRowSelectionModel
+          ]);
+        }}
+        rowSelectionModel={rowSelectionModel}
       />
     </Stack>
   );

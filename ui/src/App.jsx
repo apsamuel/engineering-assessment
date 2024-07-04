@@ -1,13 +1,16 @@
 import './App.scss';
+import React from 'react';
 import { useState, useEffect, createRef } from 'react';
 import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useMediaQuery } from '@mui/material';
 // import { useHistory, useLocation } from 'react-router-dom';
 import {
   createTheme,
   responsiveFontSizes,
   ThemeProvider
 } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import * as Colors from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -15,11 +18,13 @@ import { Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
+import Placeholder from './components/components/Placeholder';
 import { motion } from 'framer-motion';
 // import { gridRowMaximumTreeDepthSelector } from '@mui/x-data-grid';
 
 const darkTheme = responsiveFontSizes(
   createTheme({
+    mode: 'dark',
     components: {
       DataGrid: {
         styleOverrides: {
@@ -31,7 +36,9 @@ const darkTheme = responsiveFontSizes(
       MuiMenu: {
         styleOverrides: {
           paper: {
-            // backgroundColor: '#A92323'
+            backgroundColor: '#5C5353',
+            maxHeight: '33%',
+            fontSize: '0.5rem'
           }
 
         }
@@ -39,8 +46,6 @@ const darkTheme = responsiveFontSizes(
     },
     menu: {
       '& .MuiPaper-root': {
-        // backgroundColor: '#000000'
-        // backgroundColor: '#D31919'
       }
 
     },
@@ -71,44 +76,69 @@ const darkTheme = responsiveFontSizes(
 
 const lightTheme = responsiveFontSizes(
   createTheme({
-    mixins: {
-      MuiDataGrid: {
-        // pinnedBackground: Colors.grey['A700'],
-        // containerBackground: Colors.grey['A700'],
+    mode: 'light',
+    components: {
+      DataGrid: {
+        styleOverrides: {
+          root: {
+            // backgroundColor: '#F00909'
+          }
+        }
+      },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: '#5C5353',
+            maxHeight: '33%',
+            fontSize: '0.5rem'
+          }
+
+        }
       }
+    },
+    menu: {
+      '& .MuiPaper-root': {
+      }
+
+    },
+    mixins: {
+      MuiDataGrid: {}
     },
     palette: {
       mode: 'light',
-      background: {
-        default: Colors.grey[50],
-        paper: Colors.grey[50]
-      },
-      primary: {
-        light: Colors.grey[300],
-        main: Colors.grey[50],
-        dark: Colors.grey[500],
-        contrastText: '#000'
-      },
-      secondary: {
-        light: '#61B5FF',
-        main: '#57A1E1',
-        dark: '#2C5172',
-        contrastText: '#000'
-      }
+      // background: {
+      //   default: Colors.grey[50],
+      //   paper: Colors.grey[50]
+      // },
+      // primary: {
+      //   light: Colors.grey[300],
+      //   main: Colors.grey[50],
+      //   dark: Colors.grey[500],
+      //   contrastText: '#000'
+      // },
+      // secondary: {
+      //   light: '#61B5FF',
+      //   main: '#57A1E1',
+      //   dark: '#2C5172',
+      //   contrastText: '#000'
+      // }
     }
   })
 );
 
-// const AnimatedForm = motion(Form);
 const AnimatedStack = motion(Stack);
 
 function App() {
-  // test env var availability
-  console.log(import.meta.env)
+
+  // query small media
+  const mediaQuery = useMediaQuery(
+    '(max-width:50rem)'
+  );
   const history = useNavigate();
   const appLocation = useLocation();
 
   const { width: windowWidth, height: windowHeight } = useWindowSize();
+  // if REACT_GET_LOCATION !== true, set loading: false & error: null. use longitude and latitude from .env
   const { loading, error, longitude, latitude } = useGeolocation();
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
@@ -121,11 +151,15 @@ function App() {
   const [vendor, setVendor] = useState('All');
   const [foods, setFoods] = useState('All');
 
+  // prepare for cutover
+  // const [foodCategories, setFoodCategories] = useState(['All'])
+  // const [vendors, setVendors] = useState(['All']);
+
   if (loading) {
-    console.log('user.location', { loading });
+    console.log('geo.location', { loading });
   }
   if (error) {
-    console.log('user.location', { error });
+    console.log('geo.location', { error });
   }
 
 
@@ -170,49 +204,45 @@ function App() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    // windowHeight,
-    // windowWidth,
-    // windowSize,
     latitude,
     longitude,
     theme
   ]);
 
   return (
-    <ThemeProvider theme={theme} id='ThemeProvider'>
+    <ThemeProvider theme={theme} >
       {/*
         contains the application's root element
       */}
-      <Stack
+      <React.Fragment>
+        <CssBaseline enableColorScheme />
+        <Stack
         ref={rootRef}
         id='AppContainer'
         className='AppContainer'
         sx={{
+
+          // backgroundColor: 'primary.main',
           display: 'flex',
+          flexGrow: 1,
           minWidth: '100%',
-          minHeight: '100%',
-          // transition: (theme) =>
-          //   theme.transitions.create(['width', 'height'], {
-          //     easing: theme.transitions.easing.easeIn,
-          //     duration: theme.transitions.duration.enteringScreen
-          //   })
+          minHeight: '50%',
         }}
       >
         {/*
-          controls high-level characteristics of the application
+          controls high-level characteristics of the application (including navigation and content)
          */}
         <Stack
           useFlexGap
           id='AppController'
-          spacing={5}
+          // spacing={2}
           sx={{
             display: 'flex',
-            flexGrowth: 1,
+            flexGrow: 1,
             justifyContent: 'center',
             alignItems: 'center',
             top: (theme) =>
               `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(5)})`,
-
           }}
         >
           {/*
@@ -228,6 +258,17 @@ function App() {
           {/*
             app content is rendered here!
           */}
+
+          <Placeholder
+            stackProperties={{
+              position: 'relative',
+              top: (theme) =>
+                `calc(${theme.mixins.toolbar.minHeight}px + ${theme.spacing(
+                  20
+                )})`,
+            }}
+            mediaQuery={mediaQuery}
+          />
           <AnimatedStack
             animate={{
               opacity: 1
@@ -250,18 +291,19 @@ function App() {
                   2
                 )})`,
               padding: (theme) => theme.spacing(2),
-              display: {
+              display: !mediaQuery ? {
                 xs: 'flex',
                 sm: 'flex',
                 md: 'flex',
                 lg: 'flex',
                 xl: 'flex'
-              },
-              flexGrowth: 1,
+              } : 'none',
+              flexGrow: 1,
               alignContent: 'center',
               alignItems: 'center',
               justifyContent: 'center',
-              minWidth: '90%'
+              minWidth: '90%',
+              height: '90%',
             }}
             direction='column'
             spacing={{
@@ -269,7 +311,7 @@ function App() {
               sm: 2,
               md: 3,
               lg: 4,
-              xl: 5
+              xl: 4
             }}
           >
             {/*
@@ -278,12 +320,26 @@ function App() {
             <Stack
               id='ReactiveContentContainer'
               direction='row'
-              spacing={10}
+              spacing={
+                {
+                  xs: 1,
+                  sm: 2,
+                  md: 2,
+                  lg: 2,
+                  xl: 2
+
+                }
+              }
               sx={{
+                padding: 2,
                 display: 'flex',
                 flexGrow: 1,
-                width: '100%',
-                // minHeight: '50%'
+                minWidth: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                verticalAlign: 'middle',
+                borderRadius: (theme) => theme.shape.borderRadius,
+                border: (theme) => `2px solid ${theme.palette.primary.contrastText}`,
               }}
             >
               {/* controls high-level characteristics of routed child components */}
@@ -317,12 +373,12 @@ function App() {
               <Box
                 id='FormController'
                 sx={{
-                  alignSelf: 'center',
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexGrow: appLocation.pathname === '/' ? 1 : 0.666,
-                  minWidth: appLocation.pathname === '/' ? '80%' : '40%'
+                  // position: 'absolute',
+
+                  flexGrow: appLocation.pathname === '/' ? 0.333 : 0.666,
+                  minWidth: appLocation.pathname === '/' ? '30%' : '20%',
+                  justifyContent: appLocation.pathname === '/' ? 'center' : 'flex-end',
+                  alignItems: 'baseline',
                 }}
               >
                 <Form
@@ -350,6 +406,8 @@ function App() {
           </AnimatedStack>
         </Stack>
       </Stack>
+      </React.Fragment>
+
     </ThemeProvider>
   );
 }

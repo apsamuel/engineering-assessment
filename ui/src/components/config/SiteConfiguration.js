@@ -11,8 +11,8 @@ import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone';
 const navigationLinks = [
   {
     path: 'map',
-    name: 'Map',
-    description: 'Locate Trucks',
+    name: 'Maps',
+    description: 'Geolocation Features',
     to: 'map',
     element: React.createElement(Map),
     icon: React.createElement(MapTwoToneIcon),
@@ -21,7 +21,7 @@ const navigationLinks = [
   },
   {
     path: 'data',
-    name: 'Data',
+    name: 'Insights',
     description: 'Data Insights',
     to: 'data',
     element: React.createElement(Visualize),
@@ -32,7 +32,7 @@ const navigationLinks = [
   {
     path: 'reviews',
     name: 'Reviews',
-    description: 'Food Reviews',
+    description: 'Vendor Reviews',
     to: 'reviews',
     element: React.createElement(Reviews),
     icon: React.createElement(GradingTwoToneIcon),

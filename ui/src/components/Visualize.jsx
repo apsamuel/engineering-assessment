@@ -2,6 +2,7 @@ import './Visualize.scss'
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import DataViews from './components/DataViews.jsx';
+import { useMediaQuery } from '@mui/material';
 import { useOutletContext } from 'react-router-dom';
 
 export default function Visualize() {
@@ -19,6 +20,11 @@ export default function Visualize() {
     foods
   } = useOutletContext();
 
+  const mediaQuery = useMediaQuery(
+
+    '(max-width:50rem)'
+  );
+
 
 
   return (
@@ -26,26 +32,8 @@ export default function Visualize() {
       id={'Visualize'}
       className={'VisualizeComponent'}
       sx={{
-        display: {
-          xs: 'none',
-          sm: 'none',
-          md: 'none',
-          lg: 'block',
-          xl: 'block'
-        },
-        // padding: {
-        //   sm: 2,
-        //   md: 2,
-        //   lg: 2,
-        //   xl: 2
-        // },
-        width: {
-          xs: '100%',
-          sm: '100%',
-          md: '100%',
-          lg: '100%',
-          xl: '100%'
-        }
+        display: !mediaQuery ? 'flex' : 'none',
+        minWidth: '90%',
       }}
     >
       <Box>
@@ -58,9 +46,6 @@ export default function Visualize() {
           location={location}
         />
       </Box>
-      {/* <Box>
-        <Gauge trucks={filterTrucks} />
-      </Box> */}
     </Stack>
   );
 }

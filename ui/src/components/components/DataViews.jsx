@@ -1,4 +1,6 @@
 import './DataViews.scss';
+import React from 'react'
+// import ReactDOM from 'react-dom/client'
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ReactECharts from 'echarts-for-react';
@@ -10,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import haversineDistance from 'haversine-distance';
+import { parseFoodItems, categoryToEmoji } from '../config/Tools.js';
 
 // TODO: import from ThemedComponents
 const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
@@ -63,46 +66,46 @@ export default function DataViews({
       .filter(Boolean);
   };
 
-  const prettifyCategories = (foodItems) => {
-    const items = foodItems
-      .split(new RegExp('[;:.]', 'g'))
-      // remove any empty strings
-      .map((item) => item.trim())
-      .map((item) => item.toLowerCase())
-      // if the item contains spaces, capitalize each word
-      .map((item) =>
-        item
-          .split(' ')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ')
-      )
-      // very specific updates
-      .map((item) =>
-        item.replace(
-          'all types of food except for bbq on site per fire safety',
-          'General'
-        )
-      )
-      .map((item) =>
-        item.replace(
-          'asian fusion - japanese sandwiches/sliders/misubi',
-          'Asian Fusion'
-        )
-      )
-      .map((item) =>
-        item.replace(
-          'daily rotating menus consisting of various local & organic vegetable',
-          'Local Organic'
-        )
-      )
-      .map((item) =>
-        item.replace('pre-packaged swiches', 'Packaged Sandwiches')
-      )
-      .filter(Boolean);
+  // const prettifyCategories = (foodItems) => {
+  //   const items = foodItems
+  //     .split(new RegExp('[;:.]', 'g'))
+  //     // remove any empty strings
+  //     .map((item) => item.trim())
+  //     .map((item) => item.toLowerCase())
+  //     // if the item contains spaces, capitalize each word
+  //     .map((item) =>
+  //       item
+  //         .split(' ')
+  //         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //         .join(' ')
+  //     )
+  //     // very specific updates
+  //     .map((item) =>
+  //       item.replace(
+  //         'all types of food except for bbq on site per fire safety',
+  //         'General'
+  //       )
+  //     )
+  //     .map((item) =>
+  //       item.replace(
+  //         'asian fusion - japanese sandwiches/sliders/misubi',
+  //         'Asian Fusion'
+  //       )
+  //     )
+  //     .map((item) =>
+  //       item.replace(
+  //         'daily rotating menus consisting of various local & organic vegetable',
+  //         'Local Organic'
+  //       )
+  //     )
+  //     .map((item) =>
+  //       item.replace('pre-packaged swiches', 'Packaged Sandwiches')
+  //     )
+  //     .filter(Boolean);
 
-    const itemsLength = items.length;
-    return itemsLength > 3 ? items.slice(0, 3).join(', ') : items.join(', ');
-  };
+  //   const itemsLength = items.length;
+  //   return itemsLength > 3 ? items.slice(0, 3).join(', ') : items.join(', ');
+  // };
 
   const optionMap = {
     gauge: (data) => {
@@ -166,7 +169,27 @@ export default function DataViews({
           show: true,
           feature: {
             // mark: { show: true },
-            dataView: { show: true, readOnly: false },
+            dataView: {
+              show: true,
+              readOnly: false,
+              optionToContent: function (opt) {
+                const data = opt.series[0].data
+                console.log('data:', data)
+                // return `<h1>foo bar</h1>`
+                const el = React.createElement(<Typography>foo bar</Typography>)
+                return el
+                // return (
+                //   <Typography
+                //     sx={{
+                //       display: 'flex',
+                //       border: (theme) => `1px solid ${theme.palette.primary.contrastText}`,
+                //     }}
+                //   >
+                //     <span>{JSON.stringify(Object.keys(opt), null, 2)}</span>
+                //   </Typography>
+                // )
+              }
+            },
             restore: { show: true },
             saveAsImage: { show: true }
           }
@@ -236,7 +259,11 @@ export default function DataViews({
             .filter((truck) => truck.applicant === vendor)
             .map((truck) => {
               return {
-                name: prettifyCategories(truck.fooditems),
+                // name: prettifyCategories(truck.fooditems),
+                name: parseFoodItems(truck.fooditems)
+                  .map((category) => categoryToEmoji(category))
+                  .slice(0, 3)
+                  .join(' '),
                 value: getUniqueCategories([truck]).length
               };
             })

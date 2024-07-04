@@ -1,21 +1,21 @@
 import './Navigation.scss';
-import { createRef, useLayoutEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import { NavLink } from 'react-router-dom';
+import { createRef, useLayoutEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Icon from '@mui/material/Icon';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import Icon from '@mui/material/Icon';
 import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 // configuration data
 import { navigationLinks } from './config/SiteConfiguration.js';
+// import { CatchingPokemonSharp } from '@mui/icons-material';
 
 Navigation.propTypes = {
   lightTheme: PropTypes.object,
@@ -89,6 +89,7 @@ export default function Navigation({
   const ref = createRef();
 
   useLayoutEffect(() => {
+    console.log('navigation.loaded', ref);
     const {
       // eslint-disable-next-line no-unused-vars
       clientHeight,
@@ -102,25 +103,30 @@ export default function Navigation({
 
   });
 
+
   return (
     <AppBar
+      ref={ref}
       id={'AppBar'}
       className={'AppBarComponent'}
       position='absolute'
       sx={{ top: 0 }}
-      ref={ref}
+
     >
       <Container
+
         id={'NavigationController'}
         maxWidth='xl'
         sx={{
-          flexGrow: 1,
+          // flexGrow: 1,
         }}
       >
         <Toolbar
+
           disableGutters
         >
           <Stack
+
             direction={'row'}
             sx={{
               flexGrow: 1,
@@ -131,21 +137,24 @@ export default function Navigation({
           >
             <Box
               style={{
-                // color: 'primary.contrastText'
               }}
               sx={{
-                // color: 'primary.contrastText',
                 textDecoration: 'none'
               }}
             >
               <StyledNavLink to='/'>
+                <Tooltip
+                  title='Home'
+                  placement='top'
+                  arrow
+                >
                 <Typography
                   variant='h6'
                   component='div'
                   sx={{
                     mr: 1,
                     fontFamily: 'Roboto',
-                    fontSize: '2rem',
+                    // fontSize: '2rem',
                     fontWeight: 700,
                     letterSpacing: '0.3em',
                     textDecoration: 'none'
@@ -153,6 +162,8 @@ export default function Navigation({
                 >
                   Hungrèe
                 </Typography>
+                </Tooltip>
+
               </StyledNavLink>
             </Box>
 
@@ -240,8 +251,8 @@ export default function Navigation({
                   aria-label='hungree-app-theme-switch'
                   onChange={(event) =>
                     event.target.checked
-                      ? setTheme(lightTheme)
-                      : setTheme(darkTheme)
+                      ? setTheme(darkTheme)
+                      : setTheme(lightTheme)
                   }
                   inputProps={{ 'aria-label': 'controlled' }}
                 />

@@ -2,15 +2,24 @@
 @use '../src/assets/css/media' as media;
 
 html {
-  div#root {
-    margin: 0 auto;
-    text-align: center;
-    // overflow: hidden !important;
-    div.AppRoot {
-      padding: 5;
-      // border: 1px solid #000;
-      // overflow-x: hidden;
+  height: 100vh;
+  width: 100vw;
+  // background-color: antiquewhite;
+  // height: 100vh;
+  body {
+    height: 100vh;
+    width: 100vw;
+    div#root {
+      margin: 0 auto;
+      text-align: center;
+      // overflow: hidden !important;
+      div.AppRoot {
+        // padding: 5;
+        // border: 1px solid #000;
+        // overflow-x: hidden;
+      }
     }
+
   }
 
 }

@@ -2,14 +2,27 @@ import * as emoji from 'node-emoji'
 
 const categories = {
   [['peruvian']]: 'peru',
-  [['noodle', 'noodles', 'ramen']]: '🍜',
+  [['noodle', 'noodles', 'ramen']]: 'ramen',
+  [['fries', 'french fries']]: 'fries',
   [['burger', 'burgers']]: 'hamburger',
   [['taco']]: 'taco',
+  [['soup', ]]: 'bowl_with_spoon',
+  [['fried rice', 'chinese rice']]: 'curry',
+  [['bacon', ]]: 'bacon',
+  [['eggs', ]]: 'fried_egg',
+  [['drinks', ]]: 'tropical_drink',
+  [['chips', ]]: 'potato',
+  [['candy', ]]: 'candy',
+  [['cookies', ]]: 'cookie',
+
+
   [['burrito']]: 'burrito',
   [['quesadilla', 'quesadillas']]: 'cheese',
   [['pizza']]: 'pizza',
   [['hot dog', 'hot dogs']]: 'hotdog',
   [['hot chocolate', 'hot coffee']]: '☕',
+  [['hot tea', 'tea']]: 'tea',
+  [['pastries']]: 'croissant',
   [['sandwich', 'sandwiches', 'melts']]: 'sandwich',
   [['chicken']]: 'chicken',
   [['bbq', 'ribs']]: 'steak',
@@ -212,7 +225,45 @@ const vendorToEnrichment = (vendor) => {
   return results
 }
 
+const parseFoodItems = (fooditems) => {
+  if (fooditems) {
+    return fooditems
+      .split(new RegExp('[:;.]', 'g'))
+      .map((item) => item.trim())
+      .map((item) => item.toLowerCase())
+      .map((item) => item.replace(
+        new RegExp(`(${[
+          'all types of food except for bbq on site per fire safety',
+          'various menu items & drinks',
+          'multiple food trucks & food types'
+        ]})`, 'g')
+      ), 'General Market')
+      .map((item) => item.replace(
+        'asian fusion - japanese sandwiches/sliders/misubi', 'Asian Fusion'
+      ))
+      .map((item) => item.replace('vegetable and meat sandwiches filled with asian-flavored meats and vegetables', 'Sandwiches'))
+      .map((item) => item.replace('daily rotating menus consisting of various local & organic vegetable', 'Local Organic'))
+      .map((item) => item.replace('pre-packaged swiches', 'Sandwiches'))
+      .map((item) => item.replace('peruvian food served hot', 'Peruvian Cuisine'))
+      .map((item) => {
+        return item === 'tacos burritos quesadillas tortas pupusas flautas tamales' ?  ['tacos', 'burritos', 'quesadillas', 'tortas', 'pupusas', 'flautas', 'tamales'] : item;
+      })
+      .filter(Boolean)
+      // upper case first letter of each word
+      .map((item) =>
+        item.split ? item.split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ') : item
+      )
+      // .map((item) => item.replace(/[^\s+|\s+$]/g, ''))
+      .flat()
+  }
+  return [];
+}
+
+
 export {
   categoryToEmoji,
-  vendorToEnrichment
+  vendorToEnrichment,
+  parseFoodItems
 }

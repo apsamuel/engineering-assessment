@@ -1,5 +1,8 @@
 import './ThemedComponents.scss';
+import { useMemo, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import { NavLink } from 'react-router-dom';
 import ReactECharts from 'echarts-for-react';
@@ -15,16 +18,37 @@ import InputLabel from '@mui/material/InputLabel';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 
+const AnimatedBox = motion(Box);
+const AnimatedStack = motion(Stack);
+const AnimatedTypography = motion(Typography);
 
+SmartTypography.propTypes = {
+  children: PropTypes.string
+};
+function SmartTypography({ children, ...props }) {
+  const words = useMemo(() => children.split(''), [children]);
+  useEffect(() => {
+    console.log(words);
+  });
+  return (
+    <AnimatedTypography
+      {...props}
+    >
+      {words.map((word, index) => (
+        <span key={index}>{word}</span>
+      ))}
+    </AnimatedTypography>
+  );
+}
 
-const StyledTypography = styled(Typography)(( { theme}) => ({
+const StyledTypography = styled(Typography)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.primary.contrastText
 }));
 
 const AnimatedStyledTypography = motion(StyledTypography);
-
 
 const StyledThemeToggleSwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -71,7 +95,7 @@ const StyledThemeToggleSwitch = styled(Switch)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
     borderRadius: 20 / 2
   }
-}))
+}));
 
 const AnimatedStyledThemeToggleSwitch = motion(StyledThemeToggleSwitch);
 
@@ -88,7 +112,6 @@ const StyledReactECharts = styled(ReactECharts)(({ theme }) => ({
 
 const AnimatedStyledReactECharts = motion(StyledReactECharts);
 
-
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   display: {
     sm: 'none',
@@ -96,12 +119,12 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     lg: 'flex'
   },
   border: 0,
-  color: theme.palette.primary.contrastText,
+  // color: theme.palette.primary.contrastText,
   fontFamily: ['Roboto'].join(','),
   WebkitFontSmoothing: 'auto',
   letterSpacing: 'normal',
   '& .MuiDataGrid-root': {
-    backgroundColor: theme.palette.primary.main,
+    // backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     fontFamily: ['Roboto'].join(','),
     WebkitFontSmoothing: 'auto',
@@ -195,8 +218,8 @@ const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
     md: 5,
     lg: 5,
     xl: 15
-  },
-}))
+  }
+}));
 
 const AnimatedStyledInputLabel = motion(StyledInputLabel);
 
@@ -209,11 +232,13 @@ const StyledHelperText = styled(FormHelperText)(({ theme }) => ({
     lg: 5,
     xl: 15
   }
-}))
+}));
 
 const AnimatedStyledHelperText = motion(StyledHelperText);
 
 export {
+  AnimatedBox,
+  AnimatedStack,
   StyledThemeToggleSwitch,
   AnimatedStyledThemeToggleSwitch,
   StyledNavLink,
@@ -231,5 +256,6 @@ export {
   StyledSlider,
   AnimatedStyledSlider,
   StyledTypography,
-  AnimatedStyledTypography
+  AnimatedStyledTypography,
+  SmartTypography
 };
