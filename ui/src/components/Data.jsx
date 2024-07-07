@@ -4,8 +4,10 @@ import Stack from '@mui/material/Stack';
 // eslint-disable-next-line no-unused-vars
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
+// eslint-disable-next-line no-unused-vars
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 import {
   // DataGrid,
   GridToolbar,
@@ -34,7 +36,11 @@ Data.propTypes = {
   location: PropTypes.arrayOf(PropTypes.number),
   foodVendors: PropTypes.string,
   distance: PropTypes.number,
-  foodCategories: PropTypes.arrayOf(PropTypes.string)
+  foodCategories: PropTypes.string,
+  rowSelectionModel: PropTypes.arrayOf(PropTypes.string),
+  setRowSelectionModel: PropTypes.func,
+  rowSelection: PropTypes.object,
+  setRowSelection: PropTypes.func
 };
 export default function Data({
   trucks = [],
@@ -44,12 +50,19 @@ export default function Data({
   foodCategories = [],
   setFilterTrucks = () => {
     console.log('setFilterTrucks not implemented');
-  }
+  },
+  rowSelectionModel = [],
+  setRowSelectionModel = () => {
+    console.log('setRowSelectionModel not implemented');
+  },
+  setRowSelection = () => {
+    console.log('setRowSelection not implemented');
+  },
+  rowSelection
 }) {
   const browserLocation = useLocation();
   // eslint-disable-next-line no-unused-vars
   const theme = useTheme();
-  let [rowSelectionModel, setRowSelectionModel] = useState([]);
   let [filteredTrucks, setFilteredTrucks] = useState(trucks);
   const [paginationModel, setPaginationModel] = useState({
     pageSize: 10,
@@ -117,15 +130,15 @@ export default function Data({
         );
       }
     },
-    { field: 'facilitytype', headerName: 'Type', flex: 0.2,
-      renderCell: (params) => {
-        return (
-          <span>
-            {params.row.facilitytype}
-          </span>
-        )
-      }
-    },
+    // { field: 'facilitytype', headerName: 'Type', flex: 0.2,
+    //   renderCell: (params) => {
+    //     return (
+    //       <span>
+    //         {params.row.facilitytype}
+    //       </span>
+    //     )
+    //   }
+    // },
     {
       field: 'address', headerName: 'Address', flex: 0.333,
       renderCell: (params) => {
@@ -151,53 +164,94 @@ export default function Data({
           Math.round(haversine(location, [row.latitude, row.longitude])) / 1000
         } km`
     },
-    // TODO: use icons or emoji mappings for food items
     {
-      field: 'fooditems',
-      headerName: 'Categories',
-      flex: 0.55,
+      field: 'actions',
+      headerName: 'Actions',
+      flex: 0.3333,
       renderCell: (params) => {
         return (
           <Stack
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-            direction={'row'}
+            direction='row'
             spacing={1}
           >
-            {
-              parseFoodItems(params.value)
-              // .slice(0, 3)
-              .map((category, index) => (
-                <Tooltip
-                  arrow
-                  title={category}
-                  key={`${params.row.objectid}-${index}-${category}-tip`}
-                >
-                <Chip
-                  key={`${params.row.objectid}-${index}-${category}-chip`}
-                  sx={{
-                    display: {
-                      xs: 'none',
-                      sm: 'flex'
-                    },
-                    color: 'primary.contrastText'
-                  }}
-                  size='small'
-                  // key={category}
-                  // label={category}
-                  // label={`${categoryToEmoji(category)} ${category}`}
-                  label={categoryToEmoji(category)}
-                />
-                </Tooltip>
-
-              ))}
+            <Button
+              variant='contained'
+              color='primary'
+              href={`https://www.google.com/maps/search/?api=1&query=${params.row.latitude},${params.row.longitude}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              Fly To
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              href={`https://www.google.com/search?q=${params.row.applicant}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              Route
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              href={`https://www.google.com/search?q=${params.row.applicant}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              View
+            </Button>
           </Stack>
-        );
+        )
       }
-    }
+    },
+    // TODO: make a final decision on how to handle categories
+    // {
+    //   field: 'fooditems',
+    //   headerName: 'Categories',
+    //   flex: 0.55,
+    //   renderCell: (params) => {
+    //     return (
+    //       <Stack
+    //         sx={{
+    //           display: 'flex',
+    //           justifyContent: 'center',
+    //           alignItems: 'center'
+    //         }}
+    //         direction={'row'}
+    //         spacing={1}
+    //       >
+    //         {
+    //           parseFoodItems(params.value)
+    //           // .slice(0, 3)
+    //           .map((category, index) => (
+    //             <Tooltip
+    //               arrow
+    //               title={category}
+    //               key={`${params.row.objectid}-${index}-${category}-tip`}
+    //             >
+    //             <Chip
+    //               key={`${params.row.objectid}-${index}-${category}-chip`}
+    //               sx={{
+    //                 display: {
+    //                   xs: 'none',
+    //                   sm: 'flex'
+    //                 },
+    //                 color: 'primary.contrastText'
+    //               }}
+    //               size='small'
+    //               // key={category}
+    //               // label={category}
+    //               // label={`${categoryToEmoji(category)} ${category}`}
+    //               label={categoryToEmoji(category)}
+    //             />
+    //             </Tooltip>
+
+    //           ))}
+    //       </Stack>
+    //     );
+    //   }
+    // }
   ];
 
   useEffect(() => {
@@ -217,7 +271,16 @@ export default function Data({
     }
     setFilteredTrucks(filtered);
     setFilterTrucks(filtered);
-  }, [foodVendors, distance, foodCategories, location, trucks, apiRef, setFilterTrucks]);
+  }, [
+    foodVendors,
+    distance,
+    foodCategories,
+    location,
+    trucks,
+    apiRef,
+    setFilterTrucks
+  ]);
+
   return (
     <Stack
       id={'DataGridController'}
@@ -276,14 +339,36 @@ export default function Data({
           setPaginationModel(state.pagination.paginationModel);
         }}
         onRowSelectionModelChange={(newRowSelectionModel, details) => {
-          // const { data } = details.api.caches.;
-          console.log('data.rowSelectionModel', newRowSelectionModel);
-          console.log('data.rowSelectionModel.details', details)
-          setRowSelectionModel([
-            ...newRowSelectionModel
-          ]);
+          const { api } = details
+          if (newRowSelectionModel === rowSelectionModel) {
+            console.log('same')
+            const selectedRows = api.getSelectedRows()
+            // console.log(newRowSelectionModel)
+            // console.log('selected....', selectedRows)
+            setRowSelectionModel([
+              // ...rowSelectionModel,
+              ...newRowSelectionModel
+            ]);
+            console.log(rowSelectionModel)
+            setRowSelection(
+              // ...rowSelection,
+              selectedRows
+            )
+            console.log(rowSelection)
+          } else {
+            console.log('diff')
+            const selectedRows = api.getSelectedRows()
+            console.log(selectedRows)
+            setRowSelectionModel([
+              ...rowSelectionModel
+            ])
+            setRowSelection(
+              selectedRows
+            )
+          }
+
         }}
-        rowSelectionModel={rowSelectionModel}
+        // rowSelectionModel={rowSelectionModel}
       />
     </Stack>
   );
