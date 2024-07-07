@@ -1,130 +1,28 @@
 import './App.scss';
 import React from 'react';
+import { motion } from 'framer-motion';
+
 import { useState, useEffect, createRef } from 'react';
 import { useGeolocation, useWindowSize } from '@uidotdev/usehooks';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
-// import { useHistory, useLocation } from 'react-router-dom';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import { lightTheme, darkTheme } from './components/config/Themes.js';
 import {
-  createTheme,
-  responsiveFontSizes,
   ThemeProvider
 } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import * as Colors from '@mui/material/colors';
+
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+
 import { Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Data from './components/Data';
 import Form from './components/Form';
 import Placeholder from './components/components/Placeholder';
-import { motion } from 'framer-motion';
+
 // import { gridRowMaximumTreeDepthSelector } from '@mui/x-data-grid';
-
-const darkTheme = responsiveFontSizes(
-  createTheme({
-    mode: 'dark',
-    components: {
-      DataGrid: {
-        styleOverrides: {
-          root: {
-            // backgroundColor: '#F00909'
-          }
-        }
-      },
-      MuiMenu: {
-        styleOverrides: {
-          paper: {
-            backgroundColor: '#5C5353',
-            maxHeight: '33%',
-            fontSize: '0.5rem'
-          }
-
-        }
-      }
-    },
-    menu: {
-      '& .MuiPaper-root': {
-      }
-
-    },
-    mixins: {
-      MuiDataGrid: {}
-    },
-    palette: {
-      mode: 'dark',
-      background: {
-        default: '#000000',
-        paper: '#000000'
-      },
-      primary: {
-        light: '#9E9DB6',
-        main: '#2B2A2A',
-        dark: '#101010',
-        contrastText: '#8E8181'
-      },
-      secondary: {
-        light: '#737C97',
-        main: '#615F8C',
-        dark: '#2B2768',
-        contrastText: '#696161'
-      }
-    }
-  })
-);
-
-const lightTheme = responsiveFontSizes(
-  createTheme({
-    mode: 'light',
-    components: {
-      DataGrid: {
-        styleOverrides: {
-          root: {
-            // backgroundColor: '#F00909'
-          }
-        }
-      },
-      MuiMenu: {
-        styleOverrides: {
-          paper: {
-            backgroundColor: '#5C5353',
-            maxHeight: '33%',
-            fontSize: '0.5rem'
-          }
-
-        }
-      }
-    },
-    menu: {
-      '& .MuiPaper-root': {
-      }
-
-    },
-    mixins: {
-      MuiDataGrid: {}
-    },
-    palette: {
-      mode: 'light',
-      // background: {
-      //   default: Colors.grey[50],
-      //   paper: Colors.grey[50]
-      // },
-      // primary: {
-      //   light: Colors.grey[300],
-      //   main: Colors.grey[50],
-      //   dark: Colors.grey[500],
-      //   contrastText: '#000'
-      // },
-      // secondary: {
-      //   light: '#61B5FF',
-      //   main: '#57A1E1',
-      //   dark: '#2C5172',
-      //   contrastText: '#000'
-      // }
-    }
-  })
-);
 
 const AnimatedStack = motion(Stack);
 
@@ -145,13 +43,20 @@ function App() {
   const [filterTrucks, setFilterTrucks] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const [windowSize, setWindowSize] = useState([0, 0]);
-  const [browserLocation, setBrowserLocation] = useState([]);
+  const [geoLocation, setGeoLocation] = useState([]);
   // we're in NYC, and we want to see all the trucks...
-  const [distance, setDistance] = useState(10000);
+  const [distance, setDistance] = useState(
+    Number(
+      import.meta.env.VITE_MAX_DISTANCE || 10000
+    )
+  );
   // TODO: support mult-select
   // TODO: maybe switch to an auto-complete text field
   const [foodVendors, setFoodVendors] = useState('All');
   const [foodCategories, setFoodCategories] = useState('All');
+  const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  const [rowSelection, setRowSelection] = useState(new Map());
+
 
   if (loading) {
     console.log('geo.location', { loading });
@@ -194,7 +99,7 @@ function App() {
       });
 
     if (latitude && longitude) {
-      setBrowserLocation([latitude, longitude]);
+      setGeoLocation([latitude, longitude]);
     }
 
     if (windowWidth && windowHeight) {
@@ -265,15 +170,16 @@ function App() {
                   20
                 )})`,
             }}
+            windowSize={windowSize}
             mediaQuery={mediaQuery}
           />
           <AnimatedStack
-            animate={{
-              opacity: 1
-            }}
-            transition={{
-              duration: 0.5
-            }}
+            // animate={{
+            //   opacity: 1
+            // }}
+            // transition={{
+            //   duration: 0.5
+            // }}
             id='AppContentContainer'
             sx={{
               /*
@@ -359,10 +265,12 @@ function App() {
                   context={{
                     trucks: trucks,
                     filterTrucks: filterTrucks,
-                    location: browserLocation,
+                    location: geoLocation,
                     foodVendors: foodVendors,
                     distance: distance,
-                    foodCategories: foodCategories
+                    foodCategories: foodCategories,
+                    rowSelectionModel: rowSelectionModel,
+                    rowSelection: rowSelection,
                   }}
                 />
               </Box>
@@ -396,10 +304,14 @@ function App() {
               id='DataGrid'
               setFilterTrucks={setFilterTrucks}
               trucks={trucks}
-              location={browserLocation}
+              location={geoLocation}
               foodVendors={foodVendors}
               distance={distance}
               foodCategories={foodCategories}
+              rowSelectionModel={rowSelectionModel}
+              setRowSelectionModel={setRowSelectionModel}
+              rowSelection={rowSelection}
+              setRowSelection={setRowSelection}
             />
           </AnimatedStack>
         </Stack>
