@@ -1,170 +1,209 @@
 // import './Reviews.scss';
-import { useState, useEffect } from 'react';
-import React from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+// import React from 'react';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+// eslint-disable-next-line no-unused-vars
 import Typography from '@mui/material/Typography';
-import { AnimatedStyledTypography, SmartTypography } from './components/ThemedComponents.jsx';
+import {
+  // AnimatedStyled÷Typography,
+  SmartTypography,
+  // AnimatedBox,
+  // AnimatedStack
+} from './components/ThemedComponents.jsx';
 import PropTypes from 'prop-types';
+// import { delay, stagger } from 'framer-motion';
 
 About.propTypes = {
   interval: PropTypes.number
 };
 export default function About({ interval = 1000 * 10.0 }) {
-  const aboutHeader = 'Are You Hungrèe?';
+  const location = useLocation();
+  const aboutHeader = 'About Hungrèe';
 
-  const descriptions = [
-    {
-      we: 'put your safety first',
-      you: 'use licensed & approved vendors.'
+  const animationProps = {
+    you: {
+      staggerChildren: 0.33,
+      delayChildren: 0.05,
+      initial: {
+        opacity: 0,
+        y: '-10em',
+
+      },
+
+      animate: {
+        opacity: 1,
+        y: 0,
+      },
+      exit: {
+        opacity: 0,
+        y: '10em',
+
+      },
+      transition: {
+        type: 'spring',
+        damping: 5,
+        stiffness: 70,
+        duration: 15.5,
+        // ease: [0.16, 1, 0.3, 1]
+      }
     },
-    {
-      we: 'crunch the numbers for you',
-      you: 'tell us where your appetite is leading you'
-    },
-    {
-      we: 'provide dynamic visualizations',
-      you: 'gain insights and make data driven decisions'
-    },
-    {
-      we: 'provide a platform for reviews & collaboration',
-      you: 'share your experiences'
+    we: {
+      // staggerChildren: 0,
+      // delayChildren: 0,
+      initial: {
+        // opacity: 0.333,
+        opacity: 0,
+        y: '10em',
+        // x: '10em'
+      },
+      animate: {
+        opacity: 1,
+        y: '0em',
+        // x: '0em'
+      },
+      exit: {
+        opacity: 0,
+        y: '-10em',
+        // x: '-
+      },
+      transition: {
+        type: 'spring',
+        // repeat: 5,
+        damping: 5,
+        stiffness: 70,
+        duration: 15.5,
+        // ease: [0.16, 1, 0.3, 1],
+        // when: 'beforeChildren'
+      }
     }
-  ]
-  // const aboutDescriptions = [
-  //   /*
-  //     use embedded React.createElements to better format the text
-  //   */
-  //   React.createElement(Stack, null,
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         { style: {fontWeight: 'bold'}},
-  //         'We put your safety first'
-  //       ),
-  //     ),
-  //     React.createElement(Box, null,
-  //       React.createElement('span', null, 'You use licensed & approved vendors.')
-  //     )
-  //   ),
-  //   React.createElement(Stack, null,
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         { style: {fontWeight: 'bold'}},
-  //         'We crunch the numbers for you'),
-  //     ),
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         null,
-  //         'You will tell us where your appetite is leading you')
-  //     ),
-  //   ),
-  //   React.createElement(Stack, null,
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         { style: {fontWeight: 'bold'}},
-  //         'We provide dynamic visualizations'),
-  //     ),
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         null,
-  //         'You gain insights and make data driven decisions'),
-  //     )
-  //   ),
-  //   React.createElement(Stack, null,
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         { style: {fontWeight: 'bold'}},
-  //         'We provide a platform for reviews & collaboration'),
-  //     ),
-  //     React.createElement(Box, null,
-  //       React.createElement(
-  //         'span',
-  //         null,
-  //         'You share your experiences'),
-  //     ),
-  //   ),
-  // ];
-  const [description, setDescription] = useState(descriptions[0]);
+  }
+  const descriptions = useMemo(
+    () => [
+      {
+        we: 'use licensed vendors with professional presentation ✅',
+        you: 'enjoy the best & safest food options',
+        iconOrImage: null
+      },
+      {
+        we: 'facilitate search by vendor, category, or location 🤯',
+        you: 'tell us where your appetite is leading you 🌎',
+        iconOrImage: null
+      },
+      {
+        we: 'generate dynamic visualizations 📉',
+        you: 'gain insights 👁️ & let the data drive decisions 🧑🏻‍💻',
+        iconOrImage: null
+      },
+      {
+        we: 'provide a platform for user reviews ✔︎',
+        you: 'share your best 😎, worse 🥹 and in the middle 😒 experiences',
+        iconOrImage: null
+      }
+    ],
+    []
+  );
+  const [description, setDescription] = useState({
+    we: 'will get you fed',
+    you: 'are hungrèe'
+  });
+
 
   useEffect(() => {
     const reloadInterval = setInterval(() => {
-      // switch the description every 10 seconds
+      const idx = Math.floor(Math.random() * descriptions.length);
       setDescription(
-        descriptions[Math.floor(Math.random() * descriptions.length)]
+        descriptions[idx]
       );
       // console.log('description:', description);
     }, interval);
     return () => clearInterval(reloadInterval);
-  });
+  }, [descriptions, description, interval]);
   return (
     <Stack
-      id={'About'}
-      className={'AboutComponent'}
-      spacing={5}
+      key={location.pathname}
+      id={'AboutHeader'}
+      className={'AboutHeaderComponent'}
       direction={'column'}
+      spacing={10}
       sx={{
-        overflow: 'hidden',
         flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
+        padding: 5,
         borderRadius: (theme) => theme.shape.borderRadius,
         border: (theme) => `1px solid ${theme.palette.primary.contrastText}`
       }}
     >
-        <Box
-          sx={{
+      <Box
+        sx={{
+          flexGrow: 1,
+          backgroundColor: (theme) => theme.palette.secondary.main
+        }}
+      >
+        <SmartTypography
+          typographyProps={{
+            fontFamily: 'Roboto',
+            fontSize: '2.5rem',
+            fontWeight: 700,
           }}
         >
-          <SmartTypography
-            variant={'h1'}
-            component={'div'}
-          >{aboutHeader}</SmartTypography>
-        </Box>
-        <Box>
-          <AnimatedStyledTypography
-            layout
-            variant='h6'
-            component='div'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 10.5
-            }}
-            sx={{
-              fontFamily: 'Roboto',
-              color: (theme) => theme.palette.primary.contrastText,
-              alignSelf: 'flex-end',
-            }}
-          >
-            {' '}
-            {`We ${description.we}`}{' '}
-          </AnimatedStyledTypography>
-          <AnimatedStyledTypography
+          {aboutHeader}
+        </SmartTypography>
+      </Box>
 
-            variant='h6'
-            component='div'
-            // animate={{
-            //   x: [0, 20, -20, 20, -20, 0]
-            // }}
-            transition={{
-              duration: 1.5
-            }}
-            sx={{
-              fontFamily: 'Roboto',
-              color: (theme) => theme.palette.primary.contrastText,
-              alignSelf: 'flex-end',
-            }}
-          >
-            {' '}
-            {`You ${description.you}`}{' '}
-          </AnimatedStyledTypography>
-        </Box>
+      <Box
+
+        sx={{
+          // backgroundColor: (theme) => theme.palette.secondary.main,
+          padding: '5',
+        }}
+      >
+
+
+        <SmartTypography
+          // layout
+          animateCharacters={false}
+          animateWords={true}
+          animationProps={{
+            ...animationProps.we
+          }}
+          typographyProps={{
+            fontFamily: 'Roboto',
+            fontSize: `1.3rem`,
+            // color: (theme) => theme.palette.secondary.light,
+            // alignSelf: 'flex-end'
+          }}
+          keywords={['We', 'You', 'truck', 'vendor', 'category', 'location']}
+        >
+          {`We ${description.we}`}
+        </SmartTypography>
+      </Box>
+
+      <Box
+
+        sx={{
+          // backgroundColor: (theme) => theme.palette.secondary.main
+        }}
+      >
+        <SmartTypography
+          animateCharacters={false}
+          animateWords={true}
+          animationProps={{
+            ...animationProps.you
+          }}
+          typographyProps={{
+            fontFamily: 'Roboto',
+            fontSize: `1rem`,
+            // color: (theme) => theme.palette.primary.contrastText
+          }}
+          keywords={['We', 'You', 'truck', ]}
+        >
+          {`You ${description.you}`}
+        </SmartTypography>
+      </Box>
+
+
+
     </Stack>
   );
 }
