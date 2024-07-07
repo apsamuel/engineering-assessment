@@ -17,14 +17,14 @@ import {
 } from './components/ThemedComponents.jsx';
 
 Form.propTypes = {
-  trucks: PropTypes.arrayOf(PropTypes.string).isRequired,
+  trucks: PropTypes.arrayOf(PropTypes.object).isRequired,
   setTrucks: PropTypes.func,
   setDistance: PropTypes.func,
   setFoodVendors: PropTypes.func,
   setFoodCategories: PropTypes.func,
   foodVendors: PropTypes.string,
   distance: PropTypes.number,
-  foodCategories: PropTypes.arrayOf(PropTypes.string)
+  foodCategories: PropTypes.string
 };
 
 export default function Form({
@@ -59,6 +59,7 @@ export default function Form({
   const vendorInputRef = createRef();
   const distanceInputRef = createRef();
   const foodInputRef = createRef();
+  // eslint-disable-next-line no-unused-vars
   const history = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const appLocation = useLocation();
@@ -125,7 +126,7 @@ export default function Form({
             aria-label='foodVendors-distance-slider'
             defaultValue={distance}
             getAriaValueText={(value) => `${value} km`}
-            valueLabelDisplay='always'
+            valueLabelDisplay='auto'
             /*
             NOTE: the step may be a little unrealistic for real-world applications,
             i'm in NYC, the data is reflective of trucks in San Francisco, to enable geolocation/distance calculations,
@@ -168,14 +169,14 @@ export default function Form({
             label='Vendor'
             // open=
             MenuProps={{
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'bottom'
-              },
-              getAnchorEl: () => {
-                console.log(vendorInputRef.current);
-                return vendorInputRef.current;
-              }
+              // anchorOrigin: {
+              //   vertical: 'bottom',
+              //   horizontal: 'bottom'
+              // },
+              // getAnchorEl: () => {
+              //   console.log(vendorInputRef.current);
+              //   return vendorInputRef.current;
+              // }
             }}
             onChange={(event) => {
               console.log('truck.foodVendors', { value: event.target.value });
