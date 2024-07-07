@@ -203,7 +203,7 @@ export default function Map() {
           />
           {/*
 
-            layer ideas
+            TODO: layer ideas, better base layer, adjust base layer based on theme
             -- https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}
             -- https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}
             -- https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}

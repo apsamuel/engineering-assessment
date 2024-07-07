@@ -35,8 +35,8 @@ function App() {
   const history = useNavigate();
   const appLocation = useLocation();
 
+
   const { width: windowWidth, height: windowHeight } = useWindowSize();
-  // if REACT_GET_LOCATION !== true, set loading: false & error: null. use longitude and latitude from .env
   const { loading, error, longitude, latitude } = useGeolocation();
   const [theme, setTheme] = useState(darkTheme);
   const [trucks, setTrucks] = useState([]);
