@@ -9,16 +9,16 @@ AnimatedRoute.propTypes = {
   children: PropTypes.node
 };
 
-AnimatedRoute.defaultProps = {
-  transition: {
-    duration: 3,
-    ease: 'easeInOut',
-    times: [0, 0.5, 0.6, 1]
-  },
-  animate: {
-    opacity: [0, 0.2, 0.8, 1]
-  },
-};
+// AnimatedRoute.defaultProps = {
+//   transition: {
+//     // duration: 3,
+//     // ease: 'easeInOut',
+//     // times: [0, 0.5, 0.6, 1]
+//   },
+//   animate: {
+//     // opacity: [0, 0.2, 0.8, 1]
+//   },
+// };
 export default function AnimatedRoute({ children, animate, transition }) {
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function AnimatedRoute({ children, animate, transition }) {
           display: 'flex',
           flexGrow: 1,
           minWidth: '100%',
+          maxHeight: '100%'
         }}
         key={location.pathname}
         animate={animate}

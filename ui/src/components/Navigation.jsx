@@ -89,7 +89,6 @@ export default function Navigation({
   const ref = createRef();
 
   useLayoutEffect(() => {
-    console.log('navigation.loaded', ref);
     const {
       // eslint-disable-next-line no-unused-vars
       clientHeight,
