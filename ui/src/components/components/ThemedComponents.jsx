@@ -1,5 +1,11 @@
 import './ThemedComponents.scss';
-import { useMemo, useEffect } from 'react';
+import {
+  // useMemo,
+  useState,
+  useEffect,
+  createRef
+} from 'react';
+import { useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -17,29 +23,196 @@ import InputBase from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
+import { LayoutGroup, motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 
 const AnimatedBox = motion(Box);
 const AnimatedStack = motion(Stack);
-const AnimatedTypography = motion(Typography);
+
 
 SmartTypography.propTypes = {
-  children: PropTypes.string
+  children: PropTypes.string,
+  animateCharacters: PropTypes.bool,
+  animateWords: PropTypes.bool,
+  typographyProps: PropTypes.object,
+  animationProps: PropTypes.object,
+  keywords: PropTypes.array
 };
-function SmartTypography({ children, ...props }) {
-  const words = useMemo(() => children.split(''), [children]);
+function SmartTypography({
+  animateCharacters = true,
+  animateWords = false,
+  typographyProps = {},
+  animationProps = {},
+  keywords = [ ],
+  children,
+  ...props
+}) {
+  const location = useLocation();
+  const [words, setWords] = useState(children.split(/\s+/g));
+
+  const [characters, setCharacters] = useState(
+    // children.split(new RegExp('.', 'g'))
+    Array.from(children)
+  );
+
+  // should return a dict, where the key is the word and the value is the reference
+  // eslint-disable-next-line no-unused-vars
+  const createWordReferences = (words) => {
+    const wordRefs = {};
+    for (const word of words) {
+      if (!word || word === null) continue;
+      if (!wordRefs[word]) wordRefs[word] = createRef();
+    }
+    // words.forEach((word) => {
+    //   wordRefs[word] = createRef();
+    // });
+    return wordRefs;
+  }
+  // eslint-disable-next-line no-unused-vars
+  const createCharacterReferences = (characters) => {
+    const characterRefs = {};
+    for (const character of characters) {
+      if (!character || character === null) continue;
+      if (!characterRefs[character]) characterRefs[character] = createRef();
+    }
+    return characterRefs;
+  }
+
+  // const wordRefs = createWordReferences(words);
+  // const characterRefs = createCharacterReferences(characters);
+
   useEffect(() => {
-    console.log(words);
-  });
+    setCharacters(Array.from(children));
+    setWords(children.split(/\s+/g));
+
+  }, [children]);
   return (
-    <AnimatedTypography
-      {...props}
-    >
-      {words.map((word, index) => (
-        <span key={index}>{word}</span>
-      ))}
-    </AnimatedTypography>
+    <LayoutGroup>
+      <AnimatedStack
+        layout
+        direction={'row'}
+        key={location.pathname}
+        sx={{
+          position: 'absolute'
+          // overflowY: 'hidden'
+        }}
+        {...props}
+      >
+        {/* breaks children into individual characters */}
+        {animateCharacters &&
+          characters.map((character, index) => (
+            <AnimatedStack
+              layout
+              id={`animated-character-stack-${index}`}
+              key={`${index}-animated-stack`}
+              direction={'row'}
+              sx={{
+                display: 'flex',
+                // overflowY: 'hidden',
+                marginRight: '0.25rem'
+              }}
+            >
+              <motion.span
+                id={`animated-character-span-${index}`}
+                // ref={characterRefs[character]}
+                key={index}
+                style={{
+                  display: 'inline-block',
+                  fontWeight: keywords.includes(character) ? 700 : 400,
+                  fontSize: keywords.includes(character) ? '1.5rem' : '1rem',
+                  ...typographyProps
+                }}
+                initial={{
+                  ...(animationProps && animationProps.initial
+                    ? animationProps.initial
+                    : {})
+                }}
+                animate={{
+                  ...(animationProps && animationProps.animate
+                    ? animationProps.animate
+                    : {})
+                }}
+                transition={{
+                  ...(animationProps && animationProps.transition
+                    ? animationProps.transition
+                    : {}),
+                  ...(animationProps && animationProps.staggerChildren
+                    ? {
+                        staggerChildren: animationProps.staggerChildren
+                      }
+                    : {}),
+                  ...(animationProps && animationProps.delayChildren
+                    ? {
+                        delayChildren: animationProps.delayChildren * index
+                      }
+                    : {})
+                }}
+                display={'inline'}
+                component={'span'}
+              >
+                {`${character === ' ' ? '\u00A0' : character}`}
+              </motion.span>
+            </AnimatedStack>
+          ))}
+        {/* breaks children into words */}
+        {animateWords &&
+          words.map((word, index) => (
+            <AnimatedStack
+              layout
+              id={`animated-word-box-${index}`}
+              key={`${index}-animated-word-box`}
+              direction={'row'}
+              sx={{
+                // overflowY: 'hidden',
+                marginRight: '0.25rem'
+              }}
+            >
+              <motion.span
+                key={index}
+                id={`animated-word-span-${index}`}
+                style={{
+                  rotate: '0',
+                  x: 0,
+                  y: 0,
+                  fontWeight: keywords.includes(word) ? 700 : 400,
+                  fontSize: keywords.includes(word) ? '1.5rem' : '1rem',
+                  display: 'inline-block',
+                  ...typographyProps
+                }}
+                initial={{
+                  ...(animationProps && animationProps.initial
+                    ? animationProps.initial
+                    : {})
+                }}
+                animate={{
+                  ...(animationProps && animationProps.animate
+                    ? animationProps.animate
+                    : {})
+                }}
+                transition={{
+                  ...(animationProps && animationProps.transition
+                    ? animationProps.transition
+                    : {}),
+                  ...(animationProps && animationProps.staggerChildren
+                    ? {
+                        staggerChildren: animationProps.staggerChildren
+                      }
+                    : {}),
+                  ...(animationProps && animationProps.delayChildren
+                    ? {
+                        delayChildren: animationProps.delayChildren * index
+                      }
+                    : {})
+                }}
+                display={'inline'}
+                component={'span'}
+              >
+                {`${word === ' ' ? '\u00A0' : word}`}
+              </motion.span>
+            </AnimatedStack>
+          ))}
+      </AnimatedStack>
+    </LayoutGroup>
   );
 }
 
