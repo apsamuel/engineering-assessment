@@ -1,3 +1,4 @@
+import './Placeholder.scss';
 import { useEffect, useState, useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -117,6 +118,7 @@ export default function Placeholder({
           <Box
             // variant="h4"
             align='center'
+            className={'grid-lines'}
             sx={{
               alignContent: 'center',
               alignItems: 'center',
@@ -124,8 +126,6 @@ export default function Placeholder({
               display: 'flex',
               flexGrow: 1,
               padding: 2,
-              // borderTop: (theme) => `5px solid ${theme.palette.primary.contrastText}`,
-              // borderBottom: (theme) => `10px solid ${theme.palette.primary.contrastText}`
             }}
           >
             <Logo alt='logo' />
