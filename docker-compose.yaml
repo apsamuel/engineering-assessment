@@ -1,9 +1,20 @@
+networks:
+  hungree:
+    # external: true
+    name: hungree
 services:
+  # interacts with sfdata to retrieve and format food truck
   hungree-api:
+    hostname: hungree-api
+    networks:
+      - hungree
     build:
       context: ./api
       args:
+        - API_PORT=3000
+        - UI_PORT=3001
         - api_port=3000
+        - api_host=0.0.0.0
         - ui_port=3001
         - NODE_ENV=production
     container_name: hungree-api
@@ -15,7 +26,11 @@ services:
     ports:
       - 3000:3000
     command: node index.js
+  # interacts with api to provide a reactive UI on top of our API service
   hungree-ui:
+    hostname: hungree-ui
+    networks:
+      - hungree
     build:
       context: ./ui
       args:
@@ -26,23 +41,39 @@ services:
       - 3001:3001
     container_name: hungree-ui
     environment:
-      - API_PORT=3000
-      - UI_PORT=3001
+      - VITE_UI_PORT=3001
       - NODE_ENV=production
+      - VITE_API_HOST=http://localhost:3000
+      - VITE_GEOLOCATE=true
+      - VITE_LONGITUDE=-122.4194
+      - VITE_LATITUDE=37.7749
+      - VITE_HOST_NAME=hungree-ui
+      - VITE_MIN_DISTANCE=5000
+      - VITE_MAX_DISTANCE=10000
     working_dir: /app
-    command: npm run dev -- --host --port 3001
+    command: sh -c "npm run dev -- --host --port ${VITE_UI_PORT}"
+    links:
+      - hungree-api
     depends_on:
       - hungree-api
+  # a seperate route into sfdata is CLI based
+  # TODO: hungree-ctl (consume from api)
   hungree-cli:
+    hostname: cli
+    networks:
+      - hungree
     build:
       context: .
       args:
+        - API_PORT=3000
+        - UI_PORT=3001
         - api_port=3000
         - ui_port=3001
         - node_env=production
     environment:
       - API_PORT=3000
+      - API_HOST=0.0.0.0
       - UI_PORT=3001
       - NODE_ENV=production
-    container_name: hungree-cli
+    container_name: hungree-ctl
     working_dir: /app

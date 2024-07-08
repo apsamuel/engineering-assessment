@@ -4,6 +4,7 @@ import compileData from './lib/compileData.js';
 
 const app = express();
 const port = process.env.API_PORT || 8080;
+const hostname = process.env.API_HOSTNAME || '0.0.0.0';
 
 
 const apiLogger = (req, res, next) => {
@@ -157,6 +158,6 @@ app.get('/api/trucks/vendors/:vendor/categories', async (req, res) => {
   return res.json(Array.from(new Set(categories)))
 })
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
   console.log(`hungree-api is available on port ${port}`)
 })
