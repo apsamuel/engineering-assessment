@@ -288,6 +288,7 @@ export default function Data({
         // minWidth: '40%',
         // maxWidth: '100%',
         width:  '80%',
+        height: '50%'
       }}
       style={{
       }}
